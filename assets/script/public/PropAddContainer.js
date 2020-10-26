@@ -6,6 +6,9 @@ cc.Class({
         getRewardBtn: cc.Node,
 
         containerNode: cc.Node,
+
+        addType: cc.String,
+        addNumber: cc.Integer,
     },
 
     onLoad() {
@@ -15,6 +18,9 @@ cc.Class({
 
     handleGetReward(evt) {
         cc.log('press get reward');
+        const dphevt = new cc.Event.EventCustom('_state_change', true);
+        dphevt.setUserData({[this.addType]: this.addNumber});
+        this.node.dispatchEvent(dphevt);
     },
 
     dispatchLoad (evt) {

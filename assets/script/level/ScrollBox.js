@@ -14,31 +14,11 @@ cc.Class({
     },
 
     onLoad() {
-        let max = 50,
-            lockIndex = 1, 
-            list = [], 
-            unlockItem = {
-                star: 3,
-                lock: false,
-            },
-            lockItem = {
-                star: 0,
-                lock: true,
-            };
-        for (let index = 0; index < max; index++) {
-            let item = index < lockIndex ? unlockItem: lockItem;
-            list.push({
-                star: item.star,
-                level: parseInt(index + 1),
-                lock: item.lock
-            });
-        }
-
-        this.list = list;
+        this.list = JSON.parse(cc.sys.localStorage.getItem('userLevel'));
         this.page = 0;
         this.defaultX = this.node.x;
 
-        let groupList = this.supportNumberGroup(list, 12);
+        let groupList = this.supportNumberGroup(this.list, 12);
 
         this.groupList = groupList;
         this.maxPage = parseInt(groupList.length - 1);
@@ -46,33 +26,31 @@ cc.Class({
         for (let index = 0; index < groupList.length; index++) {
             const element = groupList[index];
             const group = cc.instantiate(this.groupPrefab);
+            if (!this.itemWidth) {
+                this.itemWidth = group.width;
+                this.node.width = parseInt((this.itemWidth + 10) * groupList.length - 10);
+            }
             for (let ind = 0; ind < element.length; ind++) {
                 const ele = element[ind];
-                let itemNode;
                 if (!ele.lock) {
-                    itemNode = cc.instantiate(this.unlockItemPrefab);
-                    for (const child of itemNode.children) {
-                        if (child.name == 'level') {
-                            child.string = ele.level;
+                    const itemNode = cc.instantiate(this.unlockItemPrefab);
+                    const levelNode = cc.find('level', itemNode);
+                    levelNode.getComponent(cc.Label).string = ele.level;
+                    const starGroupNode = cc.find('star group', itemNode);
+                    starGroupNode.children.map((v, k) => {
+                        if (k < ele.star) {
+                            v.getComponent(cc.Sprite).spriteFrame = this.fullStarSpriteFrame;
+                        } else {
+                            v.getComponent(cc.Sprite).spriteFrame = this.emptyStarSpriteFrame;
                         }
-                        if (child.name == 'star group') {
-                            child.children.map((v, k) => {
-                                if (k < ele.star) {
-                                    v.getComponent(cc.Sprite).spriteFrame = this.fullStarSpriteFrame;
-                                } else {
-                                    v.getComponent(cc.Sprite).spriteFrame = this.emptyStarSpriteFrame;
-                                }
-                            })
-                        }
-                    }
+                    });
+                    cc.log(itemNode);
+                    
+                    group.addChild(itemNode);
                 } else {
-                    itemNode = cc.instantiate(this.lockItemPrefab);
+                    const itemNode = cc.instantiate(this.lockItemPrefab);
+                    group.addChild(itemNode);
                 }
-                if (!this.itemWidth) {
-                    this.itemWidth = group.width;
-                    this.node.width = parseInt((this.itemWidth + 10) * groupList.length);
-                }
-                group.addChild(itemNode);
             }
             this.node.addChild(group);
         }

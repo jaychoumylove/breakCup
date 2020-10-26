@@ -70,6 +70,9 @@ cc.Class({
     },
 
     pressReplay() {
-        cc.director.loadScene('level_1');
+        const evt = new cc.Event.EventCustom('_toggle_loading', true);
+        evt.setUserData({status: true});
+        this.node.dispatchEvent(evt);
+        this.node.dispatchEvent(new cc.Event.EventCustom('_replay_current', true));
     },
 });

@@ -37,7 +37,7 @@ cc.Class({
     },
 
     initBtn() {
-        this.getBtnNode.on('click', this.closeHandle, this);
+        this.getBtnNode.on('click', this.doubelHandle, this);
     },
 
     dispatchLoad(evt) {
@@ -74,5 +74,16 @@ cc.Class({
     closeHandle(evt) {
         this.closeNode.active = false;
         this.goNext();
+    },
+
+    doubelHandle() {
+        this.recordLevelThreeStar();
+        this.goNext();
+    },
+
+    recordLevelThreeStar() {
+        const evt = new cc.Event.EventCustom('_record_lv_star', true);
+        evt.setUserData({star: 3});
+        this.node.dispatchEvent(evt);
     },
 });

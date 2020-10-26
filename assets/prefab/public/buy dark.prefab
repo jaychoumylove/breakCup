@@ -113,7 +113,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 500,
-      "height": 800
+      "height": 900
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -224,7 +224,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 500,
-      "height": 800
+      "height": 900
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2771,6 +2771,8 @@
       "__id__": 46
     },
     "containerNode": null,
+    "addType": "heart",
+    "addNumber": 2,
     "_id": ""
   },
   {
@@ -4964,6 +4966,8 @@
       "__id__": 103
     },
     "containerNode": null,
+    "addType": "money",
+    "addNumber": 200,
     "_id": ""
   },
   {

@@ -42,6 +42,9 @@ cc.Class({
 
     pressDoubel(evt) {
         cc.log('pressDoubel');
+        const dphevt = new cc.Event.EventCustom('_state_change', true);
+        dphevt.setUserData({heart: 2});
+        this.node.dispatchEvent(dphevt);
         this.goNext();
     },
 

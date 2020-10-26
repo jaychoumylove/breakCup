@@ -33,11 +33,11 @@ cc.Class({
 
     onLoad () {
         this.initPhysics();
-        const { current } = JSON.parse(cc.sys.localStorage.getItem('current_level'));
+        const { current } = JSON.parse(cc.sys.localStorage.getItem('currentLevel'));
         this.currentLevel = current;
         this.currentLabel.string = current;
         this.break = [];
-        this.cupNum = 1;
+        this.cupNum = this.boxContainer.children.length;
         this.win = false;
         this.lose = false;
         this.fallBallArray = [
@@ -75,7 +75,10 @@ cc.Class({
     },
 
     pressReplay() {
-        cc.director.loadScene('level_1');
+        const evt = new cc.Event.EventCustom('_toggle_loading', true);
+        evt.setUserData({status: true});
+        this.node.dispatchEvent(evt);
+        this.node.dispatchEvent(new cc.Event.EventCustom('_replay_current', true));
     },
 
     pressPause(evt) {
@@ -92,11 +95,19 @@ cc.Class({
 
     dispatchSuccess() {
         this.win = true;
+        // 记录当前得分
+        this.recordLevelStar();
+        // 解锁下一等级
+        this.unlockNextLevel();
         setTimeout(() => {
+            // 记录本次得分
             if (this.checkHeartBag()) {
                 return this.getHeartBag();
             }
-            if (this.checkStar()) {
+
+            // cc.sys.localStorage.setItem('currentLevel', JSON.stringify({current: level, star: 0}))
+            const status = this.checkStar();
+            if (status) {
                 return this.getThreeStar();
             }
             this.goSettle();
@@ -118,7 +129,6 @@ cc.Class({
     },
 
     goSettle() {
-        cc.sys.localStorage.setItem('last_game', JSON.stringify({star: this.getStar()}));
         const evt = new cc.Event.EventCustom('_toggle_loading', true);
         evt.setUserData({status: true});
         this.node.dispatchEvent(evt);
@@ -330,6 +340,16 @@ cc.Class({
      */
     checkStar() {
         return this.getStar() >= 3;
+    },
+
+    recordLevelStar() {
+        const evt = new cc.Event.EventCustom('_record_lv_star', true);
+        evt.setUserData({star: this.getStar()});
+        this.node.dispatchEvent(evt);
+    },
+
+    unlockNextLevel() {
+        this.node.dispatchEvent(new cc.Event.EventCustom('_unlock_lv', true));
     },
 
     getStar() {

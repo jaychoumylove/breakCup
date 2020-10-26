@@ -85,6 +85,15 @@
       },
       {
         "__id__": 261
+      },
+      {
+        "__id__": 262
+      },
+      {
+        "__id__": 263
+      },
+      {
+        "__id__": 264
       }
     ],
     "_prefab": null,
@@ -1145,7 +1154,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 500,
-      "height": 800
+      "height": 900
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -4077,6 +4086,8 @@
       "__id__": 74
     },
     "containerNode": null,
+    "addType": "money",
+    "addNumber": 200,
     "_id": "f0Be6BhiVPzLaep3Qlbu/b"
   },
   {
@@ -5663,6 +5674,8 @@
       "__id__": 120
     },
     "containerNode": null,
+    "addType": "heart",
+    "addNumber": 2,
     "_id": "b4QPCh80hJdoaDMR2tNnOL"
   },
   {
@@ -10262,7 +10275,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 500,
-      "height": 800
+      "height": 900
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -10373,7 +10386,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 500,
-      "height": 800
+      "height": 900
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -10444,7 +10457,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 500,
-      "height": 800
+      "height": 900
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -11005,6 +11018,9 @@
     "goNextNode": {
       "__id__": 230
     },
+    "levelLabel": {
+      "__id__": 178
+    },
     "goldRewardLabel": {
       "__id__": 204
     },
@@ -11024,5 +11040,41 @@
       "__id__": 238
     },
     "_id": "d7qOEpM7VDZ5t00oGayjJ8"
+  },
+  {
+    "__type__": "3800dJ4yrNOoZF+nqTRZjXf",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "_id": "1afGRVzgRNvq/MXOFAvyub"
+  },
+  {
+    "__type__": "03c6bu7wehCwbZZx7yZQrHi",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "_id": "93xunpB2FCdJRHKoqMGkeT"
+  },
+  {
+    "__type__": "9c2456vYYBC54H9fEgHOdyy",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "showTargetNode": {
+      "__id__": 20
+    },
+    "showContainerNode": {
+      "__id__": 21
+    },
+    "_id": "57w5lAGr1BPYktUWxFXj0D"
   }
 ]

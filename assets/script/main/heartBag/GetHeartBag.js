@@ -93,6 +93,9 @@ cc.Class({
         this.gotHeartContainer.active = true;
         this.topTitle.getComponent(cc.Label).string = '恭喜获得';
         this.gotHeartContainer.dispatchEvent(new cc.Event.EventCustom('_got', true));
+        const dphevt = new cc.Event.EventCustom('_state_change', true);
+        dphevt.setUserData({heart: 2});
+        this.node.dispatchEvent(dphevt);
     },
 
     setMenEmotion (emotion) {
