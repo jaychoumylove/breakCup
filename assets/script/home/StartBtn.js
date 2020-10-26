@@ -21,7 +21,9 @@ cc.Class({
     },
 
     startGame() {
-        cc.log('start');
+        const evt = new cc.Event.EventCustom('_toggle_loading', true);
+        evt.setUserData({status: true});
+        this.node.dispatchEvent(evt);
         cc.director.loadScene('level');
     }
 });

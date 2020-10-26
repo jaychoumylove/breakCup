@@ -27,7 +27,7 @@ cc.Class({
             bg.y += speed;
             if (bg.y > bg.height) {
                 // 边界重新生成
-                bg.y = this.getLastPositionY() - bg.height + 10;
+                bg.y = this.getLastPositionY() - bg.height + 20;
             }
         }
     },

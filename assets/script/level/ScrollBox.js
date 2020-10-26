@@ -15,7 +15,7 @@ cc.Class({
 
     onLoad() {
         let max = 50,
-            lockIndex = 4, 
+            lockIndex = 1, 
             list = [], 
             unlockItem = {
                 star: 3,

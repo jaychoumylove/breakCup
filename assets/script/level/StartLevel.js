@@ -14,6 +14,10 @@ cc.Class({
         })
 
         if (level) {
+            const evt = new cc.Event.EventCustom('_toggle_loading', true);
+            evt.setUserData({status: true});
+            this.node.dispatchEvent(evt);
+            cc.sys.localStorage.setItem('current_level', JSON.stringify({current: level, star: 0}))
             cc.director.loadScene('level_' + level);
         }
     },

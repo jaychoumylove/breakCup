@@ -27,11 +27,15 @@ cc.Class({
         getHeartScreenNode: cc.Node,
         getThreeStarScreenNode: cc.Node,
         bgNode: cc.Node,
+
+        currentLabel: cc.Label,
     },
 
     onLoad () {
-        cc.log(this.node);
         this.initPhysics();
+        const { current } = JSON.parse(cc.sys.localStorage.getItem('current_level'));
+        this.currentLevel = current;
+        this.currentLabel.string = current;
         this.break = [];
         this.cupNum = 1;
         this.win = false;
@@ -95,11 +99,7 @@ cc.Class({
             if (this.checkStar()) {
                 return this.getThreeStar();
             }
-            cc.sys.localStorage.setItem('last_game', JSON.stringify({star: this.getStar()}));
-            cc.director.loadScene('settle', (e, s) => {
-                // cc.log(e);
-                // cc.log(s);
-            })
+            this.goSettle();
         }, 2000)
     },
 
@@ -117,6 +117,17 @@ cc.Class({
         this.node.on('_go_settle', this.goSettleEvt, this);
     },
 
+    goSettle() {
+        cc.sys.localStorage.setItem('last_game', JSON.stringify({star: this.getStar()}));
+        const evt = new cc.Event.EventCustom('_toggle_loading', true);
+        evt.setUserData({status: true});
+        this.node.dispatchEvent(evt);
+        cc.director.loadScene('settle', (e, s) => {
+            // cc.log(e);
+            // cc.log(s);
+        })
+    },
+
     checkThreeStarEvt() {
         this.getHeartScreenNode.active = false;
         const status = this.checkStar();
@@ -131,11 +142,7 @@ cc.Class({
     goSettleEvt() {
         this.node.off('_go_settle', this.goSettleEvt, this);
         this.getThreeStarScreenNode.active = false;
-        cc.sys.localStorage.setItem('last_game', JSON.stringify({star: this.getStar()}));
-        cc.director.loadScene('settle', (e, s) => {
-            // cc.log(e);
-            // cc.log(s);
-        })
+        this.goSettle();
     },
 
     initTouch() {

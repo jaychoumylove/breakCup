@@ -57,12 +57,18 @@ cc.Class({
 
     replayCurrentLevel() {
         cc.log('replay');
+        const evt = new cc.Event.EventCustom('_toggle_loading', true);
+        evt.setUserData({status: true});
+        this.node.dispatchEvent(evt);
         cc.director.loadScene('level_1');
     },
 
     goNextLevel() {
         cc.log('go next level');
         // 去下一关
+        const evt = new cc.Event.EventCustom('_toggle_loading', true);
+        evt.setUserData({status: true});
+        this.node.dispatchEvent(evt);
         cc.director.loadScene('level_1');
     },
 
