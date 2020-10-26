@@ -2,11 +2,7 @@
   "title": "breakCup",
   "packageName": "org.cocos2d.demo",
   "startScene": "9e95080c-7c70-4ff9-bb55-78d0e791dd5f",
-  "excludeScenes": [
-    "da6342c8-64fc-412f-8fba-cd190d264ed1",
-    "ce2e6ca1-376d-451c-8b2a-ee1c675e51de",
-    "5108548e-06b0-4e33-8114-91af58b81b88"
-  ],
+  "excludeScenes": [],
   "orientation": {
     "landscapeLeft": true,
     "landscapeRight": true,
@@ -17,7 +13,7 @@
   "inlineSpriteFrames": true,
   "inlineSpriteFrames_native": true,
   "mainCompressionType": "default",
-  "mainIsRemote": false,
+  "mainIsRemote": true,
   "optimizeHotUpdate": false,
   "md5Cache": true,
   "nativeMd5Cache": true,

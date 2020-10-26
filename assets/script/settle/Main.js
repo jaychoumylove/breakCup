@@ -39,7 +39,8 @@ cc.Class({
                 ite.getComponent(cc.Sprite).spriteFrame = ind == 1 ? this.middleEmptyStarSprite: this.sideEmptyStarSprite;
             }
         })
-        this.goNextNode.active = current < 50;
+        const levels = JSON.parse(localStorage.getItem('userLevel'));
+        this.goNextNode.active = current < levels.length;
         this.levelLabel.string = current;
     },
 

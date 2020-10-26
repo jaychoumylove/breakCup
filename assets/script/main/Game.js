@@ -133,8 +133,6 @@ cc.Class({
         evt.setUserData({status: true});
         this.node.dispatchEvent(evt);
         cc.director.loadScene('settle', (e, s) => {
-            // cc.log(e);
-            // cc.log(s);
         })
     },
 

@@ -43,6 +43,7 @@ cc.Class({
                 levels[lockIndex] = Object.assign(found, {lock: false});
     
                 localStorage.setItem('userLevel', JSON.stringify(levels));
+                cc.director.preloadScene('level_' + nextLv);
             }
         }
     },

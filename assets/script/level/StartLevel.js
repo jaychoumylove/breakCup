@@ -9,7 +9,6 @@ cc.Class({
         let level = 0;
         const levelNode = cc.find('level', this.node);
         level = parseInt(levelNode.getComponent(cc.Label).string);
-        cc.log(level);
 
         if (level) {
             if (!this.checkHeart()) {

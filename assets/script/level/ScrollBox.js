@@ -44,8 +44,6 @@ cc.Class({
                             v.getComponent(cc.Sprite).spriteFrame = this.emptyStarSpriteFrame;
                         }
                     });
-                    cc.log(itemNode);
-                    
                     group.addChild(itemNode);
                 } else {
                     const itemNode = cc.instantiate(this.lockItemPrefab);
