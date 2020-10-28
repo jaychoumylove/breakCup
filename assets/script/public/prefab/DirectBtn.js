@@ -8,6 +8,9 @@ cc.Class({
     onLoad () {
         this.AudioPlayer = cc.find("bgm").getComponent("AudioManager");
         this.node.on('click', this.handleRedirect, this);
+        if (this.scene == 'store') {
+            this.node.active = false;
+        }
     },
 
     handleRedirect() {

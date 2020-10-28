@@ -39,6 +39,8 @@ cc.Class({
 
     initBtn() {
         this.getBtnNode.on('click', this.doubelHandle, this);
+        // 取消广告icon
+        this.getBtnNode.getComponent(cc.Button).target.getChildByName('icon').active = false;
     },
 
     dispatchLoad(evt) {

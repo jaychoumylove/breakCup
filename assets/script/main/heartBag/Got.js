@@ -33,10 +33,10 @@ cc.Class({
         const dft = {
             scale: this.doubelNode.scale,
         }, act = {
-            scale: 1.2,
+            scale: 1.4,
         };
-        let up = cc.tween().to(1, act),
-            down = cc.tween().to(1, dft),
+        let up = cc.tween().to(0.5, act),
+            down = cc.tween().to(0.5, dft),
             action = cc.tween().then(up).then(down);
         cc.tween(this.doubelNode).repeatForever(action).start();
     },

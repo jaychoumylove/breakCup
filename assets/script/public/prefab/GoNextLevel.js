@@ -6,6 +6,7 @@ cc.Class({
     onLoad () {
         this.AudioPlayer = cc.find("bgm").getComponent("AudioManager");
         this.node.on('click', this.goNextLevel, this);
+        this.node.active = false;
     },
 
     // update (dt) {},

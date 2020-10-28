@@ -15,6 +15,9 @@ cc.Class({
         this.getRewardBtn.on('click', this.handleGetReward, this);
         this.AudioPlayer = cc.find("bgm").getComponent("AudioManager");
         this.node.on('_dispatch_add_load', this.dispatchLoad, this);
+
+        // 取消广告icon
+        this.getRewardBtn.getComponent(cc.Button).target.getChildByName('icon').active = false;
     },
 
     handleGetReward(evt) {

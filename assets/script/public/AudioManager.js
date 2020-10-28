@@ -33,7 +33,11 @@ cc.Class({
     // },
 
     initVolume() {
-        const volume = JSON.parse(cc.sys.localStorage.getItem('userVolume'));
+        const volumeStr = cc.sys.localStorage.getItem('userVolume');
+        const volume = volumeStr ? JSON.parse(volumeStr): {bg: true,once: true};
+        if (!volumeStr) {
+            cc.sys.localStorage.setItem('userVolume', JSON.stringify(volume));
+        }
         this.bgStatus = volume.bg;
         this.onceStatus = volume.once;
     },
@@ -55,7 +59,9 @@ cc.Class({
     },
     
     playBgMusic() {
-        this.bgMusicChannel = cc.audioEngine.play(this.bgMusic,true, this.bgStatus ? 0.5: 0.0);
+        if (this.bgStatus) {
+            this.bgMusicChannel = cc.audioEngine.play(this.bgMusic,true, 0.5);
+        }
     },
 
     stopBgMusic: function () {        
@@ -71,6 +77,8 @@ cc.Class({
             this.updateStorageVolume('bg', status);
             if (typeof this.bgMusicChannel != undefined) {
                 cc.audioEngine.setVolume(this.bgMusicChannel, status ? 0.5: 0.0);
+            } else {
+                this.playBgMusic();
             }
         }
     },

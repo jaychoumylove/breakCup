@@ -27,10 +27,6 @@ cc.Class({
         }
 
         this.initByStorage('userLevel', level);
-        this.initByStorage('userVolume', {
-            bg: true,
-            once: true,
-        })
     },
 
     initByStorage(key, dftValue) {

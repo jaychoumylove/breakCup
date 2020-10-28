@@ -8086,7 +8086,7 @@
         "__id__": 214
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 224
@@ -8268,7 +8268,7 @@
         1,
         1,
         1,
-        0
+        1
       ]
     },
     "_eulerAngles": {
@@ -8772,7 +8772,7 @@
         1,
         1,
         1,
-        0
+        1
       ]
     },
     "_eulerAngles": {
@@ -9949,7 +9949,7 @@
         "__id__": 9
       }
     ],
-    "bgSpeed": 400,
+    "bgSpeed": 200,
     "_id": "b5K9ya5QBMLY9Lo8geGRb6"
   },
   {
