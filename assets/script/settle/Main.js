@@ -24,19 +24,26 @@ cc.Class({
     },
 
     onLoad() {
-        // 播放动画
-        this.initStarAction();
+        this.AudioPlayer = cc.find("bgm").getComponent("AudioManager");
+        this.AudioPlayer.playOnceMusic('win');
         this.initBtn();
         this.initReward();
+        // 播放动画
+        this.initStarAction();
     },
 
     initStarAction() {
         const { star, current } = JSON.parse(cc.sys.localStorage.getItem('currentLevel'));
         this.starGroupNode.children.map((ite, ind) => {
             if (ind < star) {
-                ite.getComponent(cc.Sprite).spriteFrame = ind == 1 ? this.middleFullStarSprite: this.sideFullStarSprite;
+                setTimeout(() => {
+                    ite.getComponent(cc.Sprite).spriteFrame = ind == 1 ? this.middleFullStarSprite: this.sideFullStarSprite;
+                    this.AudioPlayer.playOnceMusic('collectStar');
+                }, 500);
             } else {
-                ite.getComponent(cc.Sprite).spriteFrame = ind == 1 ? this.middleEmptyStarSprite: this.sideEmptyStarSprite;
+                setTimeout(() => {
+                    ite.getComponent(cc.Sprite).spriteFrame = ind == 1 ? this.middleEmptyStarSprite: this.sideEmptyStarSprite;
+                }, 500);
             }
         })
         const levels = JSON.parse(localStorage.getItem('userLevel'));
@@ -63,6 +70,7 @@ cc.Class({
     },
 
     replayCurrentLevel() {
+        this.AudioPlayer.playOnceMusic('button');
         cc.log('replay');
         const evt = new cc.Event.EventCustom('_toggle_loading', true);
         evt.setUserData({status: true});
@@ -71,6 +79,7 @@ cc.Class({
     },
 
     goNextLevel() {
+        this.AudioPlayer.playOnceMusic('button');
         cc.log('go next level');
         if (!this.checkHeart()) {
             return this.node.dispatchEvent(new cc.Event.EventCustom('_add_heart', true));
@@ -88,6 +97,7 @@ cc.Class({
         this.doubelNode.active = false;
         this.getRewardNode.active = false;
         this.redirectNode.active = true;
+        this.AudioPlayer.playOnceMusic('coin');
         this.replayNode.on('click', this.replayCurrentLevel, this);
         this.goNextNode.on('click', this.goNextLevel, this);
 
@@ -98,6 +108,7 @@ cc.Class({
 
     toggleDoubel(evt) {
         // 勾选双倍
+        this.AudioPlayer.playOnceMusic('button');
         this.dispatchGold(evt.isChecked);
     },
 

@@ -61,6 +61,7 @@ cc.Class({
         this.initTouch();
         this.replayButton.node.on('click', this.pressReplay, this);
         this.pauseButton.node.on('click', this.pressPause, this);
+        this.AudioPlayer = cc.find("bgm").getComponent("AudioManager");
     },
 
     update(dt) {},
@@ -75,6 +76,7 @@ cc.Class({
     },
 
     pressReplay() {
+        this.AudioPlayer.playOnceMusic('button');
         const evt = new cc.Event.EventCustom('_toggle_loading', true);
         evt.setUserData({status: true});
         this.node.dispatchEvent(evt);
@@ -82,6 +84,7 @@ cc.Class({
     },
 
     pressPause(evt) {
+        this.AudioPlayer.playOnceMusic('button');
         // this.offTouch();
         this.darkScreenNode.active = true;
         this.darkScreenNode.dispatchEvent(new cc.Event.EventCustom('_pause', true));

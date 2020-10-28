@@ -3,9 +3,11 @@ cc.Class({
 
     onLoad() {
         this.node.on('click', this.goLevel, this);
+        this.AudioPlayer = cc.find("bgm").getComponent("AudioManager");
     },
 
     goLevel() {
+        this.AudioPlayer.playOnceMusic('button');
         let level = 0;
         const levelNode = cc.find('level', this.node);
         level = parseInt(levelNode.getComponent(cc.Label).string);

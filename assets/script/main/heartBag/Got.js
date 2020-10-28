@@ -10,6 +10,7 @@ cc.Class({
         this.doubelNode.on('click', this.pressDoubel, this);
         this.singleNode.on('click', this.pressSingle, this);
         this.node.on('_got', this.dispatchGot, this);
+        this.AudioPlayer = cc.find("bgm").getComponent("AudioManager");
     },
 
     onDestroy() {
@@ -41,6 +42,7 @@ cc.Class({
     },
 
     pressDoubel(evt) {
+        this.AudioPlayer.playOnceMusic('button');
         cc.log('pressDoubel');
         const dphevt = new cc.Event.EventCustom('_state_change', true);
         dphevt.setUserData({heart: 2});
@@ -49,6 +51,7 @@ cc.Class({
     },
 
     pressSingle(evt) {
+        this.AudioPlayer.playOnceMusic('button');
         cc.log('pressSingle');
         this.goNext();
     },

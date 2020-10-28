@@ -3,24 +3,90 @@ cc.Class({
 
     properties: {
         bgMusic: cc.AudioClip,
+        glassBreakMusic: cc.AudioClip,
+        winMusic: cc.AudioClip,
+        coinMusic: cc.AudioClip,
+        collectStarMusic: cc.AudioClip,
+        buttonMusic: cc.AudioClip,
+        ballCollisionMusic: cc.AudioClip,
     },
 
     onLoad() {
         cc.game.addPersistRootNode(this.node);
+        this.initVolume();
+        this.playBgMusic();
+        this.musicMap = {
+            win: this.winMusic,
+            coin: this.coinMusic,
+            glassBreak: this.glassBreakMusic,
+            button: this.buttonMusic,
+            ballCollision: this.winMusic,
+            collectStar: this.collectStarMusic,
+        };
+
+        this.node.on('_play_music_once', this.playOnceMusicEvt, this);
     },
 
-    start() {
-        this.playBgMusic();
+    // update() {
+    //     cc.log('bg', 'music');
+    //     cc.log(this.bgStatus, this.onceStatus);
+    // },
+
+    initVolume() {
+        const volume = JSON.parse(cc.sys.localStorage.getItem('userVolume'));
+        this.bgStatus = volume.bg;
+        this.onceStatus = volume.once;
+    },
+
+    playOnceMusic(key) {
+        if (this.musicMap.hasOwnProperty(key)) {
+            if (this.onceStatus) {
+                cc.audioEngine.play(this.musicMap[key],false,0.5);
+            }
+        }
+    },
+    
+    playOnceMusicEvt(evt) {
+        const data = evt.getUserData();
+
+        if (data.hasOwnProperty('key')) {
+            this.playOnceMusic(data.key);
+        }
     },
     
     playBgMusic() {
-       this.bgMusicChannel = cc.audioEngine.play(this.bgMusic,true,0.5)
+        this.bgMusicChannel = cc.audioEngine.play(this.bgMusic,true, this.bgStatus ? 0.5: 0.0);
     },
 
     stopBgMusic: function () {        
         if (this.bgMusicChannel !== undefined) {
             cc.audioEngine.stop(this.bgMusicChannel);            
             this.bgMusicChannel = undefined;
+        }
+    },
+
+    checkBgMusicStatus(status) {
+        if (this.bgStatus != status) {
+            this.bgStatus = status;
+            this.updateStorageVolume('bg', status);
+            if (typeof this.bgMusicChannel != undefined) {
+                cc.audioEngine.setVolume(this.bgMusicChannel, status ? 0.5: 0.0);
+            }
+        }
+    },
+
+    checkOnceMusicStatus(status) {
+        if (this.onceStatus != status) {
+            this.onceStatus = status;
+            this.updateStorageVolume('once', status);
+        }
+    },
+
+    updateStorageVolume(key, value) {
+        const volume = JSON.parse(cc.sys.localStorage.getItem('userVolume'));
+        if (volume[key] != value) {
+            volume[key] = value;
+            cc.sys.localStorage.setItem('userVolume', JSON.stringify(volume));
         }
     },
 });

@@ -12,6 +12,7 @@ cc.Class({
     },
 
     onLoad() {
+        this.AudioPlayer = cc.find("bgm").getComponent("AudioManager");
         this.node.on('click', this.handleClick, this);
     },
 
@@ -24,6 +25,7 @@ cc.Class({
     },
 
     handleClick() {
+        this.AudioPlayer.playOnceMusic('button');
         let speed = this.moveSpeed;
         let btn = this.node.getComponent(cc.Button);
         if (this.direction == 'right') {

@@ -15,6 +15,7 @@ cc.Class({
     onLoad() {
         this.initTouch();
         this.initBtn();
+        this.AudioPlayer = cc.find("bgm").getComponent("AudioManager");
         this.node.on('_get_three_star_load', this.dispatchLoad, this);
     },
 
@@ -72,11 +73,13 @@ cc.Class({
     },
 
     closeHandle(evt) {
+        this.AudioPlayer.playOnceMusic('button');
         this.closeNode.active = false;
         this.goNext();
     },
 
     doubelHandle() {
+        this.AudioPlayer.playOnceMusic('button');
         this.recordLevelThreeStar();
         this.goNext();
     },

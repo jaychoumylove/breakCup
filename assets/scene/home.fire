@@ -136,6 +136,24 @@
     "bgMusic": {
       "__uuid__": "96dc9948-7e83-4939-85ed-af6b420b0f00"
     },
+    "glassBreakMusic": {
+      "__uuid__": "dee10eef-fd28-47e6-a9c6-c81785feaf5c"
+    },
+    "winMusic": {
+      "__uuid__": "6e6ca67e-4437-4aaa-83aa-2f8f34608c2c"
+    },
+    "coinMusic": {
+      "__uuid__": "1b3dd1f6-c519-42c6-993e-24c764ec9d1c"
+    },
+    "collectStarMusic": {
+      "__uuid__": "f49cbb43-8a3f-41e9-9e38-a7cb772c9299"
+    },
+    "buttonMusic": {
+      "__uuid__": "cdcececa-b47b-4c26-9ce5-9cbb61247656"
+    },
+    "ballCollisionMusic": {
+      "__uuid__": "7f45ae6a-6744-4ef0-b176-9d584313378c"
+    },
     "_id": "f2elCYrNdDvo08gPTZFMPf"
   },
   {
@@ -259,7 +277,7 @@
       "array": [
         0,
         0,
-        444.27103214141704,
+        444.2980954352853,
         0,
         0,
         0,
@@ -9931,7 +9949,7 @@
         "__id__": 9
       }
     ],
-    "bgSpeed": 200,
+    "bgSpeed": 400,
     "_id": "b5K9ya5QBMLY9Lo8geGRb6"
   },
   {
@@ -10038,7 +10056,7 @@
     "heart": 5,
     "money": 5,
     "lastAddHeartTime": 0,
-    "maxLevel": 4,
+    "maxLevel": 10,
     "_id": "a2m0ADKJJEwpL/n4gvL1KB"
   },
   {

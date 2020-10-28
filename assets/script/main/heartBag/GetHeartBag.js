@@ -26,7 +26,7 @@ cc.Class({
                 this.progressBar.progress -= 0.1;
                 this.setMenEmotion();
             }
-        }, 1000);
+        }, 500);
     },
 
     initLightAction() {
@@ -67,6 +67,10 @@ cc.Class({
     },
 
     pressGetHeart(evt) {
+        //获取全局播放器
+        const AudioPlayer = cc.find("bgm").getComponent("AudioManager");
+        //停止再开启背景音乐
+        AudioPlayer.playOnceMusic('button');
         if (this.progressBar.progress < 1) {
             this.countStatus = true;
             this.progressBar.progress = parseFloat((this.progressBar.progress + 0.1).toPrecision(1));
@@ -79,7 +83,7 @@ cc.Class({
             } else {
                 this.addProgressTimer = setTimeout(() => {
                     this.countStatus = false;
-                }, 1000);
+                }, 500);
             }
         }
     },

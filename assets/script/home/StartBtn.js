@@ -6,6 +6,7 @@ cc.Class({
     onLoad() {
         this.node.on('click', this.startGame, this);
         this.initAction();
+        this.AudioPlayer = cc.find("bgm").getComponent("AudioManager");
     },
 
     initAction() {
@@ -21,6 +22,7 @@ cc.Class({
     },
 
     startGame() {
+        this.AudioPlayer.playOnceMusic('button');
         const evt = new cc.Event.EventCustom('_toggle_loading', true);
         evt.setUserData({status: true});
         this.node.dispatchEvent(evt);

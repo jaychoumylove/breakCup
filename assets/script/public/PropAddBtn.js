@@ -9,9 +9,11 @@ cc.Class({
     onLoad() {
         this.show = false;
         this.node.on('click', this.handleClick, this);
+        this.AudioPlayer = cc.find("bgm").getComponent("AudioManager");
     },
 
     handleClick(evt) {
+        this.AudioPlayer.playOnceMusic('button');
         if (this.showContainerNode.active) {
             return;
         }

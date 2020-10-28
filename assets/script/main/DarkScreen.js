@@ -7,12 +7,34 @@ cc.Class({
 
         playBtn: cc.Button,
         replayBtn: cc.Button,
+        
+        musicOnSpriteFrame: cc.SpriteFrame,
+        musicOFFSpriteFrame: cc.SpriteFrame,
+        bgmOnSpriteFrame: cc.SpriteFrame,
+        bgmOFFSpriteFrame: cc.SpriteFrame,
     },
 
     onLoad() {
         this.initPress();
         this.initTouch();
         this.initScreen();
+        this.AudioPlayer = cc.find("bgm").getComponent("AudioManager");
+        this.bgmNode = this.pauseBtnGroup.getChildByName('bgm');
+        this.musicNode = this.pauseBtnGroup.getChildByName('music');
+        this.bgmNode.on('click', this.pressBGM, this);
+        this.musicNode.on('click', this.pressMusic, this);
+    },
+
+    update() {
+        const volume = JSON.parse(cc.sys.localStorage.getItem('userVolume'));
+        const bgSprite = volume.bg ? this.bgmOnSpriteFrame: this.bgmOFFSpriteFrame;
+        if (this.bgmNode.getComponent(cc.Button).target.getComponent(cc.Sprite).spriteFrame != bgSprite) {
+            this.bgmNode.getComponent(cc.Button).target.getComponent(cc.Sprite).spriteFrame = bgSprite;
+        }
+        const musicSprite = volume.once ? this.musicOnSpriteFrame: this.musicOFFSpriteFrame;
+        if (this.musicNode.getComponent(cc.Button).target.getComponent(cc.Sprite).spriteFrame != musicSprite) {
+            this.musicNode.getComponent(cc.Button).target.getComponent(cc.Sprite).spriteFrame = musicSprite;
+        }
     },
 
     onDestroy() {
@@ -38,6 +60,7 @@ cc.Class({
     },
 
     pressPlay() {
+        this.AudioPlayer.playOnceMusic('button');
         this.pauseBtnGroup.active = false;
         this.node.active = false;
         // this.offPress();
@@ -70,9 +93,18 @@ cc.Class({
     },
 
     pressReplay() {
+        this.AudioPlayer.playOnceMusic('button');
         const evt = new cc.Event.EventCustom('_toggle_loading', true);
         evt.setUserData({status: true});
         this.node.dispatchEvent(evt);
         this.node.dispatchEvent(new cc.Event.EventCustom('_replay_current', true));
+    },
+
+    pressBGM() {
+        this.AudioPlayer.checkBgMusicStatus(this.bgmNode.getComponent(cc.Button).target.getComponent(cc.Sprite).spriteFrame != this.bgmOnSpriteFrame);
+    },
+
+    pressMusic() {
+        this.AudioPlayer.checkOnceMusicStatus(this.musicNode.getComponent(cc.Button).target.getComponent(cc.Sprite).spriteFrame != this.musicOnSpriteFrame);
     },
 });

@@ -13,10 +13,12 @@ cc.Class({
 
     onLoad() {
         this.getRewardBtn.on('click', this.handleGetReward, this);
+        this.AudioPlayer = cc.find("bgm").getComponent("AudioManager");
         this.node.on('_dispatch_add_load', this.dispatchLoad, this);
     },
 
     handleGetReward(evt) {
+        this.AudioPlayer.playOnceMusic('button');
         cc.log('press get reward');
         const dphevt = new cc.Event.EventCustom('_state_change', true);
         dphevt.setUserData({[this.addType]: this.addNumber});
@@ -33,6 +35,7 @@ cc.Class({
     },
 
     handleClose(evt) {
+        this.AudioPlayer.playOnceMusic('button');
         this.closeBtn.active = false;
         this.node.active = false;
         this.containerNode.active = false;

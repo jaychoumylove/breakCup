@@ -19,15 +19,15 @@ cc.Class({
 
     update(dt) {
         const speed = this.bgSpeed * dt;
-        let max = 0;
-        this.bgArray.map(ite => {
-            max += ite.y;
-        });
+        // let max = 0;
+        // this.bgArray.map(ite => {
+        //     max += ite.y;
+        // });
         for (const bg of this.bgArray) {
             bg.y += speed;
-            if (bg.y > bg.height) {
+            if (bg.y >= bg.height) {
                 // 边界重新生成
-                bg.y = this.getLastPositionY() - bg.height + 20;
+                bg.y = bg.y - (bg.height * 2) + 20;
             }
         }
     },

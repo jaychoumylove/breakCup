@@ -4,12 +4,14 @@ cc.Class({
     properties: {},
 
     onLoad () {
+        this.AudioPlayer = cc.find("bgm").getComponent("AudioManager");
         this.node.on('click', this.goNextLevel, this);
     },
 
     // update (dt) {},
 
     goNextLevel() {
+        this.AudioPlayer.playOnceMusic('button');
         cc.log('go next');
         const evt1 = new cc.Event.EventCustom('_toggle_loading', true);
         evt1.setUserData({status: true});
