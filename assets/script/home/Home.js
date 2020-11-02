@@ -29,6 +29,16 @@ cc.Class({
         this.initByStorage('userLevel', level);
     },
 
+    start() {
+        const ad = cc.find("bgm").getComponent("WechatAdService");
+        console.log(ad);
+        ad.showGridAd({
+            width: 330,
+            top: 375,
+            left: 10,
+        });
+    },
+
     initByStorage(key, dftValue) {
         const localStorage = cc.sys.localStorage;
         let userData = localStorage.getItem(key);

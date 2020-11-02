@@ -17,15 +17,23 @@ cc.Class({
         this.node.on('_dispatch_add_load', this.dispatchLoad, this);
 
         // 取消广告icon
-        this.getRewardBtn.getComponent(cc.Button).target.getChildByName('icon').active = false;
+        // this.getRewardBtn.getComponent(cc.Button).target.getChildByName('icon').active = false;
     },
 
     handleGetReward(evt) {
         this.AudioPlayer.playOnceMusic('button');
         cc.log('press get reward');
-        const dphevt = new cc.Event.EventCustom('_state_change', true);
-        dphevt.setUserData({[this.addType]: this.addNumber});
-        this.node.dispatchEvent(dphevt);
+        const ad = cc.find("bgm").getComponent("WechatAdService");
+        const call = () => {
+            const dphevt = new cc.Event.EventCustom('_state_change', true);
+            dphevt.setUserData({[this.addType]: this.addNumber});
+            this.node.dispatchEvent(dphevt);
+        }
+        const res = ad.openVideoWithCb(() => { call() });
+        if (false == res) {
+            // 不在微信环境下直接获取奖励
+            call();
+        }
     },
 
     dispatchLoad (evt) {

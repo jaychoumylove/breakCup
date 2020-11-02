@@ -44,10 +44,18 @@ cc.Class({
     pressDoubel(evt) {
         this.AudioPlayer.playOnceMusic('button');
         cc.log('pressDoubel');
-        const dphevt = new cc.Event.EventCustom('_state_change', true);
-        dphevt.setUserData({heart: 2});
-        this.node.dispatchEvent(dphevt);
-        this.goNext();
+        const ad = cc.find("bgm").getComponent("WechatAdService");
+        const call = () => {
+            const dphevt = new cc.Event.EventCustom('_state_change', true);
+            dphevt.setUserData({heart: 2});
+            this.node.dispatchEvent(dphevt);
+            this.goNext();
+        }
+        const res = ad.openVideoWithCb(() => { call() });
+        if (false == res) {
+            // 不在微信环境下直接获取奖励
+            call();
+        }
     },
 
     pressSingle(evt) {

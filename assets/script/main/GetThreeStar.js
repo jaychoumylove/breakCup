@@ -40,7 +40,7 @@ cc.Class({
     initBtn() {
         this.getBtnNode.on('click', this.doubelHandle, this);
         // 取消广告icon
-        this.getBtnNode.getComponent(cc.Button).target.getChildByName('icon').active = false;
+        // this.getBtnNode.getComponent(cc.Button).target.getChildByName('icon').active = false;
     },
 
     dispatchLoad(evt) {
@@ -82,8 +82,16 @@ cc.Class({
 
     doubelHandle() {
         this.AudioPlayer.playOnceMusic('button');
-        this.recordLevelThreeStar();
-        this.goNext();
+        const ad = cc.find("bgm").getComponent("WechatAdService");
+        const call = () => {
+            this.recordLevelThreeStar();
+            this.goNext();
+        }
+        const res = ad.openVideoWithCb(() => { call() });
+        if (false == res) {
+            // 不在微信环境下直接获取奖励
+            call();
+        }
     },
 
     recordLevelThreeStar() {

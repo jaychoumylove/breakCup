@@ -9,10 +9,20 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        // starCountLay
     },
 
     onLoad() {
+        this.initState();
+        const ad = cc.find("bgm").getComponent("WechatAdService");
+        ad.showInterstitialAd();
+        // ad.showGridAd({
+        //     width: 330,
+        //     top: 375,
+        //     left: 10,
+        // });
+    },
+
+    initState() {
         this.achievement = this.node.getChildByName('Main Camera').getChildByName('achievement');
         const state = this.getState();
         const starStateNode = this.achievement.getChildByName('star');
@@ -52,6 +62,7 @@ cc.Class({
     },
 
     toPercent(num, total) {
-        return Math.round(num / total * 1000) / 10.0 + "%"
+        return Math.round(num / total * 1000) / 10.0 + "%";
     }
 });
+ 
