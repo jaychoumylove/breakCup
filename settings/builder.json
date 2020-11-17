@@ -1,10 +1,8 @@
 {
   "title": "breakCup",
   "packageName": "org.cocos2d.demo",
-  "startScene": "9e95080c-7c70-4ff9-bb55-78d0e791dd5f",
-  "excludeScenes": [
-    "a2085a16-9db5-4038-b77b-0e74dfde9129"
-  ],
+  "startScene": "a2085a16-9db5-4038-b77b-0e74dfde9129",
+  "excludeScenes": [],
   "orientation": {
     "landscapeLeft": true,
     "landscapeRight": true,

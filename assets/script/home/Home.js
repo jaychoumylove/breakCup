@@ -1,68 +1,72 @@
 cc.Class({
-    extends: cc.Component,
+  extends: cc.Component,
 
-    properties: {
-        heart: cc.Integer,
-        money: cc.Integer,
-        lastAddHeartTime: cc.Integer,
-        maxLevel: cc.Integer,
-    },
+  properties: {
+    heart: cc.Integer,
+    money: cc.Integer,
+    lastAddHeartTime: cc.Integer,
+    maxLevel: cc.Integer,
+  },
 
-    onLoad() {
-        // 初始化数据
-        const userData = {
-            heart: this.heart,
-            money: this.money,
-            lastAddHeartTime: this.lastAddHeartTime,
-        };
-        this.initByStorage('userState', userData);
-        let level = [];
-        for (let index = 0; index < this.maxLevel; index++) {
-            const item = {
-                level: index + 1,
-                lock: index > 0,
-                star: 0
-            };
-            level.push(item);
-        }
+  onLoad() {
+    // 初始化数据
+    const userData = {
+      heart: this.heart,
+      money: this.money,
+      lastAddHeartTime: this.lastAddHeartTime,
+    };
+    this.initByStorage("userState", userData);
+    let level = [];
+    for (let index = 0; index < this.maxLevel; index++) {
+      const item = {
+        level: index + 1,
+        lock: index > 0,
+        star: 0,
+      };
+      level.push(item);
+    }
 
-        this.initByStorage('userLevel', level);
-    },
+    this.initByStorage("userLevel", level);
+  },
 
-    start() {
-        const ad = cc.find("bgm").getComponent("WechatAdService");
-        console.log(ad);
-        ad.showGridAd({
-            width: 330,
-            top: 375,
-            left: 10,
-        });
-    },
+  start() {
+    const ad = cc.find("bgm").getComponent("WechatAdService");
+    if (wx) {
+      const wxSys = wx.getSystemInfoSync();
+      ad.showBannerAd({
+        height: 80,
+        width: 300,
+        top: wxSys.screenHeight - 90,
+        left: (wxSys.screenWidth - 300) / 2,
+      });
+    }
+  },
 
-    initByStorage(key, dftValue) {
-        const localStorage = cc.sys.localStorage;
-        let userData = localStorage.getItem(key);
-        if (!userData) {
-            localStorage.setItem(key, JSON.stringify(dftValue));
-        }
-        if (key == 'userLevel') {
-            userData = JSON.parse(userData);
-            if (userData instanceof Array && userData.length < dftValue.length) {
-                let lastInd = 0;
-                const newUserData = dftValue.map((ite, ind) => {
-                    if (userData.hasOwnProperty(ind)) {
-                        lastInd = ind;
-                        return userData[ind];
-                    } else {
-                        if (lastInd == ind) {
-                            ite.lock = false;
-                        }
-                        return ite;
-                    }
-                })
-    
-                localStorage.setItem(key, JSON.stringify(newUserData));
+  initByStorage(key, dftValue) {
+    const localStorage = cc.sys.localStorage;
+    let userData = localStorage.getItem(key);
+    if (!userData) {
+      localStorage.setItem(key, JSON.stringify(dftValue));
+      return;
+    }
+    if (key == "userLevel") {
+      userData = JSON.parse(userData);
+      if (userData instanceof Array && userData.length < dftValue.length) {
+        let lastInd = 0;
+        const newUserData = dftValue.map((ite, ind) => {
+          if (userData.hasOwnProperty(ind)) {
+            lastInd = ind;
+            return userData[ind];
+          } else {
+            if (lastInd == ind) {
+              ite.lock = false;
             }
-        }
-    },
+            return ite;
+          }
+        });
+
+        localStorage.setItem(key, JSON.stringify(newUserData));
+      }
+    }
+  },
 });

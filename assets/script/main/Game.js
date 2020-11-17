@@ -66,14 +66,7 @@ cc.Class({
 
     update(dt) {},
 
-    onDestroy() {
-        // this.node.off('_box_break', this.boxBreakHandle, this);
-        // this.node.off(cc.Node.EventType.TOUCH_START, this.createBall, this);
-        // this.node.off(cc.Node.EventType.TOUCH_MOVE, this.moveBall, this);
-        // this.node.off(cc.Node.EventType.TOUCH_END, this.fallDownBall, this);
-        // this.node.off(cc.Node.EventType.TOUCH_CANCEL, this.fallDownBall, this);
-        // this.replayButton.node.off('click', this.replay);
-    },
+    onDestroy() {},
 
     pressReplay() {
         this.AudioPlayer.playOnceMusic('button');

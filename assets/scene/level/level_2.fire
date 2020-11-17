@@ -196,7 +196,7 @@
       "array": [
         0,
         0,
-        444.2980954352853,
+        443.4050067376326,
         0,
         0,
         0,
@@ -1591,7 +1591,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 200,
+      "width": 280,
       "height": 40
     },
     "_anchorPoint": {
@@ -1655,7 +1655,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 120,
+      "width": 200,
       "height": 25.2
     },
     "_anchorPoint": {
@@ -1708,8 +1708,8 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_useOriginalSize": true,
-    "_string": "千万不要打盹",
-    "_N$string": "千万不要打盹",
+    "_string": "不要总是在厕所待着哦",
+    "_N$string": "不要总是在厕所待着哦",
     "_fontSize": 20,
     "_lineHeight": 20,
     "_enableWrapText": true,
@@ -1747,7 +1747,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 200,
+      "width": 280,
       "height": 40
     },
     "_resize": 1,
@@ -16559,7 +16559,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        -124.072,
+        -184.072,
         0,
         0,
         0,
