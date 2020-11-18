@@ -1,0 +1,18 @@
+{
+  "package": "s",
+  "name": "s",
+  "icon": "/Users/qucaixian/creatorProject/breakCup/assets/resources/image/ball.png",
+  "versionName": "1.0.0",
+  "versionCode": "1.0.0",
+  "minPlatformVersion": "1081",
+  "deviceOrientation": "portrait",
+  "logLevel": "log",
+  "npmPath": "",
+  "tinyPackageServer": "",
+  "useDebugKey": true,
+  "privatePath": "",
+  "certificatePath": "",
+  "disabledMode": "disabled is-disabled",
+  "showNpmPath": false,
+  "packFirstScreenRes": false
+}
