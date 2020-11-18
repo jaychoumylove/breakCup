@@ -1,3 +1,5 @@
+const common = require("../util/common");
+
 cc.Class({
   extends: cc.Component,
 
@@ -53,6 +55,10 @@ cc.Class({
     const levels = JSON.parse(localStorage.getItem("userLevel"));
     this.goNextNode.active = current < levels.length;
     this.levelLabel.string = current;
+    common.preloadlevel(current);
+    if (current < levels.length) {
+      common.preloadlevel(current);
+    }
   },
 
   initBtn() {
@@ -91,6 +97,10 @@ cc.Class({
       return this.node.dispatchEvent(
         new cc.Event.EventCustom("_add_heart", true)
       );
+    } else {
+      const dphHevt = new cc.Event.EventCustom("_state_change", true);
+      dphHevt.setUserData({ heart: -1 });
+      this.node.dispatchEvent(dphHevt);
     }
     // 去下一关
     const evt = new cc.Event.EventCustom("_toggle_loading", true);

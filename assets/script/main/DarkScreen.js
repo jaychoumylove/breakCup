@@ -1,110 +1,133 @@
 cc.Class({
-    extends: cc.Component,
+  extends: cc.Component,
 
-    properties: {
-        pauseBtnGroup: cc.Node,
-        failBtnGroup: cc.Node,
+  properties: {
+    pauseBtnGroup: cc.Node,
+    failBtnGroup: cc.Node,
 
-        playBtn: cc.Button,
-        replayBtn: cc.Button,
-        
-        musicOnSpriteFrame: cc.SpriteFrame,
-        musicOFFSpriteFrame: cc.SpriteFrame,
-        bgmOnSpriteFrame: cc.SpriteFrame,
-        bgmOFFSpriteFrame: cc.SpriteFrame,
-    },
+    playBtn: cc.Button,
+    replayBtn: cc.Button,
 
-    onLoad() {
-        this.initPress();
-        this.initTouch();
-        this.initScreen();
-        this.AudioPlayer = cc.find("bgm").getComponent("AudioManager");
-        this.bgmNode = this.pauseBtnGroup.getChildByName('bgm');
-        this.musicNode = this.pauseBtnGroup.getChildByName('music');
-        this.bgmNode.on('click', this.pressBGM, this);
-        this.musicNode.on('click', this.pressMusic, this);
-    },
+    musicOnSpriteFrame: cc.SpriteFrame,
+    musicOFFSpriteFrame: cc.SpriteFrame,
+    bgmOnSpriteFrame: cc.SpriteFrame,
+    bgmOFFSpriteFrame: cc.SpriteFrame,
+  },
 
-    update() {
-        const volume = JSON.parse(cc.sys.localStorage.getItem('userVolume'));
-        const bgSprite = volume.bg ? this.bgmOnSpriteFrame: this.bgmOFFSpriteFrame;
-        if (this.bgmNode.getComponent(cc.Button).target.getComponent(cc.Sprite).spriteFrame != bgSprite) {
-            this.bgmNode.getComponent(cc.Button).target.getComponent(cc.Sprite).spriteFrame = bgSprite;
-        }
-        const musicSprite = volume.once ? this.musicOnSpriteFrame: this.musicOFFSpriteFrame;
-        if (this.musicNode.getComponent(cc.Button).target.getComponent(cc.Sprite).spriteFrame != musicSprite) {
-            this.musicNode.getComponent(cc.Button).target.getComponent(cc.Sprite).spriteFrame = musicSprite;
-        }
-    },
+  onLoad() {
+    this.initPress();
+    this.initTouch();
+    this.initScreen();
+    this.AudioPlayer = cc.find("bgm").getComponent("AudioManager");
+    const localStorage = cc.sys.localStorage;
+    const { current } = JSON.parse(localStorage.getItem("currentLevel"));
+    cc
+      .find("current Level/number", this.node)
+      .getComponent(cc.Label).string = current;
+  },
 
-    onDestroy() {
-        this.offTouch();
-    },
+  update() {
+    const volume = JSON.parse(cc.sys.localStorage.getItem("userVolume"));
+    const bgSprite = volume.bg ? this.bgmOnSpriteFrame : this.bgmOFFSpriteFrame;
+    if (
+      this.bgmNode.getComponent(cc.Button).target.getComponent(cc.Sprite)
+        .spriteFrame != bgSprite
+    ) {
+      this.bgmNode
+        .getComponent(cc.Button)
+        .target.getComponent(cc.Sprite).spriteFrame = bgSprite;
+    }
+    const musicSprite = volume.once
+      ? this.musicOnSpriteFrame
+      : this.musicOFFSpriteFrame;
+    if (
+      this.musicNode.getComponent(cc.Button).target.getComponent(cc.Sprite)
+        .spriteFrame != musicSprite
+    ) {
+      this.musicNode
+        .getComponent(cc.Button)
+        .target.getComponent(cc.Sprite).spriteFrame = musicSprite;
+    }
+  },
 
-    initTouch() {
-        this.node.on(cc.Node.EventType.TOUCH_START, this.stopDispatch, this);
-        this.node.on(cc.Node.EventType.TOUCH_MOVE, this.stopDispatch, this);
-        this.node.on(cc.Node.EventType.TOUCH_END, this.stopDispatch, this);
-        this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.stopDispatch, this);
-    },
+  onDestroy() {
+    this.offTouch();
+  },
 
-    offTouch() {
-        this.node.off(cc.Node.EventType.TOUCH_START, this.stopDispatch, this);
-        this.node.off(cc.Node.EventType.TOUCH_MOVE, this.stopDispatch, this);
-        this.node.off(cc.Node.EventType.TOUCH_END, this.stopDispatch, this);
-        this.node.off(cc.Node.EventType.TOUCH_CANCEL, this.stopDispatch, this);
-    },
+  initTouch() {
+    this.node.on(cc.Node.EventType.TOUCH_START, this.stopDispatch, this);
+    this.node.on(cc.Node.EventType.TOUCH_MOVE, this.stopDispatch, this);
+    this.node.on(cc.Node.EventType.TOUCH_END, this.stopDispatch, this);
+    this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.stopDispatch, this);
+  },
 
-    stopDispatch(evt) {
-        evt.stopPropagation();
-    },
+  offTouch() {
+    this.node.off(cc.Node.EventType.TOUCH_START, this.stopDispatch, this);
+    this.node.off(cc.Node.EventType.TOUCH_MOVE, this.stopDispatch, this);
+    this.node.off(cc.Node.EventType.TOUCH_END, this.stopDispatch, this);
+    this.node.off(cc.Node.EventType.TOUCH_CANCEL, this.stopDispatch, this);
+  },
 
-    pressPlay() {
-        this.AudioPlayer.playOnceMusic('button');
-        this.pauseBtnGroup.active = false;
-        this.node.active = false;
-        // this.offPress();
-    },
+  stopDispatch(evt) {
+    evt.stopPropagation();
+  },
 
-    initPress() {
-        this.playBtn.node.on('click', this.pressPlay, this);
-        this.replayBtn.node.on('click', this.pressReplay, this);
-        // this.pauseButton.node.on('click', this.pressPause, this);
-    }, 
+  pressPlay() {
+    this.AudioPlayer.playOnceMusic("button");
+    this.pauseBtnGroup.active = false;
+    this.node.active = false;
+    // this.offPress();
+  },
 
-    offPress() {
-        this.playBtn.node.off('click', this.pressPlay, this);
-        // this.pauseButton.node.off('click', this.pressPause, this);
-    },
+  initPress() {
+    this.playBtn.node.on("click", this.pressPlay, this);
+    this.replayBtn.node.on("click", this.pressReplay, this);
+    this.bgmNode = this.pauseBtnGroup.getChildByName("bgm");
+    this.musicNode = this.pauseBtnGroup.getChildByName("music");
+    this.bgmNode.on("click", this.pressBGM, this);
+    this.musicNode.on("click", this.pressMusic, this);
+    // this.pauseButton.node.on('click', this.pressPause, this);
+  },
 
-    initScreen() {
-        this.node.on('_pause', this.dispatchPauseScreen, this);
-        this.node.on('_fail', this.dispatchFailScreen, this);
-    },
+  offPress() {
+    this.playBtn.node.off("click", this.pressPlay, this);
+    // this.pauseButton.node.off('click', this.pressPause, this);
+  },
 
-    dispatchPauseScreen(evt) {
-        this.failBtnGroup.active = false;
-        this.pauseBtnGroup.active = true;
-    },
+  initScreen() {
+    this.node.on("_pause", this.dispatchPauseScreen, this);
+    this.node.on("_fail", this.dispatchFailScreen, this);
+  },
 
-    dispatchFailScreen(evt) {
-        this.pauseBtnGroup.active = false;
-        this.failBtnGroup.active = true;
-    },
+  dispatchPauseScreen(evt) {
+    this.failBtnGroup.active = false;
+    this.pauseBtnGroup.active = true;
+  },
 
-    pressReplay() {
-        this.AudioPlayer.playOnceMusic('button');
-        const evt = new cc.Event.EventCustom('_toggle_loading', true);
-        evt.setUserData({status: true});
-        this.node.dispatchEvent(evt);
-        this.node.dispatchEvent(new cc.Event.EventCustom('_replay_current', true));
-    },
+  dispatchFailScreen(evt) {
+    this.pauseBtnGroup.active = false;
+    this.failBtnGroup.active = true;
+  },
 
-    pressBGM() {
-        this.AudioPlayer.checkBgMusicStatus(this.bgmNode.getComponent(cc.Button).target.getComponent(cc.Sprite).spriteFrame != this.bgmOnSpriteFrame);
-    },
+  pressReplay() {
+    this.AudioPlayer.playOnceMusic("button");
+    const evt = new cc.Event.EventCustom("_toggle_loading", true);
+    evt.setUserData({ status: true });
+    this.node.dispatchEvent(evt);
+    this.node.dispatchEvent(new cc.Event.EventCustom("_replay_current", true));
+  },
 
-    pressMusic() {
-        this.AudioPlayer.checkOnceMusicStatus(this.musicNode.getComponent(cc.Button).target.getComponent(cc.Sprite).spriteFrame != this.musicOnSpriteFrame);
-    },
+  pressBGM() {
+    this.AudioPlayer.checkBgMusicStatus(
+      this.bgmNode.getComponent(cc.Button).target.getComponent(cc.Sprite)
+        .spriteFrame != this.bgmOnSpriteFrame
+    );
+  },
+
+  pressMusic() {
+    this.AudioPlayer.checkOnceMusicStatus(
+      this.musicNode.getComponent(cc.Button).target.getComponent(cc.Sprite)
+        .spriteFrame != this.musicOnSpriteFrame
+    );
+  },
 });
