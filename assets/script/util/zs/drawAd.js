@@ -10,6 +10,10 @@ cc.Class({
     adParent: cc.Node,
     scrollDirect: cc.Vec2,
 
+    rowNum: 3,
+
+    colNum: 8,
+
     direction: cc.Vec2,
 
     hideIcon: cc.SpriteFrame,
@@ -27,7 +31,10 @@ cc.Class({
 
   refreshAds() {
     zsSdk.loadAd((res) => {
-      this.showAd(res);
+      this.showAd(res, this.rowNum * this.colNum, () => {
+        // 防止结构错乱主动更新
+        this.adParent.getComponent(cc.Layout).updateLayout();
+      });
     });
   },
 
@@ -42,8 +49,8 @@ cc.Class({
       this.showNode.x = -showX;
     }
     this.moreBox = cc.find("more", this.node);
-    const bgWidth = this.itemPrefab.data.width * 3; // 抽屉最多一行3个广告
-    const bgHeight = this.itemPrefab.data.width * 3; // 抽屉最多一行3个广告
+    const bgWidth = this.itemPrefab.data.width * this.rowNum; // 抽屉最多一行3个广告
+    const bgHeight = this.itemPrefab.data.width * this.rowNum; // 抽屉最多一行3个广告
     this.adParent.width = bgWidth;
     this.adParent.x = -bgWidth / 2;
     this.adParent.y = bgHeight / 2;
@@ -72,22 +79,28 @@ cc.Class({
     this.hideNode.on("click", this.hideMore, this);
   },
 
-  showAd(adData) {
+  showAd(adData, number, call) {
     let adArray = adData.promotion;
     adArray = Common.shuffleArray(adArray);
 
+    this.adArray = adArray;
     if (adArray.length > 0) {
-      for (let i = 0; i < adArray.length; i++) {
-        const adEntity = adArray[i];
+      let index = 0;
+      for (let i = 0; i < number; i++) {
+        if (index >= adArray.length) {
+          index = 0;
+        }
+        const adEntity = adArray[index];
         let adNode = cc.instantiate(this.itemPrefab);
         this.adParent.addChild(adNode);
         let adItem = adNode.getComponent("ZSAdItem");
         if (adItem) {
           adItem.init(adEntity);
         }
+        index++;
       }
+      call && call();
     }
-    this.adArray = adArray;
   },
 
   showMore() {
@@ -99,7 +112,9 @@ cc.Class({
       .call(() => {
         this.hideNode.active = true;
         if (this.scrollDirect) {
-          this.initUpDownTween();
+          if (!this.moveTween) {
+            this.initUpDownTween();
+          }
         }
       })
       .start();
@@ -146,7 +161,6 @@ cc.Class({
   hideMore() {
     if (false == this.status) return;
     this.status = false;
-    this.moveTween.stop();
     this.hideNode.active = false;
     const x = this.direction.x > 0 ? cc.winSize.width : -cc.winSize.width;
     cc.tween(this.moreBox)

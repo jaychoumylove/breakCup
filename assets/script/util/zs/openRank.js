@@ -1,6 +1,6 @@
-import zsSdk from "zs.sdk";
-import zsLoad from "./ZSLoad";
-import Common from "./common";
+import zsSdk from "../zs.sdk";
+import Common from "../common";
+import { versionCheck, getCfgVal } from "../ZSLoad";
 
 cc.Class({
   extends: cc.Component,
@@ -20,20 +20,23 @@ cc.Class({
 
   onLoad() {
     this.initBtnPos();
-    this.initContainerWH();
+    // this.initContainerWH();
     zsSdk.loadAd((res) => {
-      this.showAd(res, this.rowNum * 5, () => {
+      this.showAd(res, () => {
         this.adContainer.getComponent(cc.Layout).updateLayout();
-        this.scrolling = true;
+        cc.log(this.adContainer);
+        setInterval(() => {
+          cc.log(this.adContainer);
+        }, 2000);
+        // this.scrolling = true;
       });
     });
-    this.defaultPos = { x: this.adContainer.x, y: this.adContainer.y };
+    // this.defaultPos = { x: this.adContainer.x, y: this.adContainer.y };
     this.checkWorseClick();
     this.node
       .getChildByName("bottom")
       .getChildByName("go on")
       .on("click", this.clickHandle, this);
-    this.adContainer.getComponent(cc.Layout).updateLayout();
   },
 
   initBtnPos() {
@@ -62,20 +65,20 @@ cc.Class({
 
   update(dt) {
     if (this.adContainer.height && this.scrolling) {
-      const max = this.adContainer.height - this.adContainer.parent.height,
-        maxY = this.defaultPos.y + max;
-      if (this.scrollDirection == "down") {
-        this.adContainer.y -= 100 * dt;
-        if (this.adContainer.y <= this.defaultPos.y) {
-          this.scrollDirection = "up";
-        }
-      }
-      if (this.scrollDirection == "up") {
-        this.adContainer.y += 100 * dt;
-        if (this.adContainer.y >= maxY) {
-          this.scrollDirection = "down";
-        }
-      }
+      // const max = this.adContainer.height - this.adContainer.parent.height,
+      //   maxY = this.defaultPos.y + max;
+      // if (this.scrollDirection == "down") {
+      //   this.adContainer.y -= 100 * dt;
+      //   if (this.adContainer.y <= this.defaultPos.y) {
+      //     this.scrollDirection = "up";
+      //   }
+      // }
+      // if (this.scrollDirection == "up") {
+      //   this.adContainer.y += 100 * dt;
+      //   if (this.adContainer.y >= maxY) {
+      //     this.scrollDirection = "down";
+      //   }
+      // }
     }
   },
 
@@ -83,12 +86,12 @@ cc.Class({
    * 是否误触
    */
   checkWorseClick() {
-    if (!zsLoad.versionCheck()) {
+    if (!versionCheck()) {
       // 审核中不展示广告
       this.hasShowBannerAd = true;
       return;
     }
-    if (parseInt(zsLoad.getCfgVal("zs_switch")) < 1) {
+    if (parseInt(getCfgVal("zs_switch")) < 1) {
       // 未开启误触
       this.hasShowBannerAd = true;
       return;
@@ -121,32 +124,37 @@ cc.Class({
     }
   },
 
-  showAd(adData, number, call) {
+  showAd(adData, call) {
     let adArray = adData.promotion;
-
     if (adArray.length > 0) {
-      let index = 0;
-      adArray = Common.shuffleArray(adArray);
-      cc.log(number);
-      for (let i = 0; i < number; i++) {
-        cc.log(i);
-        if (index >= adArray.length) {
-          index = 0;
-        }
-        const adEntity = adArray[index];
+      this.showTopAd(adArray.slice(0, 3));
+      for (let i = 3; i < adArray.length; i++) {
+        const adEntity = adArray[i];
         let adNode = cc.instantiate(this.adItem);
         this.adContainer.addChild(adNode);
-        let adItem = adNode.getComponent("ZSAdItem");
+        let adItem = adNode.getComponent("adRowItem");
         if (adItem) {
-          adItem.init(adEntity);
+          adItem.init(adEntity, i);
         }
-        index++;
       }
       const randInt = Common.getRandNumber(1);
       this.adContainer.children[randInt]
-        .getComponent("ZSAdItem")
+        .getComponent("adRowItem")
         .navigate2Mini();
       call && call();
     }
+  },
+
+  showTopAd(array) {
+    const oneNode = cc.find("top/one", this.node);
+    const twoNode = cc.find("top/two", this.node);
+    const threeNode = cc.find("top/three", this.node);
+    [oneNode, twoNode, threeNode].map((item, index) => {
+      const adEntity = array[index];
+      let adItem = item.getComponent("ZSAdItem");
+      if (adItem) {
+        adItem.init(adEntity);
+      }
+    });
   },
 });

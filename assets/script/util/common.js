@@ -33,6 +33,15 @@ const common = {
     }
     return parseInt(key);
   },
+
+  /**
+   * 生成随机数
+   * @param {number} min 最小值
+   * @param {number} max 最大值
+   */
+  randomIntFromInterval(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  },
 };
 
 module.exports = common;

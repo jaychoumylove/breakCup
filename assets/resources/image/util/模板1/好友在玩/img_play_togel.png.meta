@@ -1,0 +1,36 @@
+{
+  "ver": "2.3.5",
+  "uuid": "7ed4fb1f-883c-4a93-b0e3-913048838d47",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 158,
+  "height": 54,
+  "platformSettings": {},
+  "subMetas": {
+    "img_play_togel": {
+      "ver": "1.0.4",
+      "uuid": "9d2f1ac5-4379-408c-90e7-bccfc36a334e",
+      "rawTextureUuid": "7ed4fb1f-883c-4a93-b0e3-913048838d47",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 158,
+      "height": 54,
+      "rawWidth": 158,
+      "rawHeight": 54,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

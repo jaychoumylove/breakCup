@@ -1,13 +1,13 @@
 import zsSdk from "zs.sdk";
-import zsLoad from "./ZSLoad";
-import Common from "./common";
+import Common from "../common";
+import { versionCheck, getCfgVal } from "../ZSLoad";
 
 cc.Class({
   extends: cc.Component,
 
   properties: {
-    adItem: cc.Prefab,
     adContainer: cc.Node,
+    adItem: cc.Prefab,
     defaultPos: null,
     rowNum: cc.Integer,
     scrollDirection: "up",
@@ -16,13 +16,15 @@ cc.Class({
     tweenAct: null,
     hasShowBannerAd: false,
     isback: false,
+
+    sc: cc._Script,
   },
 
   onLoad() {
     this.initBtnPos();
     this.initContainerWH();
     zsSdk.loadAd((res) => {
-      this.showAd(res, this.rowNum * 5, () => {
+      this.showAd(res, this.rowNum * 8, () => {
         this.adContainer.getComponent(cc.Layout).updateLayout();
         this.scrolling = true;
       });
@@ -57,7 +59,7 @@ cc.Class({
     this.adContainer.getComponent(cc.Layout).paddingLeft = paddingRow / 2;
     this.adContainer.getComponent(cc.Layout).paddingRight = paddingRow / 2;
     this.adContainer.parent.width = w;
-    this.adContainer.parent.getChildByName("bg").width = w;
+    // this.adContainer.parent.getChildByName("bg").width = w;
   },
 
   update(dt) {
@@ -83,12 +85,12 @@ cc.Class({
    * 是否误触
    */
   checkWorseClick() {
-    if (!zsLoad.versionCheck()) {
+    if (!versionCheck()) {
       // 审核中不展示广告
       this.hasShowBannerAd = true;
       return;
     }
-    if (parseInt(zsLoad.getCfgVal("zs_switch")) < 1) {
+    if (parseInt(getCfgVal("zs_switch")) < 1) {
       // 未开启误触
       this.hasShowBannerAd = true;
       return;
@@ -127,9 +129,7 @@ cc.Class({
     if (adArray.length > 0) {
       let index = 0;
       adArray = Common.shuffleArray(adArray);
-      cc.log(number);
       for (let i = 0; i < number; i++) {
-        cc.log(i);
         if (index >= adArray.length) {
           index = 0;
         }
@@ -138,11 +138,12 @@ cc.Class({
         this.adContainer.addChild(adNode);
         let adItem = adNode.getComponent("ZSAdItem");
         if (adItem) {
-          adItem.init(adEntity);
+          adItem.init(adEntity, i);
         }
         index++;
       }
       const randInt = Common.getRandNumber(1);
+      cc.log(randInt);
       this.adContainer.children[randInt]
         .getComponent("ZSAdItem")
         .navigate2Mini();
