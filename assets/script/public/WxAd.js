@@ -1,5 +1,3 @@
-const { initAD, setGBAd } = require("../util/wechatAd");
-
 cc.Class({
   extends: cc.Component,
 
@@ -13,8 +11,9 @@ cc.Class({
     } else {
       // 初始化广告单例
       // 激励视频
+      this.ad = cc.find("bgm").getComponent("WechatAdService");
       setTimeout(() => {
-        initAD();
+        this.ad.initAD();
       }, 1);
     }
   },
@@ -22,8 +21,8 @@ cc.Class({
   update() {
     const currentScene = cc.director.getScene().name;
     if (this._cuurentScene != currentScene) {
-      setGBAd("grid", false);
-      setGBAd("banner", false);
+      this.ad.setGBAd("grid", false);
+      this.ad.setGBAd("banner", false);
       this._cuurentScene = currentScene;
     }
   },

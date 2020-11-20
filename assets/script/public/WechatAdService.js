@@ -19,18 +19,17 @@ cc.Class({
   },
 
   update() {
-    const currentScene = cc.director.getScene().name;
-    if (this._cuurentScene != currentScene) {
-      cc.log("hide");
-      this._cuurentScene = currentScene;
-      if (this.bannerAd) {
-        this.bannerAd.hide();
-      }
-      if (this.gridAd) {
-        this.gridAd.hide();
-      }
-      this._cuurentScene = currentScene;
-    }
+    // const currentScene = cc.director.getScene().name;
+    // if (this._cuurentScene != currentScene) {
+    //   cc.log("hide");
+    //   this._cuurentScene = currentScene;
+    //   if (this.bannerAd) {
+    //     this.bannerAd.hide();
+    //   }
+    //   if (this.gridAd) {
+    //     this.gridAd.hide();
+    //   }
+    // }
   },
 
   initAdIds() {
@@ -131,7 +130,7 @@ cc.Class({
     }
   },
 
-  setGBAd(targetAd, status, style) {
+  setGBAd(targetAd, status, style, call) {
     if (["banner", "grid"].indexOf(targetAd) < 0) return false;
     let target;
     if (targetAd == "banner") {
@@ -145,15 +144,33 @@ cc.Class({
 
     if (status) {
       const styleMapKey = ["width", "height", "top", "left"];
+
+      if (style.hasOwnProperty("pos")) {
+        if (style.pos == "fullBottom") {
+          const wxSys = wx.getSystemInfoSync();
+          target.style.width = wx.screenWidth;
+          target.style.top = wxSys.screenHeight - style.height;
+          target.style.left = 0;
+        }
+        if (style.pos == "middleBottom") {
+          const wxSys = wx.getSystemInfoSync();
+          target.style.top = wxSys.screenHeight - style.height;
+          target.style.left = (wxSys.screenWidth - style.width) / 2;
+        }
+      }
       styleMapKey.map((ite) => {
         if (style.hasOwnProperty(ite)) {
           target.style[ite] = style[ite];
         }
       });
 
-      target.show();
+      target.show().then(() => {
+        call && call();
+      });
     } else {
-      target.hide();
+      target.hide().then(() => {
+        call && call();
+      });
     }
   },
 });

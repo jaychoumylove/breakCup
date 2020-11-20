@@ -19,6 +19,8 @@ cc.Class({
     hideIcon: cc.SpriteFrame,
     showIcon: cc.SpriteFrame,
     showRedIcon: cc.SpriteFrame,
+
+    darkScreen: cc.Node,
   },
 
   onLoad() {
@@ -107,6 +109,7 @@ cc.Class({
     if (true == this.status) return;
     this.status = true;
     this.showNode.active = false;
+    this.darkScreen.active = true;
     cc.tween(this.moreBox)
       .to(0.1, { x: this.moveMoreX })
       .call(() => {
@@ -162,6 +165,7 @@ cc.Class({
     if (false == this.status) return;
     this.status = false;
     this.hideNode.active = false;
+    this.darkScreen.active = false;
     const x = this.direction.x > 0 ? cc.winSize.width : -cc.winSize.width;
     cc.tween(this.moreBox)
       .to(0.1, { x: x })

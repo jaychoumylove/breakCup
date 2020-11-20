@@ -1,7 +1,7 @@
 ﻿//v2.5
 var conf = {
-    appId: "wx123900796a78eaa4", //请在此行填写游戏appid
-    secret: "YjRXnR103ps8Eerj", //请在此行填写指色分配的密钥
+    appId: "wx709f9ccd46e0690b", //请在此行填写游戏appid
+    secret: "GgZTb4uCzn1Xae8u", //请在此行填写指色分配的密钥
     uploadLog: "true", //不用理会
     channel: "wx", //wx, oppo, vivo, tt, qq
 }

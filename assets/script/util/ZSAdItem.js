@@ -100,13 +100,14 @@ cc.Class({
     let fail = () => {
       //失败回调
       console.log("失败");
-      if (!cc.find("Canvas/openOne")) {
-        if (parseInt(getCfgVal("zs_full_screen_jump"))) {
-          if (this.node.parent.parent.parent.name == "bg") {
-            return;
-          }
-          cc.find("Canvas").addChild(cc.instantiate(this.openOne));
-        }
+      if (!cc.find("Canvas/openOneVertical")) {
+        cc.find("Canvas").addChild(cc.instantiate(this.openOne));
+        // if (parseInt(getCfgVal("zs_full_screen_jump"))) {
+        //   if (this.node.parent.parent.parent.name == "bg") {
+        //     return;
+        //   }
+        //   cc.find("Canvas").addChild(cc.instantiate(this.openOne));
+        // }
       }
     };
 

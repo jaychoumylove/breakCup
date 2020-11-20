@@ -1,3 +1,5 @@
+import { versionCheck } from "../../util/ZSLoad";
+
 cc.Class({
   extends: cc.Component,
 
@@ -16,6 +18,9 @@ cc.Class({
     this.initBtn();
     this.initPregressBar();
     this.initLightAction();
+    if (!versionCheck()) {
+      cc.find("horizontalScroll", this.node).active = false;
+    }
   },
 
   initPregressBar() {
@@ -102,9 +107,29 @@ cc.Class({
     this.gotHeartContainer.dispatchEvent(
       new cc.Event.EventCustom("_got", true)
     );
-    const dphevt = new cc.Event.EventCustom("_state_change", true);
-    dphevt.setUserData({ heart: 2 });
-    this.node.dispatchEvent(dphevt);
+    if (versionCheck) {
+      cc.find("horizontalScroll", this.node).y = cc.find(
+        "ProgressBar",
+        this.node
+      ).y;
+
+      const ad = cc.find("bgm").getComponent("WechatAdService");
+      ad.setGBAd(
+        "banner",
+        true,
+        {
+          width: 300,
+          height: 100,
+          pos: "middleBottom",
+        },
+        () => {
+          console.log("added");
+        }
+      );
+    }
+    // const dphevt = new cc.Event.EventCustom("_state_change", true);
+    // dphevt.setUserData({ heart: 2 });
+    // this.node.dispatchEvent(dphevt);
   },
 
   setMenEmotion(emotion) {

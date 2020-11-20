@@ -129,7 +129,7 @@
     "_is3DNode": false,
     "_groupIndex": 0,
     "groupIndex": 0,
-    "_id": "98DcJkSypJ86Ye0EYDEXcG"
+    "_id": "02aXlVHbBNw4dPdw/LeI4o"
   },
   {
     "__type__": "0c5f6iTFqpLnIrBoaTAjj5y",
@@ -160,7 +160,17 @@
     "ballCollisionMusic": {
       "__uuid__": "7f45ae6a-6744-4ef0-b176-9d584313378c"
     },
-    "_id": "3eu2Z2+4pNvJ127OoZgsCw"
+    "_id": "a8dtjEFBpCtrDlft57Wb9X"
+  },
+  {
+    "__type__": "623c4cuxe9OJJ/VCsLfZ5+0",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "_id": "df1uRiSmBD55glk/KsRCz4"
   },
   {
     "__type__": "0da5e38s2ZOvpLmKtikzClU",
@@ -171,21 +181,7 @@
     },
     "_enabled": true,
     "platform": "wechat",
-    "_id": "3bcoGe735IgK8+XcNb8056"
-  },
-  {
-    "__type__": "623c4cuxe9OJJ/VCsLfZ5+0",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 2
-    },
-    "_enabled": true,
-    "rewardedVideoAdunit": "adunit-2ff2aa7b659c8d6e",
-    "bannerAdunit": "adunit-4fd1f4ef4075c297",
-    "intertitialAdunit": "adunit-18df80e922b70a1e",
-    "gridAdunit": "adunit-1e7e1a5d2eaec01a",
-    "_id": "cbEX1TOpVFNopw7Z1PHFrC"
+    "_id": "94lIRDjORKqrM3IwS8CP2v"
   },
   {
     "__type__": "cc.Node",
@@ -302,7 +298,7 @@
       "array": [
         0,
         0,
-        443.4050067376326,
+        436.4768035073571,
         0,
         0,
         0,

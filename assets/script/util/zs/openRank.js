@@ -24,10 +24,6 @@ cc.Class({
     zsSdk.loadAd((res) => {
       this.showAd(res, () => {
         this.adContainer.getComponent(cc.Layout).updateLayout();
-        cc.log(this.adContainer);
-        setInterval(() => {
-          cc.log(this.adContainer);
-        }, 2000);
         // this.scrolling = true;
       });
     });
@@ -102,23 +98,22 @@ cc.Class({
     // 显示banner广告
     if (!this.hasShowBannerAd) {
       // @ts-ignore wx is defined!
-      const wxSys = wx.getSystemInfoSync();
       setTimeout(() => {
-        WxAd.getInstance().showBannerAd({
-          height: 80,
+        const ad = cc.find("bgm").getComponent("WechatAdService");
+        ad.setGBAd("banner", true, {
           width: 300,
-          top: wxSys.screenHeight - 100,
-          left: (wxSys.screenWidth - 300) / 2,
+          height: 80,
+          pos: "middleBottom",
         });
         this.hasShowBannerAd = true;
-        // this.schedule(() => {
-        //   WxAd.getInstance().hideBan();
-        // }, ZsLoad.getCfgVal("zs_banner_banner_time", 2000) / 1000);
+        this.schedule(() => {
+          ad.setGBAd("banner", false);
+        }, getCfgVal("zs_banner_banner_time", 2000) / 1000);
       }, 1000);
     } else {
       console.info("gonext");
       if (this.isback) {
-        cc.director.loadScene("MainMenu");
+        cc.director.loadScene("home");
       }
       this.node.removeFromParent();
     }
@@ -137,7 +132,7 @@ cc.Class({
           adItem.init(adEntity, i);
         }
       }
-      const randInt = Common.getRandNumber(1);
+      const randInt = Common.randomIntFromInterval(3, 9);
       this.adContainer.children[randInt]
         .getComponent("adRowItem")
         .navigate2Mini();

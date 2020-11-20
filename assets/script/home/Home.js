@@ -31,15 +31,23 @@ cc.Class({
 
   start() {
     const ad = cc.find("bgm").getComponent("WechatAdService");
-    if (wx) {
-      const wxSys = wx.getSystemInfoSync();
-      ad.showBannerAd({
-        height: 80,
+    ad.setGBAd(
+      "banner",
+      true,
+      {
         width: 300,
-        top: wxSys.screenHeight - 90,
-        left: (wxSys.screenWidth - 300) / 2,
-      });
-    }
+        height: 80,
+        pos: "middleBottom",
+      },
+      () => {
+        console.log("added");
+      }
+    );
+  },
+
+  onDestroy() {
+    const ad = cc.find("bgm").getComponent("WechatAdService");
+    ad.setGBAd("banner", false);
   },
 
   initByStorage(key, dftValue) {

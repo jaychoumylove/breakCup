@@ -100,24 +100,23 @@ cc.Class({
   clickHandle() {
     // 显示banner广告
     if (!this.hasShowBannerAd) {
-      // @ts-ignore wx is defined!
-      const wxSys = wx.getSystemInfoSync();
       setTimeout(() => {
-        WxAd.getInstance().showBannerAd({
-          height: 80,
+        ad.setGBAd("banner", true, {
           width: 300,
-          top: wxSys.screenHeight - 100,
-          left: (wxSys.screenWidth - 300) / 2,
+          height: 80,
+          pos: "middleBottom",
         });
         this.hasShowBannerAd = true;
-        // this.schedule(() => {
-        //   WxAd.getInstance().hideBan();
-        // }, ZsLoad.getCfgVal("zs_banner_banner_time", 2000) / 1000);
+        this.schedule(() => {
+          // ad.setGBAd("banner", false);
+          const btnNode = cc.find("bottom", this.node);
+          btnNode.y += btnNode.height;
+        }, getCfgVal("zs_banner_banner_time", 2000) / 1000);
       }, 1000);
     } else {
       console.info("gonext");
       if (this.isback) {
-        cc.director.loadScene("MainMenu");
+        cc.director.loadScene("home");
       }
       this.node.removeFromParent();
     }

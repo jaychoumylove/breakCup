@@ -2,14 +2,13 @@ import zsSdk from "zs.sdk";
 import cfg from "./cfg";
 
 const zsLoad = (call) => {
-  zsSdk.login((user_id) => {
-    cc.sys.localStorage.setItem("zsUser", user_id);
-    zsSdk.init(user_id);
-  });
+  // zsSdk.login((user_id) => {
+  //   cc.sys.localStorage.setItem("zsUser", user_id);
+  //   zsSdk.init(user_id);
+  // });
   zsSdk.loadCfg((data) => {
     cc.sys.localStorage.setItem("zsCfg", JSON.stringify(data));
     // cc.director.loadScene("MainMenu");
-
     call && call();
   });
 };

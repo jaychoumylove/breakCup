@@ -1,7 +1,5 @@
 import zsSdk from "zs.sdk";
-import zsLoad from "./ZSLoad";
-import WechatAdService from "../public/WechatAdService";
-import ZsLoad from "./ZSLoad";
+import { versionCheck, getCfgVal } from "./ZSLoad";
 import Common from "./common";
 
 cc.Class({
@@ -21,7 +19,6 @@ cc.Class({
   },
 
   onLoad() {
-    cc.log(WechatAdService);
     this.initContainerWH();
     zsSdk.loadAd((res) => {
       this.showAd(res, 2 * (this.rowNum + 4), () => {
@@ -58,12 +55,12 @@ cc.Class({
    * 是否误触
    */
   checkWorseClick() {
-    if (!zsLoad.versionCheck()) {
+    if (!versionCheck()) {
       // 审核中不展示广告
       this.hasShowBannerAd = true;
       return;
     }
-    if (parseInt(zsLoad.getCfgVal("zs_switch")) < 1) {
+    if (parseInt(getCfgVal("zs_switch")) < 1) {
       // 未开启误触
       this.hasShowBannerAd = true;
       return;
@@ -73,19 +70,17 @@ cc.Class({
   clickHandle() {
     // 显示banner广告
     if (!this.hasShowBannerAd) {
-      // @ts-ignore wx is defined!
-      // const wxSys = wx.getSystemInfoSync();
       setTimeout(() => {
-        // WxAd.getInstance().showBannerAd({
-        //   height: 80,
-        //   width: 300,
-        //   top: wxSys.screenHeight - 100,
-        //   left: (wxSys.screenWidth - 300) / 2,
-        // });
+        const ad = cc.find("bgm").getComponent("WechatAdService");
+        ad.setGBAd("banner", true, {
+          width: 300,
+          height: 80,
+          pos: "middleBottom",
+        });
         this.hasShowBannerAd = true;
-        // this.schedule(() => {
-        //   WxAd.getInstance().hideBan();
-        // }, ZsLoad.getCfgVal("zs_banner_banner_time", 2000) / 1000);
+        this.schedule(() => {
+          ad.setGBAd("banner", false);
+        }, getCfgVal("zs_banner_banner_time", 2000) / 1000);
       }, 1000);
     } else {
       console.info("gonext");
