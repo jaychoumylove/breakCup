@@ -1,3 +1,5 @@
+import { versionCheck, getCfgVal } from "../util/ZSLoad";
+
 cc.Class({
   extends: cc.Component,
 
@@ -115,17 +117,42 @@ cc.Class({
   dispatchSuccess() {
     this.win = true;
     // 记录当前得分
+    const status = this.checkStar();
     this.recordLevelStar();
     // 解锁下一等级
     this.unlockNextLevel();
+    let openNode;
+    if (versionCheck()) {
+      cc.resources.load("prefab/openRank", cc.Prefab, (err, prefab) => {
+        if (!err) {
+          openNode = cc.instantiate(prefab);
+        }
+      });
+    }
     setTimeout(() => {
-      // 记录本次得分
+      if (versionCheck()) {
+        if (cc.find("Canvas/openRank")) {
+        } else {
+          if (openNode) {
+            cc.find("Canvas").addChild(openNode);
+          } else {
+            cc.resources.load("prefab/openRank", cc.Prefab, (err, prefab) => {
+              cc.log(err, prefab);
+              if (!err) {
+                openNode = cc.instantiate(prefab);
+                cc.find("Canvas").addChild(openNode);
+                // cc.find("Canvas/Main Camera").addChild(openRank);
+              }
+            });
+          }
+        }
+      }
       if (this.checkHeartBag()) {
+        // 记录本次得分
         return this.getHeartBag();
       }
 
       // cc.sys.localStorage.setItem('currentLevel', JSON.stringify({current: level, star: 0}))
-      const status = this.checkStar();
       if (status) {
         return this.getThreeStar();
       }

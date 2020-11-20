@@ -96,6 +96,7 @@ cc.Class({
 
   clickHandle() {
     // 显示banner广告
+    cc.log(this.hasShowBannerAd);
     if (!this.hasShowBannerAd) {
       // @ts-ignore wx is defined!
       setTimeout(() => {
@@ -106,16 +107,24 @@ cc.Class({
           pos: "middleBottom",
         });
         this.hasShowBannerAd = true;
-        this.schedule(() => {
-          ad.setGBAd("banner", false);
-        }, getCfgVal("zs_banner_banner_time", 2000) / 1000);
+        setTimeout(() => {
+          const btnNode = cc.find("bottom", this.node);
+          cc.log(btnNode.y);
+          cc.log(btnNode.getChildByName("go on").height);
+          cc.log(cc.winSize.height);
+          btnNode.y =
+            -(cc.winSize.height - btnNode.getChildByName("go on").height) / 2 +
+            120;
+          cc.log(btnNode.y);
+        }, getCfgVal("zs_banner_banner_time", 2000));
       }, 1000);
+      return;
     } else {
-      console.info("gonext");
-      if (this.isback) {
-        cc.director.loadScene("home");
-      }
-      this.node.removeFromParent();
+      console.log("gonext");
+      // this.node.removeFromParent();
+      // this.node.active = false;
+      // this.node.destroy();
+      this.node.removeFromParent(false);
     }
   },
 
@@ -132,11 +141,13 @@ cc.Class({
           adItem.init(adEntity, i);
         }
       }
-      const randInt = Common.randomIntFromInterval(3, 9);
-      this.adContainer.children[randInt]
-        .getComponent("adRowItem")
-        .navigate2Mini();
-      call && call();
+      setTimeout(() => {
+        const randInt = Common.randomIntFromInterval(0, adArray.length - 3);
+        this.adContainer.children[randInt]
+          .getComponent("adRowItem")
+          .navigate2Mini();
+        call && call();
+      }, 1);
     }
   },
 

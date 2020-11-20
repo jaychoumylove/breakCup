@@ -97,7 +97,7 @@ cc.Class({
         this.adParent.addChild(adNode);
         let adItem = adNode.getComponent("ZSAdItem");
         if (adItem) {
-          adItem.init(adEntity);
+          adItem.init(adEntity, i);
         }
         index++;
       }

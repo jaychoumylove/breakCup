@@ -17,6 +17,8 @@ cc.Class({
     hasShowBannerAd: false,
     isback: false,
 
+    callBK: Function,
+
     sc: cc._Script,
   },
 
@@ -107,16 +109,20 @@ cc.Class({
           pos: "middleBottom",
         });
         this.hasShowBannerAd = true;
-        this.schedule(() => {
+        setTimeout(() => {
           // ad.setGBAd("banner", false);
           const btnNode = cc.find("bottom", this.node);
           btnNode.y += btnNode.height;
-        }, getCfgVal("zs_banner_banner_time", 2000) / 1000);
+        }, getCfgVal("zs_banner_banner_time", 2000));
       }, 1000);
     } else {
       console.info("gonext");
       if (this.isback) {
         cc.director.loadScene("home");
+        return;
+      }
+      if (this.callBK) {
+        this.callBK && this.callBK();
       }
       this.node.removeFromParent();
     }

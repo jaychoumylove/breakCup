@@ -141,6 +141,7 @@ cc.Class({
     }
 
     if (!target) return false;
+    cc.log(target);
 
     if (status) {
       const styleMapKey = ["width", "height", "top", "left"];

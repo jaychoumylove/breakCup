@@ -108,9 +108,9 @@ cc.Class({
           pos: "middleBottom",
         });
         this.hasShowBannerAd = true;
-        this.schedule(() => {
+        setTimeout(() => {
           ad.setGBAd("banner", false);
-        }, getCfgVal("zs_banner_banner_time", 2000) / 1000);
+        }, getCfgVal("zs_banner_banner_time", 2000));
       }, 1000);
     } else {
       console.info("gonext");

@@ -1,3 +1,6 @@
+import { initAD } from "../util/wechatAd";
+import { versionCheck } from "../util/ZSLoad";
+
 cc.Class({
   extends: cc.Component,
 
@@ -6,6 +9,9 @@ cc.Class({
     money: cc.Integer,
     lastAddHeartTime: cc.Integer,
     maxLevel: cc.Integer,
+
+    scrollPrefab: cc.Prefab,
+    moreGameNode: cc.Node,
   },
 
   onLoad() {
@@ -27,27 +33,45 @@ cc.Class({
     }
 
     this.initByStorage("userLevel", level);
+
+    this.initAd();
+  },
+
+  initAd() {
+    if (versionCheck()) {
+      const parent = cc.find("Canvas/Main Camera");
+      const crollNode = cc.instantiate(this.scrollPrefab);
+      crollNode.y = 252.539;
+      cc.find("draw", parent).active = true;
+      parent.addChild(crollNode);
+      this.moreGameNode.active = true;
+    } else {
+      cc.find("draw", parent).active = false;
+      this.moreGameNode.active = false;
+    }
   },
 
   start() {
-    const ad = cc.find("bgm").getComponent("WechatAdService");
-    ad.setGBAd(
-      "banner",
-      true,
-      {
-        width: 300,
-        height: 80,
-        pos: "middleBottom",
-      },
-      () => {
-        console.log("added");
-      }
-    );
+    if (versionCheck()) {
+      const ad = cc.find("bgm").getComponent("WechatAdService");
+      ad.setGBAd(
+        "banner",
+        true,
+        {
+          width: 300,
+          height: 80,
+          pos: "middleBottom",
+        },
+        () => {
+          console.log("added");
+        }
+      );
+    }
   },
 
   onDestroy() {
-    const ad = cc.find("bgm").getComponent("WechatAdService");
-    ad.setGBAd("banner", false);
+    // const ad = cc.find("bgm").getComponent("WechatAdService");
+    // ad.setGBAd("banner", false);
   },
 
   initByStorage(key, dftValue) {

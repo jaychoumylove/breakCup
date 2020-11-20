@@ -1,3 +1,5 @@
+import { versionCheck } from "../util/ZSLoad";
+
 cc.Class({
   extends: cc.Component,
 
@@ -114,7 +116,24 @@ cc.Class({
     const evt = new cc.Event.EventCustom("_toggle_loading", true);
     evt.setUserData({ status: true });
     this.node.dispatchEvent(evt);
-    this.node.dispatchEvent(new cc.Event.EventCustom("_replay_current", true));
+    if (versionCheck()) {
+      cc.resources.load("prefab/openOneVertical", cc.Prefab, (err, prefab) => {
+        cc.log(err, prefab);
+        if (!err) {
+          const openNode = cc.instantiate(prefab);
+          openNode.getComponent("OpenOneFullAd").callBK = () => {
+            this.node.dispatchEvent(
+              new cc.Event.EventCustom("_replay_current", true)
+            );
+          };
+          cc.find("Canvas").addChild(openNode);
+        }
+      });
+    } else {
+      this.node.dispatchEvent(
+        new cc.Event.EventCustom("_replay_current", true)
+      );
+    }
   },
 
   pressBGM() {

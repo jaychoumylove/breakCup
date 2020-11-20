@@ -109,21 +109,16 @@ cc.Class({
     if (!this.hasShowOnceBannerAd) {
       setTimeout(() => {
         const ad = cc.find("bgm").getComponent("WechatAdService");
-        ad.setGBAd(
-          "banner",
-          true,
-          {
-            width: 300,
-            height: 80,
-            pos: "middleBottom",
-          },
-          () => {
-            this.hasShowOnceBannerAd = true;
-            this.schedule(() => {
-              this.redirectNode.y = this.doubelNode.y;
-            }, getCfgVal("zs_banner_banner_time", 2000) / 1000);
-          }
-        );
+        ad.setGBAd("banner", true, {
+          width: 300,
+          height: 80,
+          pos: "middleBottom",
+        });
+
+        this.hasShowOnceBannerAd = true;
+        this.schedule(() => {
+          this.redirectNode.y = this.doubelNode.y;
+        }, getCfgVal("zs_banner_banner_time", 2000) / 1000);
       }, 1000);
       return;
     }
@@ -139,21 +134,15 @@ cc.Class({
     if (!this.hasShowTwiceBannerAd) {
       setTimeout(() => {
         const ad = cc.find("bgm").getComponent("WechatAdService");
-        ad.setGBAd(
-          "banner",
-          true,
-          {
-            width: 300,
-            height: 80,
-            pos: "middleBottom",
-          },
-          () => {
-            this.hasShowTwiceBannerAd = true;
-            this.schedule(() => {
-              this.redirectNode.y = this.doubelNode.y;
-            }, getCfgVal("zs_banner_banner_time", 2000) / 1000);
-          }
-        );
+        ad.setGBAd("banner", true, {
+          width: 300,
+          height: 80,
+          pos: "middleBottom",
+        });
+        this.hasShowTwiceBannerAd = true;
+        this.schedule(() => {
+          this.redirectNode.y = this.doubelNode.y;
+        }, getCfgVal("zs_banner_banner_time", 2000) / 1000);
       }, 1000);
       return;
     }
@@ -170,7 +159,14 @@ cc.Class({
     const evt = new cc.Event.EventCustom("_toggle_loading", true);
     evt.setUserData({ status: true });
     this.node.dispatchEvent(evt);
-    this.node.dispatchEvent(new cc.Event.EventCustom("_go_next_lv", true));
+    cc.resources.load("prefab/openOneVertical", cc.Prefab, (err, prefab) => {
+      if (!err) {
+        const openNode = cc.instantiate(prefab);
+        openNode.getComponent("OpenOneFullAd").isback = true;
+        cc.find("Canvas").addChild(openNode);
+      }
+    });
+    // this.node.dispatchEvent(new cc.Event.EventCustom("_go_next_lv", true));
   },
 
   pressGetReward() {
@@ -179,21 +175,15 @@ cc.Class({
     if (!this.hasShowOnceBannerAd) {
       setTimeout(() => {
         const ad = cc.find("bgm").getComponent("WechatAdService");
-        ad.setGBAd(
-          "banner",
-          true,
-          {
-            width: 300,
-            height: 80,
-            pos: "middleBottom",
-          },
-          () => {
-            this.hasShowOnceBannerAd = true;
-            this.schedule(() => {
-              ad.setGBAd("banner", false);
-            }, getCfgVal("zs_banner_banner_time", 2000) / 1000);
-          }
-        );
+        ad.setGBAd("banner", true, {
+          width: 300,
+          height: 80,
+          pos: "middleBottom",
+        });
+        this.hasShowOnceBannerAd = true;
+        this.schedule(() => {
+          ad.setGBAd("banner", false);
+        }, getCfgVal("zs_banner_banner_time", 2000) / 1000);
       }, 1000);
       return;
     }
@@ -201,27 +191,14 @@ cc.Class({
     this.getRewardNode.active = false;
     this.redirectNode.active = true;
     this.AudioPlayer.playOnceMusic("coin");
-    this.replayNode.on("click", this.replayCurrentLevel, this);
+    // 取消重玩本关
+    // this.replayNode.on("click", this.replayCurrentLevel, this);
     this.goNextNode.on("click", this.goNextLevel, this);
 
     const dphevt = new cc.Event.EventCustom("_state_change", true);
     const money = this.reward * (this.doubel ? 2 : 1);
     dphevt.setUserData({ money });
-    const call = () => {
-      this.node.dispatchEvent(dphevt);
-    };
-    if (this.doubel) {
-      const ad = cc.find("bgm").getComponent("WechatAdService");
-      const res = ad.openVideoWithCb(() => {
-        call();
-      });
-      if (false == res) {
-        // 不在微信环境下直接获取奖励
-        call();
-      }
-    } else {
-      call();
-    }
+    this.node.dispatchEvent(dphevt);
   },
 
   toggleDoubel(evt) {

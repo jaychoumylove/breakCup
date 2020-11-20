@@ -187,7 +187,7 @@
       "array": [
         0,
         0,
-        438.208854314926,
+        437.34282891114157,
         0,
         0,
         0,
@@ -5660,9 +5660,6 @@
     "pauseButton": {
       "__id__": 37
     },
-    "darkScreenNode": null,
-    "getHeartScreenNode": null,
-    "getThreeStarScreenNode": null,
     "bgNode": {
       "__id__": 4
     },
