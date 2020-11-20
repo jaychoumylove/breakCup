@@ -12,6 +12,7 @@ cc.Class({
 
     scrollPrefab: cc.Prefab,
     moreGameNode: cc.Node,
+    drawNode: cc.Node,
   },
 
   onLoad() {
@@ -42,11 +43,15 @@ cc.Class({
       const parent = cc.find("Canvas/Main Camera");
       const crollNode = cc.instantiate(this.scrollPrefab);
       crollNode.y = 252.539;
-      cc.find("draw", parent).active = true;
+      if (this.drawNode) {
+        this.drawNode.active = true;
+      }
       parent.addChild(crollNode);
       this.moreGameNode.active = true;
     } else {
-      cc.find("draw", parent).active = false;
+      if (this.drawNode) {
+        this.drawNode.active = false;
+      }
       this.moreGameNode.active = false;
     }
   },
@@ -59,7 +64,7 @@ cc.Class({
         true,
         {
           width: 300,
-          height: 80,
+          height: 100,
           pos: "middleBottom",
         },
         () => {

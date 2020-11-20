@@ -107,7 +107,7 @@ cc.Class({
     this.gotHeartContainer.dispatchEvent(
       new cc.Event.EventCustom("_got", true)
     );
-    if (versionCheck) {
+    if (versionCheck()) {
       cc.find("horizontalScroll", this.node).y = cc.find(
         "ProgressBar",
         this.node

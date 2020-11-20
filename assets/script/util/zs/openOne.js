@@ -1,5 +1,4 @@
-import zsSdk from "zs.sdk";
-import { versionCheck, getCfgVal } from "../ZSLoad";
+import { versionCheck, getCfgVal, getZsLoadData } from "../ZSLoad";
 import Common from "./common";
 
 cc.Class({
@@ -21,7 +20,7 @@ cc.Class({
   onLoad() {
     this.initBtnPos();
     this.initContainerWH();
-    zsSdk.loadAd((res) => {
+    getZsLoadData((res) => {
       this.showAd(res, this.rowNum * 5, () => {
         this.adContainer.getComponent(cc.Layout).updateLayout();
         this.scrolling = true;

@@ -1,10 +1,4 @@
-// Learn cc.Class:
-//  - https://docs.cocos.com/creator/manual/en/scripting/class.html
-// Learn Attribute:
-//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
-
+import { versionCheck } from "../util/ZSLoad";
 cc.Class({
   extends: cc.Component,
 
@@ -19,18 +13,20 @@ cc.Class({
     //     top: 375,
     //     left: 10,
     // });
-    ad.setGBAd(
-      "banner",
-      true,
-      {
-        width: 300,
-        height: 80,
-        pos: "middleBottom",
-      },
-      () => {
-        console.log("added");
-      }
-    );
+    if (versionCheck()) {
+      ad.setGBAd(
+        "banner",
+        true,
+        {
+          width: 300,
+          height: 100,
+          pos: "middleBottom",
+        },
+        () => {
+          console.log("added");
+        }
+      );
+    }
   },
 
   //   start() {

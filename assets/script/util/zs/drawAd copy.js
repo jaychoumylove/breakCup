@@ -14,26 +14,14 @@ cc.Class({
     colNum: 8,
 
     direction: cc.Vec2,
-
-    hideIcon: cc.SpriteFrame,
-    showIcon: cc.SpriteFrame,
-    showRedIcon: cc.SpriteFrame,
-
-    darkScreen: cc.Node,
   },
 
   onLoad() {
     if (versionCheck()) {
-      this.initToggle();
-      this.initClick();
-      // this.refreshAds();
-    }
-  },
-
-  start() {
-    setTimeout(() => {
+      // this.initToggle();
+      // this.initClick();
       this.refreshAds();
-    }, 3000);
+    }
   },
 
   refreshAds() {
@@ -72,10 +60,10 @@ cc.Class({
     this.moveMoreX = (cc.winSize.width - this.moreBox.width) / 2;
     this.moveMoreX = this.direction.x > 0 ? this.moveMoreX : -this.moveMoreX;
     if (this.direction.x > 0) {
-      this.moreBox.x = this.moveMoreX + bgWidth;
+      // this.moreBox.x = this.moveMoreX + bgWidth;
       this.hideNode.x = this.showNode.x - bgWidth;
     } else {
-      this.moreBox.x = this.moveMoreX - bgWidth;
+      // this.moreBox.x = this.moveMoreX - bgWidth;
       this.hideNode.x = this.showNode.x + bgWidth;
     }
     this.moveWidth = bgWidth;
@@ -95,32 +83,32 @@ cc.Class({
 
       if (adArray.length > 0) {
         adArray = Common.shuffleArray(adArray);
-        for (let i = 0; i < adArray.length; i++) {
-          let adEntity = adArray[i];
-          cc.loader.load(
-            { url: adEntity.app_icon, type: "png" },
-            (err, texture) => {
-              if (texture) {
-                adArray[i].app_icon = new cc.SpriteFrame(texture);
-              }
-            }
-          );
+        // for (let i = 0; i < adArray.length; i++) {
+        //   let adEntity = adArray[i];
+        //   cc.loader.load(
+        //     { url: adEntity.app_icon, type: "png" },
+        //     (err, texture) => {
+        //       if (texture) {
+        //         adArray[i].app_icon = new cc.SpriteFrame(texture);
+        //       }
+        //     }
+        //   );
+        // }
+        for (let i = 0; i < number; i++) {
+          if (index >= adArray.length) {
+            index = 0;
+          }
+          const adEntity = adArray[index];
+          let adNode = cc.instantiate(this.itemPrefab);
+          this.adParent.addChild(adNode);
+          let adItem = adNode.getComponent("ZSAdItem");
+          if (adItem) {
+            adItem.init(adEntity, i);
+          }
+          index++;
         }
+        call && call();
       }
-      for (let i = 0; i < number; i++) {
-        if (index >= adArray.length) {
-          index = 0;
-        }
-        const adEntity = adArray[index];
-        let adNode = cc.instantiate(this.itemPrefab);
-        this.adParent.addChild(adNode);
-        let adItem = adNode.getComponent("ZSAdItem");
-        if (adItem) {
-          adItem.init(adEntity, i);
-        }
-        index++;
-      }
-      call && call();
     }
   },
 

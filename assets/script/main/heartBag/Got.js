@@ -64,6 +64,8 @@ cc.Class({
   pressSingle(evt) {
     this.AudioPlayer.playOnceMusic("button");
     cc.log("pressSingle");
+    const ad = cc.find("bgm").getComponent("WechatAdService");
+    ad.setGBAd("banner", false);
     this.goNext();
   },
 

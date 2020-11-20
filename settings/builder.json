@@ -3,19 +3,6 @@
   "packageName": "org.cocos2d.demo",
   "startScene": "a2085a16-9db5-4038-b77b-0e74dfde9129",
   "excludeScenes": [
-    "d9e7422c-0c1e-4843-bc22-fd3b9f354661",
-    "d1106e86-99ac-4fc1-bbc2-2e9890145613",
-    "211e6485-9468-4a37-9a13-7a330877e106",
-    "e55d9507-f2dc-4a91-b165-341086f95048",
-    "b8425136-2a5a-4585-adaa-f08438d6ac08",
-    "7d53ccf0-7bb6-4156-8ba9-2010fd49305b",
-    "18399390-133d-4d52-b4ad-bb1a140d994a",
-    "baa7f737-00bf-4422-add8-a3813ac0ebf0",
-    "2fdfc55a-b28c-4617-8f1f-d42d0f452982",
-    "9335190b-6010-4134-aaa1-d94b63df8c1e",
-    "707c131e-5373-4f60-b779-a507a554ffdf",
-    "0e07673f-736c-46ea-978f-553565fda607",
-    "886c9902-23d9-4121-879d-c0639a601304",
     "71501c62-b628-485b-ba01-ba4e2c91decc"
   ],
   "orientation": {
@@ -25,10 +12,10 @@
     "upsideDown": false
   },
   "webOrientation": "auto",
-  "inlineSpriteFrames": false,
+  "inlineSpriteFrames": true,
   "inlineSpriteFrames_native": true,
   "mainCompressionType": "default",
-  "mainIsRemote": false,
+  "mainIsRemote": true,
   "optimizeHotUpdate": false,
   "md5Cache": true,
   "nativeMd5Cache": true,

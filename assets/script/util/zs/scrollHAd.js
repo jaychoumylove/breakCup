@@ -1,6 +1,5 @@
-import zsSdk from "../zs.sdk";
 import Common from "../common";
-import { versionCheck } from "../ZSLoad";
+import { versionCheck, getZsLoadData } from "../ZSLoad";
 
 cc.Class({
   extends: cc.Component,
@@ -30,7 +29,7 @@ cc.Class({
   },
 
   refreshAds() {
-    zsSdk.loadAd((res) => {
+    getZsLoadData((res) => {
       this.showAd(res);
     });
   },

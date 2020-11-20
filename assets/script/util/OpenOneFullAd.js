@@ -1,6 +1,5 @@
-import zsSdk from "zs.sdk";
 import Common from "./common";
-import { versionCheck, getCfgVal } from "./ZSLoad";
+import { versionCheck, getCfgVal, getZsLoadData } from "./ZSLoad";
 
 cc.Class({
   extends: cc.Component,
@@ -23,7 +22,7 @@ cc.Class({
   onLoad() {
     this.initBtnPos();
     this.initContainerWH();
-    zsSdk.loadAd((res) => {
+    getZsLoadData((res) => {
       this.showAd(res, this.rowNum * 5, () => {
         this.adContainer.getComponent(cc.Layout).updateLayout();
         this.scrolling = true;
@@ -104,7 +103,7 @@ cc.Class({
         const ad = cc.find("bgm").getComponent("WechatAdService");
         ad.setGBAd("banner", true, {
           width: 300,
-          height: 80,
+          height: 100,
           pos: "middleBottom",
         });
         this.hasShowBannerAd = true;

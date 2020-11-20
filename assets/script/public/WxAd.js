@@ -1,3 +1,5 @@
+import { initZsData } from "../util/ZSLoad";
+
 cc.Class({
   extends: cc.Component,
 
@@ -5,16 +7,16 @@ cc.Class({
 
   onLoad() {
     this._cuurentScene = cc.director.getScene().name;
-
+    initZsData();
     if (typeof wx == "undefined") {
       cc.warn("wx is undefined!");
     } else {
       // 初始化广告单例
       // 激励视频
-      this.ad = cc.find("bgm").getComponent("WechatAdService");
-      setTimeout(() => {
-        this.ad.initAD();
-      }, 1);
+      // this.ad = cc.find("bgm").getComponent("WechatAdService");
+      // setTimeout(() => {
+      //   this.ad.initAD();
+      // }, 1);
     }
   },
 

@@ -111,7 +111,7 @@ cc.Class({
         const ad = cc.find("bgm").getComponent("WechatAdService");
         ad.setGBAd("banner", true, {
           width: 300,
-          height: 80,
+          height: 100,
           pos: "middleBottom",
         });
 
@@ -136,7 +136,7 @@ cc.Class({
         const ad = cc.find("bgm").getComponent("WechatAdService");
         ad.setGBAd("banner", true, {
           width: 300,
-          height: 80,
+          height: 100,
           pos: "middleBottom",
         });
         this.hasShowTwiceBannerAd = true;
@@ -147,6 +147,10 @@ cc.Class({
       return;
     }
     if (!this.checkHeart()) {
+      const freeSide = cc.find("Canvas/Main Camera/freeSideL");
+      if (freeSide) {
+        freeSide.destroy();
+      }
       return this.node.dispatchEvent(
         new cc.Event.EventCustom("_add_heart", true)
       );
@@ -159,14 +163,17 @@ cc.Class({
     const evt = new cc.Event.EventCustom("_toggle_loading", true);
     evt.setUserData({ status: true });
     this.node.dispatchEvent(evt);
-    cc.resources.load("prefab/openOneVertical", cc.Prefab, (err, prefab) => {
-      if (!err) {
-        const openNode = cc.instantiate(prefab);
-        openNode.getComponent("OpenOneFullAd").isback = true;
-        cc.find("Canvas").addChild(openNode);
-      }
-    });
-    // this.node.dispatchEvent(new cc.Event.EventCustom("_go_next_lv", true));
+    if (versionCheck()) {
+      cc.resources.load("prefab/openOneVertical", cc.Prefab, (err, prefab) => {
+        if (!err) {
+          const openNode = cc.instantiate(prefab);
+          openNode.getComponent("OpenOneFullAd").isback = true;
+          cc.find("Canvas").addChild(openNode);
+        }
+      });
+    } else {
+      this.node.dispatchEvent(new cc.Event.EventCustom("_go_next_lv", true));
+    }
   },
 
   pressGetReward() {
@@ -177,7 +184,7 @@ cc.Class({
         const ad = cc.find("bgm").getComponent("WechatAdService");
         ad.setGBAd("banner", true, {
           width: 300,
-          height: 80,
+          height: 100,
           pos: "middleBottom",
         });
         this.hasShowOnceBannerAd = true;

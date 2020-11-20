@@ -29,7 +29,7 @@ cc.Class({
   },
 
   refreshAds() {
-    zsSdk.loadAd((res) => {
+    zsLoad.getZsLoadData((res) => {
       this.showAd(res);
     });
   },

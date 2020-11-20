@@ -28,13 +28,14 @@ cc.Class({
    * app_icon ��Ϸicon��ַ
    */
   init(adEntity, adIndex) {
-    this.adEntity = adEntity;
-    if (this.txt_name) {
-      this.txt_name.string = adEntity.app_title;
+    const _this = this;
+    _this.adEntity = adEntity;
+    if (_this.txt_name) {
+      _this.txt_name.string = adEntity.app_title;
       if (typeof adIndex == "number" && adIndex > -1) {
         if (
-          this.txt_name.node.parent != this.node &&
-          this.txt_name.node.parent.getChildByName("bg")
+          _this.txt_name.node.parent != _this.node &&
+          _this.txt_name.node.parent.getChildByName("bg")
         ) {
           const absolutePath = "image/util/openOneAssets/";
           let floor = adIndex > 0 ? adIndex % 9 : 0;
@@ -45,7 +46,7 @@ cc.Class({
             null,
             (e, df) => {
               if (!e) {
-                this.txt_name.node.parent
+                _this.txt_name.node.parent
                   .getChildByName("bg")
                   .getComponent(cc.Sprite).spriteFrame = df;
               }
@@ -57,25 +58,53 @@ cc.Class({
 
     if (adEntity.app_icon) {
       if (typeof adEntity.app_icon == "string") {
-        cc.loader.load(
-          { url: adEntity.app_icon, type: "png" },
-          (err, texture) => {
-            if (texture) {
-              var spriteFrame = new cc.SpriteFrame(texture);
-              if (this.icon && spriteFrame) {
-                this.icon.spriteFrame = spriteFrame;
-                this.icon.node.width = this.spriteSize.x;
-                this.icon.node.height = this.spriteSize.y;
-              }
+        // console.log("从url加载", adEntity.app_icon);
+        cc.assetManager.loadRemote(adEntity.app_icon, (err, img) => {
+          // console.log("加载over:");
+          // console.log("erro texture");
+          // console.log(err, img);
+          if (img) {
+            var spriteFrame = new cc.SpriteFrame(img);
+            // console.log("spriteFrame");
+            // console.log(spriteFrame);
+            if (_this.icon && spriteFrame) {
+              // _this.icon.node.getComponent(
+              //   cc.Sprite
+              // ).spriteFrame = spriteFrame;
+              _this.icon.spriteFrame = spriteFrame;
+              _this.icon.node.width = _this.spriteSize.x;
+              _this.icon.node.height = _this.spriteSize.y;
+              // console.log("icon");
+              // console.log(_this.icon);
             }
           }
-        );
+        });
+        // cc.loader.load(
+        //   { url: adEntity.app_icon, type: "png" },
+        //   (err, texture) => {
+        //     console.log("加载over:");
+        //     console.log("erro texture");
+        //     console.log(err, texture);
+        //     if (texture) {
+        //       var spriteFrame = new cc.SpriteFrame(texture);
+        //       console.log("spriteFrame");
+        //       console.log(spriteFrame);
+        //       if (_this.icon && spriteFrame) {
+        //         _this.icon.spriteFrame = spriteFrame;
+        //         _this.icon.node.width = _this.spriteSize.x;
+        //         _this.icon.node.height = _this.spriteSize.y;
+        //         console.log("icon");
+        //         console.log(_this.icon);
+        //       }
+        //     }
+        //   }
+        // );
       }
 
       if (adEntity.app_icon instanceof cc.SpriteFrame) {
-        this.icon.spriteFrame = adEntity.app_icon;
-        this.icon.node.width = this.spriteSize.x;
-        this.icon.node.height = this.spriteSize.y;
+        _this.icon.spriteFrame = adEntity.app_icon;
+        _this.icon.node.width = _this.spriteSize.x;
+        _this.icon.node.height = _this.spriteSize.y;
       }
     }
   },

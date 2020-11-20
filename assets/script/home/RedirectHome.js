@@ -1,5 +1,5 @@
 import { initAD } from "../util/wechatAd";
-import { zsLoad } from "../util/ZSLoad";
+import { zsLoad, initZsData } from "../util/ZSLoad";
 
 cc.Class({
   extends: cc.Component,
@@ -8,6 +8,7 @@ cc.Class({
 
   onLoad() {
     zsLoad();
+    initZsData();
     cc.director.preloadScene(
       "home",
       (complete, total) => {},
