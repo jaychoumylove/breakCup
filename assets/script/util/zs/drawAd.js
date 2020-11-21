@@ -24,16 +24,16 @@ cc.Class({
 
   onLoad() {
     if (versionCheck()) {
+      this.status = false; // 隐藏状态
+      this.showNode = cc.find("showMore", this.node);
+      this.showNode.active = false;
       this.initToggle();
       this.initClick();
       // this.refreshAds();
+      setTimeout(() => {
+        this.refreshAds();
+      }, 3000);
     }
-  },
-
-  start() {
-    setTimeout(() => {
-      this.refreshAds();
-    }, 3000);
   },
 
   refreshAds() {
@@ -41,13 +41,12 @@ cc.Class({
       this.showAd(res, this.rowNum * this.colNum, () => {
         // 防止结构错乱主动更新
         this.adParent.getComponent(cc.Layout).updateLayout();
+        this.showNode.active = true;
       });
     });
   },
 
   initToggle() {
-    this.status = false; // 隐藏状态
-    this.showNode = cc.find("showMore", this.node);
     const showX = (cc.winSize.width - this.showNode.width) / 2;
     if (this.direction.x > 0) {
       // right
@@ -88,24 +87,21 @@ cc.Class({
 
   showAd(adData, number, call) {
     let adArray = adData.promotion;
-    adArray = Common.shuffleArray(adArray);
 
     if (adArray.length > 0) {
+      adArray = Common.shuffleArray(adArray);
       let index = 0;
-
-      if (adArray.length > 0) {
-        adArray = Common.shuffleArray(adArray);
-        for (let i = 0; i < adArray.length; i++) {
-          let adEntity = adArray[i];
-          cc.loader.load(
-            { url: adEntity.app_icon, type: "png" },
-            (err, texture) => {
-              if (texture) {
-                adArray[i].app_icon = new cc.SpriteFrame(texture);
-              }
+      for (let i = 0; i < adArray.length; i++) {
+        let adEntity = adArray[i];
+        cc.assetManager.loadRemote(
+          adEntity.app_icon,
+          { ext: ".png" },
+          (err, texture) => {
+            if (texture) {
+              adArray[i].app_icon = new cc.SpriteFrame(texture);
             }
-          );
-        }
+          }
+        );
       }
       for (let i = 0; i < number; i++) {
         if (index >= adArray.length) {

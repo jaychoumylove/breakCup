@@ -1,6 +1,12 @@
 import zsSdk from "zs.sdk";
 import cfg from "./cfg";
 
+let loadedData = null;
+
+const setLoadedData = (data) => {
+  loadedData = data;
+};
+
 const zsLoad = (call) => {
   // zsSdk.login((user_id) => {
   //   cc.sys.localStorage.setItem("zsUser", user_id);
@@ -37,36 +43,39 @@ const getSysVal = (key, dft) => {
 };
 
 const getZsLoadData = (call) => {
-  const zsad = cc.sys.localStorage.getItem("zsAdArray");
-  call(JSON.parse(zsad));
+  // const zsad = cc.sys.localStorage.getItem("zsAdArray");
+  // call(JSON.parse(zsad));
+  call(loadedData);
 };
 
-const setZsLoadData = () => {
+const setZsLoadData = (call) => {
   zsSdk.loadAd((res) => {
-    // const adArray = res.promotion;
-    // for (let i = 0; i < adArray.length; i++) {
-    //   let adEntity = adArray[i];
-    //   cc.loader.load(
-    //     { url: adEntity.app_icon, type: "png" },
-    //     (err, texture) => {
-    //       if (texture) {
-    //         adArray[i].app_icon = new cc.SpriteFrame(texture);
-    //       }
-    //       if (i + 1 == adArray.length) {
-    //         res.promotion = adArray;
-    //         cc.sys.localStorage.setItem("zsAdArray", JSON.stringify(res));
-    //       }
-    //     }
-    //   );
-    // }
-    cc.sys.localStorage.setItem("zsAdArray", JSON.stringify(res));
+    const adArray = res.promotion;
+    for (let i = 0; i < adArray.length; i++) {
+      let adEntity = adArray[i];
+      cc.assetManager.loadRemote(
+        adEntity.app_icon,
+        { ext: ".png" },
+        (err, texture) => {
+          if (texture) {
+            adArray[i].app_icon = new cc.SpriteFrame(texture);
+          }
+          if (i + 1 == adArray.length) {
+            res.promotion = adArray;
+            setLoadedData(res);
+            call && call();
+          }
+        }
+      );
+    }
+    // cc.sys.localStorage.setItem("zsAdArray", JSON.stringify(res));
   });
 };
 
-const initZsData = () => {
-  setZsLoadData();
+const initZsData = (call) => {
+  setZsLoadData(call);
   setInterval(() => {
-    setZsLoadData();
+    setZsLoadData(null);
   }, 1000 * 30);
 };
 

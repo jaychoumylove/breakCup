@@ -34,8 +34,9 @@ cc.Class({
 
     if (adEntity.app_icon) {
       if (typeof adEntity.app_icon == "string") {
-        cc.loader.load(
-          { url: adEntity.app_icon, type: "png" },
+        cc.assetManager.loadRemote(
+          adEntity.app_icon,
+          { ext: ".png" },
           (err, texture) => {
             if (texture) {
               var spriteFrame = new cc.SpriteFrame(texture);

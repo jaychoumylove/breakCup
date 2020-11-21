@@ -7,14 +7,30 @@ cc.Class({
   properties: {},
 
   onLoad() {
-    zsLoad();
-    initZsData();
+    this.loadedCfg = false;
+    this.preloadHome = false;
+    this.loadedData = false;
+    zsLoad(() => {
+      this.loadedCfg = true;
+      this.checkRedirectState();
+    });
+    initZsData(() => {
+      this.loadedData = true;
+      this.checkRedirectState();
+    });
     cc.director.preloadScene(
       "home",
       (complete, total) => {},
       (error) => {
-        cc.director.loadScene("home");
+        this.preloadHome = true;
+        this.checkRedirectState();
       }
     );
+  },
+
+  checkRedirectState() {
+    if (this.loadedCfg && this.loadedData && this.preloadHome) {
+      cc.director.loadScene("home");
+    }
   },
 });

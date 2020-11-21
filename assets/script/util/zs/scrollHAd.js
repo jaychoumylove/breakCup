@@ -61,12 +61,12 @@ cc.Class({
         this.itemPrefab.data.height +
         this.adParent.getComponent(cc.Layout).spacingY;
       if (this.scrollDirect.x) {
-        const maxX = adArray.length * itemW - this.adParent.parent.width;
+        const maxX = this.adParent.width * itemW - this.adParent.parent.width;
         activePos.x = maxX * this.scrollDirect.x;
       }
 
       if (this.scrollDirect.y) {
-        const maxY = adArray.length * itemH - this.adParent.parent.height;
+        const maxY = this.adParent.height - this.adParent.parent.height;
         activePos.y = maxY * this.scrollDirect.y;
       }
 

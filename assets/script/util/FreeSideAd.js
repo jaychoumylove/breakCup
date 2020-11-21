@@ -38,17 +38,6 @@ cc.Class({
     let adArray = adData.promotion;
     if (adArray.length > 0) {
       adArray = Common.shuffleArray(adArray);
-      for (let i = 0; i < adArray.length; i++) {
-        let adEntity = adArray[i];
-        cc.loader.load(
-          { url: adEntity.app_icon, type: "png" },
-          (err, texture) => {
-            if (texture) {
-              adArray[i].app_icon = new cc.SpriteFrame(texture);
-            }
-          }
-        );
-      }
     }
 
     this.adArray = adArray;

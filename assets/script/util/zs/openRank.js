@@ -123,8 +123,10 @@ cc.Class({
       // this.node.removeFromParent();
       // this.node.active = false;
       // this.node.destroy();
-      const ad = cc.find("bgm").getComponent("WechatAdService");
-      ad.setGBAd("banner", false);
+      if (cc.director.getScene().name != "home") {
+        const ad = cc.find("bgm").getComponent("WechatAdService");
+        ad.setGBAd("banner", false);
+      }
       this.node.removeFromParent();
     }
   },

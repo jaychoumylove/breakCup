@@ -58,27 +58,32 @@ cc.Class({
 
     if (adEntity.app_icon) {
       if (typeof adEntity.app_icon == "string") {
+        console.log(adEntity.app_icon);
         // console.log("从url加载", adEntity.app_icon);
-        cc.assetManager.loadRemote(adEntity.app_icon, (err, img) => {
-          // console.log("加载over:");
-          // console.log("erro texture");
-          // console.log(err, img);
-          if (img) {
-            var spriteFrame = new cc.SpriteFrame(img);
-            // console.log("spriteFrame");
-            // console.log(spriteFrame);
-            if (_this.icon && spriteFrame) {
-              // _this.icon.node.getComponent(
-              //   cc.Sprite
-              // ).spriteFrame = spriteFrame;
-              _this.icon.spriteFrame = spriteFrame;
-              _this.icon.node.width = _this.spriteSize.x;
-              _this.icon.node.height = _this.spriteSize.y;
-              // console.log("icon");
-              // console.log(_this.icon);
+        cc.assetManager.loadRemote(
+          adEntity.app_icon,
+          { ext: ".png" },
+          (err, texture) => {
+            console.log("加载over:");
+            // console.log("erro texture");
+            // console.log(err, img);
+            if (img) {
+              var spriteFrame = new cc.SpriteFrame(img);
+              // console.log("spriteFrame");
+              // console.log(spriteFrame);
+              if (_this.icon && spriteFrame) {
+                // _this.icon.node.getComponent(
+                //   cc.Sprite
+                // ).spriteFrame = spriteFrame;
+                _this.icon.spriteFrame = spriteFrame;
+                _this.icon.node.width = _this.spriteSize.x;
+                _this.icon.node.height = _this.spriteSize.y;
+                // console.log("icon");
+                // console.log(_this.icon);
+              }
             }
           }
-        });
+        );
         // cc.loader.load(
         //   { url: adEntity.app_icon, type: "png" },
         //   (err, texture) => {
@@ -102,6 +107,7 @@ cc.Class({
       }
 
       if (adEntity.app_icon instanceof cc.SpriteFrame) {
+        console.log(adEntity.app_icon);
         _this.icon.spriteFrame = adEntity.app_icon;
         _this.icon.node.width = _this.spriteSize.x;
         _this.icon.node.height = _this.spriteSize.y;

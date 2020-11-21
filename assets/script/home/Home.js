@@ -12,7 +12,8 @@ cc.Class({
 
     scrollPrefab: cc.Prefab,
     moreGameNode: cc.Node,
-    drawNode: cc.Node,
+    drawNode: cc.Prefab,
+    darkScreen: cc.Prefab,
   },
 
   onLoad() {
@@ -44,13 +45,18 @@ cc.Class({
       const crollNode = cc.instantiate(this.scrollPrefab);
       crollNode.y = 252.539;
       if (this.drawNode) {
-        this.drawNode.active = true;
+        const darkNode = cc.instantiate(this.darkScreen);
+        parent.addChild(darkNode);
+        const drawNode = cc.instantiate(this.drawNode);
+        parent.addChild(drawNode);
+        drawNode.getComponent("drawAd").darkScreen = darkNode;
+        // this.drawNode.active = true;
       }
       parent.addChild(crollNode);
       this.moreGameNode.active = true;
     } else {
       if (this.drawNode) {
-        this.drawNode.active = false;
+        // this.drawNode.active = false;
       }
       this.moreGameNode.active = false;
     }

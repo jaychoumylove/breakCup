@@ -22,6 +22,9 @@ cc.Class({
 
   handleRedirect() {
     this.AudioPlayer.playOnceMusic("button");
+
+    const ad = cc.find("bgm").getComponent("WechatAdService");
+    ad.setGBAd("banner", false);
     if (this.scene != "store") {
       if (this.scene == "home") {
         cc.resources.load(
