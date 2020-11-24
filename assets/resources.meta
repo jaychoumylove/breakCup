@@ -14,11 +14,11 @@
   },
   "inlineSpriteFrames": {
     "web-mobile": false,
-    "wechatgame": false
+    "wechatgame": true
   },
   "isRemoteBundle": {
     "web-mobile": false,
-    "wechatgame": false
+    "wechatgame": true
   },
   "subMetas": {}
 }

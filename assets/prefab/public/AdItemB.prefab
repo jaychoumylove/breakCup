@@ -437,6 +437,7 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
+    "_useOriginalSize": true,
     "_string": "",
     "_N$string": "",
     "_fontSize": 18,
@@ -595,6 +596,7 @@
       "x": 150,
       "y": 150
     },
+    "adEntity": null,
     "_id": ""
   },
   {

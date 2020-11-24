@@ -97,15 +97,17 @@ cc.Class({
     // 显示banner广告
     cc.log(this.hasShowBannerAd);
     if (!this.hasShowBannerAd) {
-      // @ts-ignore wx is defined!
       setTimeout(() => {
         const ad = cc.find("bgm").getComponent("WechatAdService");
-        ad.setGBAd("banner", true, {
-          width: 300,
-          height: 100,
-          pos: "middleBottom",
+        const style = ad.transformPos(cc.find("bottom", this.node), {
+          width: 400,
+          height: 240,
+        });
+        ad.setGBAd("banner", true, style, () => {
+          console.log("added");
         });
         this.hasShowBannerAd = true;
+        cc.log(this.hasShowBannerAd);
         setTimeout(() => {
           const btnNode = cc.find("bottom", this.node);
           cc.log(btnNode.y);
@@ -162,7 +164,7 @@ cc.Class({
       const adEntity = array[index];
       let adItem = item.getComponent("ZSAdItem");
       if (adItem) {
-        adItem.init(adEntity);
+        adItem.init(adEntity, index);
       }
     });
   },

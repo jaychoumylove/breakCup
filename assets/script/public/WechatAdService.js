@@ -174,4 +174,26 @@ cc.Class({
       });
     }
   },
+
+  // pos {x: 1, y: 1, anchorx:0.5, anchory:0.5}
+  transformPos(node, size) {
+    let wxsys = wx.getSystemInfoSync();
+    let hrate = wxsys.screenHeight / cc.winSize.height;
+    let wrate = wxsys.screenWidth / cc.winSize.width;
+
+    const width = size.width * wrate;
+    const height = size.height * hrate;
+
+    const wxX = (node.x + cc.winSize.width / 2) * wrate;
+    const wxY = (cc.winSize.height / 2 - node.y) * hrate;
+    const left = wxX - width / 2;
+    const top = wxY - height / 2 + wxsys.safeArea.top;
+
+    return {
+      left,
+      top,
+      width,
+      height,
+    };
+  },
 });

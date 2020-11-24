@@ -104,29 +104,15 @@ cc.Class({
     this.getHeartBtn.node.active = false;
     this.gotHeartContainer.active = true;
     this.topTitle.getComponent(cc.Label).string = "恭喜获得";
-    this.gotHeartContainer.dispatchEvent(
-      new cc.Event.EventCustom("_got", true)
-    );
     if (versionCheck()) {
       cc.find("horizontalScroll", this.node).y = cc.find(
         "ProgressBar",
         this.node
       ).y;
-
-      const ad = cc.find("bgm").getComponent("WechatAdService");
-      ad.setGBAd(
-        "banner",
-        true,
-        {
-          width: 300,
-          height: 100,
-          pos: "middleBottom",
-        },
-        () => {
-          console.log("added");
-        }
-      );
     }
+    this.gotHeartContainer.dispatchEvent(
+      new cc.Event.EventCustom("_got", true)
+    );
     // const dphevt = new cc.Event.EventCustom("_state_change", true);
     // dphevt.setUserData({ heart: 2 });
     // this.node.dispatchEvent(dphevt);

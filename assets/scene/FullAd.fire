@@ -274,7 +274,7 @@
       "array": [
         0,
         0,
-        437.34282891114157,
+        385.38130468407525,
         0,
         0,
         0,
@@ -4765,7 +4765,7 @@
         "__id__": 150
       }
     ],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 160
@@ -5917,7 +5917,7 @@
         1,
         1,
         1,
-        1
+        0
       ]
     },
     "_eulerAngles": {
@@ -9809,7 +9809,7 @@
         "__id__": 271
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 290
@@ -10927,6 +10927,7 @@
       "__uuid__": "b6d2d6f1-28c3-44df-a608-7ed472b1dd6d"
     },
     "darkScreen": null,
+    "newGuy": false,
     "_id": "b5YHhPoelDD4c3MuKhzGGr"
   },
   {

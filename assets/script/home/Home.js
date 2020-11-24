@@ -1,3 +1,4 @@
+import { initSkinGroup } from "../public/UserSkin";
 import { initAD } from "../util/wechatAd";
 import { versionCheck } from "../util/ZSLoad";
 
@@ -23,7 +24,13 @@ cc.Class({
       money: this.money,
       lastAddHeartTime: this.lastAddHeartTime,
     };
+    let newGuy = !cc.sys.localStorage.getItem("userState");
     this.initByStorage("userState", userData);
+    initSkinGroup();
+    this.initByStorage("userSkin", {
+      has: [0],
+      use: 0,
+    });
     let level = [];
     for (let index = 0; index < this.maxLevel; index++) {
       const item = {
@@ -36,10 +43,10 @@ cc.Class({
 
     this.initByStorage("userLevel", level);
 
-    this.initAd();
+    this.initAd(newGuy);
   },
 
-  initAd() {
+  initAd(newGuy) {
     if (versionCheck()) {
       const parent = cc.find("Canvas/Main Camera");
       const crollNode = cc.instantiate(this.scrollPrefab);
@@ -49,8 +56,8 @@ cc.Class({
         parent.addChild(darkNode);
         const drawNode = cc.instantiate(this.drawNode);
         parent.addChild(drawNode);
+        drawNode.getComponent("drawAd").changeSprite(newGuy, true);
         drawNode.getComponent("drawAd").darkScreen = darkNode;
-        // this.drawNode.active = true;
       }
       parent.addChild(crollNode);
       this.moreGameNode.active = true;
@@ -78,11 +85,6 @@ cc.Class({
         }
       );
     }
-  },
-
-  onDestroy() {
-    // const ad = cc.find("bgm").getComponent("WechatAdService");
-    // ad.setGBAd("banner", false);
   },
 
   initByStorage(key, dftValue) {

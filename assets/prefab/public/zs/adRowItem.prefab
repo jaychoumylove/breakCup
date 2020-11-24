@@ -662,8 +662,8 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_useOriginalSize": false,
-    "_string": "xxx大作战",
-    "_N$string": "xxx大作战",
+    "_string": "",
+    "_N$string": "",
     "_fontSize": 24,
     "_lineHeight": 24,
     "_enableWrapText": true,
@@ -718,7 +718,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 133.37,
+      "width": 122.25,
       "height": 25.2
     },
     "_anchorPoint": {
@@ -771,8 +771,8 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_useOriginalSize": false,
-    "_string": "120万人正在玩",
-    "_N$string": "120万人正在玩",
+    "_string": "30万人正在玩",
+    "_N$string": "30万人正在玩",
     "_fontSize": 20,
     "_lineHeight": 20,
     "_enableWrapText": true,

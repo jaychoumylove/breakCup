@@ -20,19 +20,22 @@ cc.Class({
     showRedIcon: cc.SpriteFrame,
 
     darkScreen: cc.Node,
+
+    newGuy: false,
   },
 
   onLoad() {
+    cc.log("loaded", this.newGuy);
     if (versionCheck()) {
       this.status = false; // 隐藏状态
       this.showNode = cc.find("showMore", this.node);
       this.showNode.active = false;
       this.initToggle();
       this.initClick();
-      // this.refreshAds();
-      setTimeout(() => {
-        this.refreshAds();
-      }, 3000);
+      this.refreshAds();
+      // setTimeout(() => {
+      //   this.refreshAds();
+      // }, 3000);
     }
   },
 
@@ -44,6 +47,17 @@ cc.Class({
         this.showNode.active = true;
       });
     });
+  },
+
+  changeSprite(newGuy, force) {
+    if (true == force) {
+      this.newGuy = newGuy;
+    }
+    this.showNode
+      .getComponent(cc.Button)
+      .target.getComponent(cc.Sprite).spriteFrame = newGuy
+      ? this.showRedIcon
+      : this.showIcon;
   },
 
   initToggle() {
@@ -89,20 +103,8 @@ cc.Class({
     let adArray = adData.promotion;
 
     if (adArray.length > 0) {
-      adArray = Common.shuffleArray(adArray);
+      adArray = Common.shuffleArray(adArray); // 打乱数组
       let index = 0;
-      for (let i = 0; i < adArray.length; i++) {
-        let adEntity = adArray[i];
-        cc.assetManager.loadRemote(
-          adEntity.app_icon,
-          { ext: ".png" },
-          (err, texture) => {
-            if (texture) {
-              adArray[i].app_icon = new cc.SpriteFrame(texture);
-            }
-          }
-        );
-      }
       for (let i = 0; i < number; i++) {
         if (index >= adArray.length) {
           index = 0;
@@ -189,6 +191,26 @@ cc.Class({
     cc.tween(this.moreBox)
       .to(0.1, { x: x })
       .call(() => {
+        if (true == this.newGuy) {
+          // this.changeSprite(false, true);
+        }
+        if (false == this.newGuy) {
+          if (!cc.find("Canvas/openOneVertical")) {
+            cc.resources.load(
+              "prefab/openOneVertical",
+              cc.Prefab,
+              (err, prefab) => {
+                if (!err) {
+                  const ad = cc.find("bgm").getComponent("WechatAdService");
+                  ad.setGBAd("banner", false);
+                  const openNode = cc.instantiate(prefab);
+                  openNode.getComponent("OpenOneFullAd").isback = true;
+                  cc.find("Canvas").addChild(openNode);
+                }
+              }
+            );
+          }
+        }
         this.showNode.active = true;
       })
       .start();

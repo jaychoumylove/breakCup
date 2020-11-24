@@ -1,3 +1,5 @@
+import { versionCheck } from "../../util/ZSLoad";
+
 cc.Class({
   extends: cc.Component,
 
@@ -24,6 +26,20 @@ cc.Class({
   dispatchGot() {
     this.doubelNode.active = true;
     this.initDoubelAction();
+    if (versionCheck()) {
+      const ad = cc.find("bgm").getComponent("WechatAdService");
+
+      const style = ad.transformPos(
+        { x: this.node.x, y: this.node.y - 100 },
+        {
+          width: 400,
+          height: 240,
+        }
+      );
+      ad.setGBAd("banner", true, style, () => {
+        console.log("added");
+      });
+    }
     setTimeout(() => {
       this.singleNode.active = true;
     }, 2000);

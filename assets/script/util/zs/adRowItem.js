@@ -1,5 +1,5 @@
 import zsSdk from "zs.sdk";
-import { getCfgVal, getSysVal } from "../ZSLoad";
+import { getCfgVal, getSysVal, getImageByKey } from "../ZSLoad";
 
 cc.Class({
   extends: cc.Component,
@@ -25,36 +25,28 @@ cc.Class({
     this.adEntity = adEntity;
     if (this.txt_name) {
       this.txt_name.string = adEntity.app_title;
+    }
+    if (this.indexLabel) {
       if (typeof adIndex == "number" && adIndex > -1) {
         let floor = adIndex > 0 ? adIndex : 0;
         const randBg = floor + 1;
         this.indexLabel.string = randBg;
       }
     }
+    if (this.descLabel) {
+      if (typeof adIndex == "number" && adIndex > -1) {
+        let floor = adIndex > 0 ? adIndex : 0;
+        const randBg = floor + 1;
+        let peopleNum = 20;
+      }
+    }
 
     if (adEntity.app_icon) {
-      if (typeof adEntity.app_icon == "string") {
-        cc.assetManager.loadRemote(
-          adEntity.app_icon,
-          { ext: ".png" },
-          (err, texture) => {
-            if (texture) {
-              var spriteFrame = new cc.SpriteFrame(texture);
-              if (this.icon && spriteFrame) {
-                this.icon.spriteFrame = spriteFrame;
-                this.icon.node.width = this.spriteSize.x;
-                this.icon.node.height = this.spriteSize.y;
-              }
-            }
-          }
-        );
-      }
-
-      if (adEntity.app_icon instanceof cc.SpriteFrame) {
-        this.icon.spriteFrame = adEntity.app_icon;
+      getImageByKey(adEntity.app_icon, (spriteFrame) => {
+        this.icon.spriteFrame = spriteFrame;
         this.icon.node.width = this.spriteSize.x;
         this.icon.node.height = this.spriteSize.y;
-      }
+      });
     }
   },
 
@@ -79,9 +71,8 @@ cc.Class({
       console.log("失败");
       if (!cc.find("Canvas/openOne")) {
         if (parseInt(getCfgVal("zs_full_screen_jump"))) {
-          if (this.node.parent.parent.parent.name == "bg") {
-            return;
-          }
+          const ad = cc.find("bgm").getComponent("WechatAdService");
+          ad.setGBAd("banner", false);
           cc.find("Canvas").addChild(cc.instantiate(this.openOne));
         }
       }

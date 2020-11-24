@@ -1,5 +1,5 @@
 import zsSdk from "zs.sdk";
-import { getCfgVal, getSysVal } from "./ZSLoad";
+import { getCfgVal, getSysVal, getImageByKey } from "./ZSLoad";
 import { randomIntFromInterval } from "./common";
 
 cc.Class({
@@ -57,61 +57,11 @@ cc.Class({
     }
 
     if (adEntity.app_icon) {
-      if (typeof adEntity.app_icon == "string") {
-        console.log(adEntity.app_icon);
-        // console.log("从url加载", adEntity.app_icon);
-        cc.assetManager.loadRemote(
-          adEntity.app_icon,
-          { ext: ".png" },
-          (err, texture) => {
-            console.log("加载over:");
-            // console.log("erro texture");
-            // console.log(err, img);
-            if (img) {
-              var spriteFrame = new cc.SpriteFrame(img);
-              // console.log("spriteFrame");
-              // console.log(spriteFrame);
-              if (_this.icon && spriteFrame) {
-                // _this.icon.node.getComponent(
-                //   cc.Sprite
-                // ).spriteFrame = spriteFrame;
-                _this.icon.spriteFrame = spriteFrame;
-                _this.icon.node.width = _this.spriteSize.x;
-                _this.icon.node.height = _this.spriteSize.y;
-                // console.log("icon");
-                // console.log(_this.icon);
-              }
-            }
-          }
-        );
-        // cc.loader.load(
-        //   { url: adEntity.app_icon, type: "png" },
-        //   (err, texture) => {
-        //     console.log("加载over:");
-        //     console.log("erro texture");
-        //     console.log(err, texture);
-        //     if (texture) {
-        //       var spriteFrame = new cc.SpriteFrame(texture);
-        //       console.log("spriteFrame");
-        //       console.log(spriteFrame);
-        //       if (_this.icon && spriteFrame) {
-        //         _this.icon.spriteFrame = spriteFrame;
-        //         _this.icon.node.width = _this.spriteSize.x;
-        //         _this.icon.node.height = _this.spriteSize.y;
-        //         console.log("icon");
-        //         console.log(_this.icon);
-        //       }
-        //     }
-        //   }
-        // );
-      }
-
-      if (adEntity.app_icon instanceof cc.SpriteFrame) {
-        console.log(adEntity.app_icon);
-        _this.icon.spriteFrame = adEntity.app_icon;
+      getImageByKey(adEntity.app_icon, (spriteFrame) => {
+        _this.icon.spriteFrame = spriteFrame;
         _this.icon.node.width = _this.spriteSize.x;
         _this.icon.node.height = _this.spriteSize.y;
-      }
+      });
     }
   },
 
@@ -136,13 +86,9 @@ cc.Class({
       //失败回调
       console.log("失败");
       if (!cc.find("Canvas/openOneVertical")) {
+        const ad = cc.find("bgm").getComponent("WechatAdService");
+        ad.setGBAd("banner", false);
         cc.find("Canvas").addChild(cc.instantiate(this.openOne));
-        // if (parseInt(getCfgVal("zs_full_screen_jump"))) {
-        //   if (this.node.parent.parent.parent.name == "bg") {
-        //     return;
-        //   }
-        //   cc.find("Canvas").addChild(cc.instantiate(this.openOne));
-        // }
       }
     };
 

@@ -2,20 +2,45 @@ import zsSdk from "zs.sdk";
 import cfg from "./cfg";
 
 let loadedData = null;
+let imageDict = {};
 
 const setLoadedData = (data) => {
   loadedData = data;
 };
 
+const setImageKV = (k, v) => {
+  imageDict[k] = v;
+};
+
+const getImageByKey = (k, call) => {
+  if (imageDict.hasOwnProperty(k)) {
+    const spriteFrame = new cc.SpriteFrame(imageDict[k]);
+    call && call(spriteFrame);
+    return;
+  }
+
+  loadRemoteImage(k, call);
+  return;
+};
+
+const loadRemoteImage = (url, call) => {
+  cc.assetManager.loadRemote(url, { ext: ".png" }, (err, texture) => {
+    if (texture) {
+      setImageKV(url, texture);
+      const spriteFrame = new cc.SpriteFrame(texture);
+      call && call(spriteFrame);
+    }
+  });
+};
+
 const zsLoad = (call) => {
-  // zsSdk.login((user_id) => {
-  //   cc.sys.localStorage.setItem("zsUser", user_id);
-  //   zsSdk.init(user_id);
-  // });
   zsSdk.loadCfg((data) => {
     cc.sys.localStorage.setItem("zsCfg", JSON.stringify(data));
-    // cc.director.loadScene("MainMenu");
     call && call();
+  });
+  zsSdk.login((user_id) => {
+    cc.sys.localStorage.setItem("zsUser", user_id);
+    zsSdk.init(user_id);
   });
 };
 
@@ -43,13 +68,12 @@ const getSysVal = (key, dft) => {
 };
 
 const getZsLoadData = (call) => {
-  // const zsad = cc.sys.localStorage.getItem("zsAdArray");
-  // call(JSON.parse(zsad));
   call(loadedData);
 };
 
 const setZsLoadData = (call) => {
   zsSdk.loadAd((res) => {
+    setLoadedData(res);
     const adArray = res.promotion;
     for (let i = 0; i < adArray.length; i++) {
       let adEntity = adArray[i];
@@ -58,23 +82,22 @@ const setZsLoadData = (call) => {
         { ext: ".png" },
         (err, texture) => {
           if (texture) {
-            adArray[i].app_icon = new cc.SpriteFrame(texture);
+            setImageKV(adEntity.app_icon, texture);
           }
           if (i + 1 == adArray.length) {
-            res.promotion = adArray;
-            setLoadedData(res);
             call && call();
           }
         }
       );
     }
-    // cc.sys.localStorage.setItem("zsAdArray", JSON.stringify(res));
   });
 };
 
 const initZsData = (call) => {
+  cc.log("call");
   setZsLoadData(call);
   setInterval(() => {
+    cc.log("call null");
     setZsLoadData(null);
   }, 1000 * 30);
 };
@@ -100,4 +123,6 @@ module.exports = {
   getCfgVal,
   getSysVal,
   versionCheck,
+  loadRemoteImage,
+  getImageByKey,
 };

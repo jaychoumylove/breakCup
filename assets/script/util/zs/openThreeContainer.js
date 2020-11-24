@@ -102,20 +102,25 @@ cc.Class({
     // 显示banner广告
     if (!this.hasShowBannerAd) {
       setTimeout(() => {
-        ad.setGBAd("banner", true, {
-          width: 300,
-          height: 100,
-          pos: "middleBottom",
+        const ad = cc.find("bgm").getComponent("WechatAdService");
+        const style = ad.transformPos(cc.find("bottom", this.node), {
+          width: 400,
+          height: 240,
+        });
+        ad.setGBAd("banner", true, style, () => {
+          console.log("added");
         });
         this.hasShowBannerAd = true;
         setTimeout(() => {
           // ad.setGBAd("banner", false);
           const btnNode = cc.find("bottom", this.node);
-          btnNode.y += btnNode.height;
+          btnNode.y = btnNode.y + 100;
         }, getCfgVal("zs_banner_banner_time", 2000));
       }, 1000);
     } else {
       console.info("gonext");
+      const ad = cc.find("bgm").getComponent("WechatAdService");
+      ad.setGBAd("banner", false);
       if (this.isback) {
         cc.director.loadScene("home");
         return;

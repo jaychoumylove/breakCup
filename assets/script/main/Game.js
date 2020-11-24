@@ -1,3 +1,9 @@
+import {
+  getBallMapPath,
+  getNextBall,
+  getUseSkinGroup,
+  updateCurrentIndex,
+} from "../public/UserSkin";
 import { versionCheck, getCfgVal } from "../util/ZSLoad";
 
 cc.Class({
@@ -65,20 +71,7 @@ cc.Class({
     this.cupNum = this.boxContainer.children.length;
     this.win = false;
     this.lose = false;
-    this.fallBallArray = [
-      {
-        type: "ball",
-        sprite: "2",
-      },
-      {
-        type: "triangle",
-        sprite: "3",
-      },
-      {
-        type: "four_side",
-        sprite: "1",
-      },
-    ];
+    this.fallBallArray = getNextBall(3);
     this.currentBall = null;
     this.currentBallIndex = 0;
     this.initBall();
@@ -112,12 +105,26 @@ cc.Class({
     // this.offTouch();
     this.darkScreenNode.active = true;
     this.darkScreenNode.dispatchEvent(new cc.Event.EventCustom("_fail", true));
+    if (versionCheck()) {
+      if (cc.find("Canvas/openThree")) {
+      } else {
+        this.scheduleOnce(() => {
+          cc.resources.load("prefab/openThree", cc.Prefab, (err, prefab) => {
+            if (!err) {
+              let openNode = cc.instantiate(prefab);
+              cc.find("Canvas").addChild(openNode);
+            }
+          });
+        }, 0);
+      }
+    }
   },
 
   dispatchSuccess() {
     this.win = true;
     // 记录当前得分
     const status = this.checkStar();
+    updateCurrentIndex();
     this.recordLevelStar();
     // 解锁下一等级
     this.unlockNextLevel();
@@ -129,7 +136,7 @@ cc.Class({
         }
       });
     }
-    setTimeout(() => {
+    this.scheduleOnce(() => {
       if (versionCheck()) {
         if (cc.find("Canvas/openRank")) {
         } else {
@@ -157,7 +164,7 @@ cc.Class({
         return this.getThreeStar();
       }
       this.goSettle();
-    }, 2000);
+    }, 2);
   },
 
   getHeartBag() {
@@ -220,7 +227,8 @@ cc.Class({
       const type = ite.type;
       let ballDashed = cc.instantiate(this.ballDashedPrefab),
         ballStatic = cc.instantiate(this.ballStaticPrefab),
-        absolutePath = "image/base/ball/",
+        absolutePath = getBallMapPath(),
+        groupPath = getUseSkinGroup(),
         image;
 
       if (type == "ball") {
@@ -238,7 +246,7 @@ cc.Class({
       cc.resources.load(absolutePath + image, cc.SpriteFrame, null, (e, df) => {
         ballDashed.getComponent(cc.Sprite).spriteFrame = df;
         cc.resources.load(
-          absolutePath + ite.sprite,
+          absolutePath + groupPath + "/" + ite.sprite,
           cc.SpriteFrame,
           null,
           (e, sf) => {
@@ -291,7 +299,8 @@ cc.Class({
 
     let type = this.fallBallArray[this.currentBall.current].type,
       image = this.fallBallArray[this.currentBallIndex].sprite,
-      absolutePath = "image/base/ball/",
+      absolutePath = getBallMapPath(),
+      groupPath = getUseSkinGroup(),
       prefab;
     if (type == "ball") {
       prefab = this.ballDynamicPrefab;
@@ -305,13 +314,18 @@ cc.Class({
     let ball = cc.instantiate(prefab);
     ball.x = this.currentBall.node.x;
     ball.y = this.currentBall.node.y;
-    cc.resources.load(absolutePath + image, cc.SpriteFrame, null, (e, df) => {
-      ball.getComponent(cc.Sprite).spriteFrame = df;
-      this.currentBall.node.destroy();
-      this.currentBall = null;
-      this.bgNode.addChild(ball);
-      this.displayCurrentBall();
-    });
+    cc.resources.load(
+      absolutePath + groupPath + "/" + image,
+      cc.SpriteFrame,
+      null,
+      (e, df) => {
+        ball.getComponent(cc.Sprite).spriteFrame = df;
+        this.currentBall.node.destroy();
+        this.currentBall = null;
+        this.bgNode.addChild(ball);
+        this.displayCurrentBall();
+      }
+    );
   },
 
   displayCurrentBall() {
@@ -325,10 +339,10 @@ cc.Class({
       this.checkTimer = setInterval(() => {
         this.checkLose(false);
       }, 1000);
-      setTimeout(() => {
+      this.scheduleOnce(() => {
         this.cleanCheck();
         this.checkLose(true);
-      }, 5000);
+      }, 5);
     }
   },
 

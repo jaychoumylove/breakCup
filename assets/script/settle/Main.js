@@ -109,12 +109,13 @@ cc.Class({
     if (!this.hasShowOnceBannerAd) {
       setTimeout(() => {
         const ad = cc.find("bgm").getComponent("WechatAdService");
-        ad.setGBAd("banner", true, {
-          width: 300,
-          height: 100,
-          pos: "middleBottom",
+        const style = ad.transformPos(this.getRewardNode, {
+          width: 400,
+          height: 240,
         });
-
+        ad.setGBAd("banner", true, style, () => {
+          console.log("added");
+        });
         this.hasShowOnceBannerAd = true;
         this.schedule(() => {
           this.redirectNode.y = this.doubelNode.y;
@@ -134,10 +135,12 @@ cc.Class({
     if (!this.hasShowTwiceBannerAd) {
       setTimeout(() => {
         const ad = cc.find("bgm").getComponent("WechatAdService");
-        ad.setGBAd("banner", true, {
-          width: 300,
-          height: 100,
-          pos: "middleBottom",
+        const style = ad.transformPos(this.getRewardNode, {
+          width: 400,
+          height: 240,
+        });
+        ad.setGBAd("banner", true, style, () => {
+          console.log("added");
         });
         this.hasShowTwiceBannerAd = true;
         this.schedule(() => {
@@ -182,10 +185,12 @@ cc.Class({
     if (!this.hasShowOnceBannerAd) {
       setTimeout(() => {
         const ad = cc.find("bgm").getComponent("WechatAdService");
-        ad.setGBAd("banner", true, {
-          width: 300,
-          height: 100,
-          pos: "middleBottom",
+        const style = ad.transformPos(this.getRewardNode, {
+          width: 400,
+          height: 240,
+        });
+        ad.setGBAd("banner", true, style, () => {
+          console.log("added");
         });
         this.hasShowOnceBannerAd = true;
         this.schedule(() => {

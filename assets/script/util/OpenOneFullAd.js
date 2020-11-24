@@ -101,10 +101,12 @@ cc.Class({
     if (!this.hasShowBannerAd) {
       setTimeout(() => {
         const ad = cc.find("bgm").getComponent("WechatAdService");
-        ad.setGBAd("banner", true, {
-          width: 300,
-          height: 100,
-          pos: "middleBottom",
+        const style = ad.transformPos(cc.find("bottom", this.node), {
+          width: 400,
+          height: 240,
+        });
+        ad.setGBAd("banner", true, style, () => {
+          console.log("added");
         });
         this.hasShowBannerAd = true;
         setTimeout(() => {
@@ -130,7 +132,6 @@ cc.Class({
     if (adArray.length > 0) {
       let index = 0;
       adArray = Common.shuffleArray(adArray);
-      cc.log(number);
       for (let i = 0; i < number; i++) {
         cc.log(i);
         if (index >= adArray.length) {
