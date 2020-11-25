@@ -41,6 +41,8 @@ cc.Class({
       level.push(item);
     }
 
+    cc.director.preloadScene("level");
+
     this.initByStorage("userLevel", level);
 
     this.initAd(newGuy);

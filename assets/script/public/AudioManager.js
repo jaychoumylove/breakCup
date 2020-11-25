@@ -12,7 +12,6 @@ cc.Class({
   },
 
   onLoad() {
-    cc.game.addPersistRootNode(this.node);
     this.initVolume();
     this.playBgMusic();
     this.musicMap = {
@@ -70,11 +69,7 @@ cc.Class({
     if (this.bgStatus != status) {
       this.bgStatus = status;
       this.updateStorageVolume("bg", status);
-      if (typeof this.bgMusicChannel != undefined) {
-        cc.audioEngine.setVolume(this.bgMusicChannel, status ? 0.5 : 0.0);
-      } else {
-        this.playBgMusic();
-      }
+      status ? this.playBgMusic() : this.stopBgMusic();
     }
   },
 

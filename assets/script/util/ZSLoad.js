@@ -38,10 +38,10 @@ const zsLoad = (call) => {
     cc.sys.localStorage.setItem("zsCfg", JSON.stringify(data));
     call && call();
   });
-  zsSdk.login((user_id) => {
-    cc.sys.localStorage.setItem("zsUser", user_id);
-    zsSdk.init(user_id);
-  });
+  // zsSdk.login((user_id) => {
+  //   cc.sys.localStorage.setItem("zsUser", user_id);
+  //   zsSdk.init(user_id);
+  // });
 };
 
 const getCfgVal = (key, dft) => {
@@ -113,6 +113,8 @@ const isJsonString = (str) => {
 
 const versionCheck = () => {
   // 最初版本1.1.0
+  // return false;
+  // return true;
   return !(getCfgVal("zs_version", "1.1.0") == cfg.version);
 };
 

@@ -21,35 +21,34 @@ cc.Class({
   },
 
   handleRedirect() {
+    if (this.scene == "store") {
+      return;
+    }
     this.AudioPlayer.playOnceMusic("button");
-
+    let scene = this.scene;
     const ad = cc.find("bgm").getComponent("WechatAdService");
     ad.setGBAd("banner", false);
-    if (this.scene != "store") {
-      if (this.scene == "home") {
-        cc.resources.load(
-          "prefab/openOneVertical",
-          cc.Prefab,
-          (err, prefab) => {
-            cc.log(err, prefab);
-            if (!err) {
-              const openNode = cc.instantiate(prefab);
-              openNode.getComponent("OpenOneFullAd").isback = true;
-              cc.find("Canvas").addChild(openNode);
-            }
-          }
-        );
-      }
+    if (scene == "home") {
+      cc.resources.load("prefab/openOneVertical", cc.Prefab, (err, prefab) => {
+        cc.log(err, prefab);
+        if (!err) {
+          const openNode = cc.instantiate(prefab);
+          openNode.getComponent("OpenOneFullAd").isback = true;
+          cc.find("Canvas").addChild(openNode);
+        }
+      });
       const evt = new cc.Event.EventCustom("_toggle_loading", true);
       evt.setUserData({ status: true });
       this.node.dispatchEvent(evt);
       return;
     }
-    if (this.scene) {
-      const evt = new cc.Event.EventCustom("_toggle_loading", true);
-      evt.setUserData({ status: true });
-      this.node.dispatchEvent(evt);
-      cc.director.loadScene(this.scene);
+    if (scene == "back") {
+      scene = cc.find("bgm").getComponent("RootNode").getLastScene();
     }
+    const evt = new cc.Event.EventCustom("_toggle_loading", true);
+    evt.setUserData({ status: true });
+    this.node.dispatchEvent(evt);
+    cc.director.loadScene(scene);
+    return;
   },
 });

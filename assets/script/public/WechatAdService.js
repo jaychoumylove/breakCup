@@ -4,7 +4,8 @@ cc.Class({
   properties: {},
 
   onLoad() {
-    this._cuurentScene = cc.director.getScene().name;
+    // this._currentScene = cc.director.getScene().name;
+    // this._lastScene = null;
 
     if (typeof wx == "undefined") {
       cc.warn("wx is undefined!");
@@ -18,19 +19,19 @@ cc.Class({
     }
   },
 
-  update() {
-    // const currentScene = cc.director.getScene().name;
-    // if (this._cuurentScene != currentScene) {
-    //   cc.log("hide");
-    //   this._cuurentScene = currentScene;
-    //   if (this.bannerAd) {
-    //     this.bannerAd.hide();
-    //   }
-    //   if (this.gridAd) {
-    //     this.gridAd.hide();
-    //   }
-    // }
-  },
+  // update() {
+  //   const currentScene = cc.director.getScene().name;
+  //   if (this._currentScene != currentScene) {
+  //     this._lastScene = this._currentScene;
+  //     this._currentScene = currentScene;
+  //     if (this.bannerAd) {
+  //       this.bannerAd.hide();
+  //     }
+  //     if (this.gridAd) {
+  //       this.gridAd.hide();
+  //     }
+  //   }
+  // },
 
   initAdIds() {
     this.gridAdunit = "adunit-1e7e1a5d2eaec01a";
