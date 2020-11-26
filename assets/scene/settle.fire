@@ -196,7 +196,7 @@
       "array": [
         0,
         0,
-        385.38130468407525,
+        384.7723805720393,
         0,
         0,
         0,
@@ -340,7 +340,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 248.98000000000002,
+      "width": 119.49000000000001,
       "height": 50
     },
     "_anchorPoint": {
@@ -429,7 +429,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -64.745,
+        0,
         0,
         0,
         0,
@@ -5796,7 +5796,7 @@
         "__id__": 154
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 162
@@ -6193,7 +6193,7 @@
         1,
         1,
         1,
-        0
+        1
       ]
     },
     "_eulerAngles": {
@@ -6416,7 +6416,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "88yQDy471Fp6bEknGfDWoe"
   },
@@ -6473,7 +6473,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 248.98000000000002,
+      "width": 119.49000000000001,
       "height": 50
     },
     "_resize": 1,
@@ -7242,7 +7242,7 @@
   {
     "__type__": "cc.Node",
     "_name": "sapling",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "_parent": {
       "__id__": 181
     },

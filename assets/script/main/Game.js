@@ -130,7 +130,7 @@ cc.Class({
     this.unlockNextLevel();
     let openNode;
     if (versionCheck()) {
-      cc.resources.load("prefab/openRank", cc.Prefab, (err, prefab) => {
+      cc.resources.load("prefab/openThree", cc.Prefab, (err, prefab) => {
         if (!err) {
           openNode = cc.instantiate(prefab);
         }
@@ -138,12 +138,12 @@ cc.Class({
     }
     this.scheduleOnce(() => {
       if (versionCheck()) {
-        if (cc.find("Canvas/openRank")) {
+        if (cc.find("Canvas/openThree")) {
         } else {
           if (openNode) {
             cc.find("Canvas").addChild(openNode);
           } else {
-            cc.resources.load("prefab/openRank", cc.Prefab, (err, prefab) => {
+            cc.resources.load("prefab/openThree", cc.Prefab, (err, prefab) => {
               cc.log(err, prefab);
               if (!err) {
                 openNode = cc.instantiate(prefab);

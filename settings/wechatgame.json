@@ -2,7 +2,7 @@
   "appid": "wx709f9ccd46e0690b",
   "orientation": "portrait",
   "separate_engine": true,
-  "REMOTE_SERVER_ROOT": "https://res.anaculture.com/game/dstdpz/v1.1.5",
+  "REMOTE_SERVER_ROOT": "https://res.anaculture.com/game/dstdpz/v1.1.7.2",
   "subContext": "",
   "startSceneAssetBundle": true
 }

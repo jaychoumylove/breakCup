@@ -1,3 +1,5 @@
+import { versionCheck } from "../../util/ZSLoad";
+
 cc.Class({
   extends: cc.Component,
 
@@ -29,18 +31,24 @@ cc.Class({
     const ad = cc.find("bgm").getComponent("WechatAdService");
     ad.setGBAd("banner", false);
     if (scene == "home") {
-      cc.resources.load("prefab/openOneVertical", cc.Prefab, (err, prefab) => {
-        cc.log(err, prefab);
-        if (!err) {
-          const openNode = cc.instantiate(prefab);
-          openNode.getComponent("OpenOneFullAd").isback = true;
-          cc.find("Canvas").addChild(openNode);
-        }
-      });
-      const evt = new cc.Event.EventCustom("_toggle_loading", true);
-      evt.setUserData({ status: true });
-      this.node.dispatchEvent(evt);
-      return;
+      if (versionCheck()) {
+        cc.resources.load(
+          "prefab/openOneVertical",
+          cc.Prefab,
+          (err, prefab) => {
+            cc.log(err, prefab);
+            if (!err) {
+              const openNode = cc.instantiate(prefab);
+              openNode.getComponent("OpenOneFullAd").isback = true;
+              cc.find("Canvas").addChild(openNode);
+            }
+          }
+        );
+        const evt = new cc.Event.EventCustom("_toggle_loading", true);
+        evt.setUserData({ status: true });
+        this.node.dispatchEvent(evt);
+        return;
+      }
     }
     if (scene == "back") {
       scene = cc.find("bgm").getComponent("RootNode").getLastScene();

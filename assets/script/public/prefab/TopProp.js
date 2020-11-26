@@ -12,6 +12,8 @@ cc.Class({
   onLoad() {
     this.heartLabel.string = this.heart;
     this.moneyLabel.string = this.money;
+    this.node.getChildByName("money").active = false;
+    this.node.x -= parseInt(this.node.getChildByName("money").x);
   },
 
   update(dt) {

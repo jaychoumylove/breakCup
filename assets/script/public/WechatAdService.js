@@ -178,6 +178,10 @@ cc.Class({
 
   // pos {x: 1, y: 1, anchorx:0.5, anchory:0.5}
   transformPos(node, size) {
+    if (typeof wx == "undefined") {
+      cc.warn("wx is undefined!");
+      return null;
+    }
     let wxsys = wx.getSystemInfoSync();
     let hrate = wxsys.screenHeight / cc.winSize.height;
     let wrate = wxsys.screenWidth / cc.winSize.width;

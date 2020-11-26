@@ -149,19 +149,6 @@ cc.Class({
       }, 1000);
       return;
     }
-    if (!this.checkHeart()) {
-      const freeSide = cc.find("Canvas/Main Camera/freeSideL");
-      if (freeSide) {
-        freeSide.destroy();
-      }
-      return this.node.dispatchEvent(
-        new cc.Event.EventCustom("_add_heart", true)
-      );
-    } else {
-      const dphHevt = new cc.Event.EventCustom("_state_change", true);
-      dphHevt.setUserData({ heart: -1 });
-      this.node.dispatchEvent(dphHevt);
-    }
     // 去下一关
     const evt = new cc.Event.EventCustom("_toggle_loading", true);
     evt.setUserData({ status: true });
@@ -175,6 +162,19 @@ cc.Class({
         }
       });
     } else {
+      if (!this.checkHeart()) {
+        const freeSide = cc.find("Canvas/Main Camera/freeSideL");
+        if (freeSide) {
+          freeSide.destroy();
+        }
+        return this.node.dispatchEvent(
+          new cc.Event.EventCustom("_add_heart", true)
+        );
+      } else {
+        const dphHevt = new cc.Event.EventCustom("_state_change", true);
+        dphHevt.setUserData({ heart: -1 });
+        this.node.dispatchEvent(dphHevt);
+      }
       this.node.dispatchEvent(new cc.Event.EventCustom("_go_next_lv", true));
     }
   },
