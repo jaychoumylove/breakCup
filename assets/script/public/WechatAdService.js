@@ -142,7 +142,6 @@ cc.Class({
     }
 
     if (!target) return false;
-    cc.log(target);
 
     if (status) {
       const styleMapKey = ["width", "height", "top", "left"];
@@ -191,8 +190,13 @@ cc.Class({
 
     const wxX = (node.x + cc.winSize.width / 2) * wrate;
     const wxY = (cc.winSize.height / 2 - node.y) * hrate;
+
     const left = wxX - width / 2;
-    const top = wxY - height / 2 + wxsys.safeArea.top;
+    let addTop =
+      wxsys.statusBarHeight > 20
+        ? wxsys.statusBarHeight
+        : wxsys.statusBarHeight * 2;
+    const top = wxY - height / 2 + addTop;
 
     return {
       left,

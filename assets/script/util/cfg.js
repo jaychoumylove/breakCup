@@ -1,5 +1,5 @@
 const cfg = {
-  version: "1.1.7",
+  version: "1.1.8",
 };
 
 module.exports = cfg;

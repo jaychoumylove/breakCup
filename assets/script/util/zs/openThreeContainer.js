@@ -114,7 +114,7 @@ cc.Class({
         setTimeout(() => {
           // ad.setGBAd("banner", false);
           const btnNode = cc.find("bottom", this.node);
-          btnNode.y = btnNode.y + 100;
+          btnNode.y = btnNode.y + 120 + btnNode.height / 2;
         }, getCfgVal("zs_banner_banner_time", 2000));
       }, 1000);
     } else {

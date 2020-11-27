@@ -90,7 +90,7 @@ cc.Class({
         this.hasShowBannerAdTimer = setTimeout(() => {
           const ad = cc.find("bgm").getComponent("WechatAdService");
           const style = ad.transformPos(
-            { x: this.singleNode.x, y: this.singleNode.y - 80 },
+            { x: this.singleNode.x, y: this.singleNode.y - 40 },
             {
               width: 400,
               height: 240,
