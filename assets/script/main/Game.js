@@ -105,17 +105,19 @@ cc.Class({
     // this.offTouch();
     this.darkScreenNode.active = true;
     this.darkScreenNode.dispatchEvent(new cc.Event.EventCustom("_fail", true));
-    if (versionCheck()) {
-      if (cc.find("Canvas/openThree")) {
-      } else {
-        this.scheduleOnce(() => {
-          cc.resources.load("prefab/openThree", cc.Prefab, (err, prefab) => {
-            if (!err) {
-              let openNode = cc.instantiate(prefab);
-              cc.find("Canvas").addChild(openNode);
-            }
-          });
-        }, 0);
+    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+      if (versionCheck()) {
+        if (cc.find("Canvas/openThree")) {
+        } else {
+          this.scheduleOnce(() => {
+            cc.resources.load("prefab/openThree", cc.Prefab, (err, prefab) => {
+              if (!err) {
+                let openNode = cc.instantiate(prefab);
+                cc.find("Canvas").addChild(openNode);
+              }
+            });
+          }, 0);
+        }
       }
     }
   },
@@ -128,29 +130,37 @@ cc.Class({
     this.recordLevelStar();
     // 解锁下一等级
     this.unlockNextLevel();
-    let openNode;
-    if (versionCheck()) {
-      cc.resources.load("prefab/openThree", cc.Prefab, (err, prefab) => {
-        if (!err) {
-          openNode = cc.instantiate(prefab);
-        }
-      });
+    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+      let openNode;
+      if (versionCheck()) {
+        cc.resources.load("prefab/openThree", cc.Prefab, (err, prefab) => {
+          if (!err) {
+            openNode = cc.instantiate(prefab);
+          }
+        });
+      }
     }
     this.scheduleOnce(() => {
-      if (versionCheck()) {
-        if (cc.find("Canvas/openThree")) {
-        } else {
-          if (openNode) {
-            cc.find("Canvas").addChild(openNode);
+      if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+        if (versionCheck()) {
+          if (cc.find("Canvas/openThree")) {
           } else {
-            cc.resources.load("prefab/openThree", cc.Prefab, (err, prefab) => {
-              cc.log(err, prefab);
-              if (!err) {
-                openNode = cc.instantiate(prefab);
-                cc.find("Canvas").addChild(openNode);
-                // cc.find("Canvas/Main Camera").addChild(openRank);
-              }
-            });
+            if (openNode) {
+              cc.find("Canvas").addChild(openNode);
+            } else {
+              cc.resources.load(
+                "prefab/openThree",
+                cc.Prefab,
+                (err, prefab) => {
+                  cc.log(err, prefab);
+                  if (!err) {
+                    openNode = cc.instantiate(prefab);
+                    cc.find("Canvas").addChild(openNode);
+                    // cc.find("Canvas/Main Camera").addChild(openRank);
+                  }
+                }
+              );
+            }
           }
         }
       }

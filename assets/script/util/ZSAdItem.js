@@ -85,10 +85,13 @@ cc.Class({
     let fail = () => {
       //失败回调
       console.log("失败");
-      if (!cc.find("Canvas/openOneVertical")) {
-        const ad = cc.find("bgm").getComponent("WechatAdService");
-        ad.setGBAd("banner", false);
-        cc.find("Canvas").addChild(cc.instantiate(this.openOne));
+
+      if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+        if (!cc.find("Canvas/openOneVertical")) {
+          const ad = cc.find("bgm").getComponent("WechatAdService");
+          ad.setGBAd("banner", false);
+          cc.find("Canvas").addChild(cc.instantiate(this.openOne));
+        }
       }
     };
 

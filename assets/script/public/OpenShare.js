@@ -10,11 +10,8 @@ cc.Class({
     //     'wechat': wx
     // };
     // this.platformObject = this.platformMap[this.platform];
-    if (this.platform == "wechat") {
-      if (typeof wx == "undefined") {
-      } else {
-        this.openWxShare();
-      }
+    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+      this.openWxShare();
     }
   },
 

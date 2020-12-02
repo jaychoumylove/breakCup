@@ -28,19 +28,21 @@ cc.Class({
    * 是否误触
    */
   checkWorseClick() {
-    if (!versionCheck()) {
-      // 审核中不展示广告
+    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+      if (!versionCheck()) {
+        // 审核中不展示广告
+        this.hasShowBannerAd = true;
+        return;
+      }
+      if (parseInt(getCfgVal("zs_switch")) < 1) {
+        // 未开启误触
+        this.hasShowBannerAd = true;
+        return;
+      }
+    } else {
       this.hasShowBannerAd = true;
-      return;
-    }
-    if (parseInt(getCfgVal("zs_switch")) < 1) {
-      // 未开启误触
-      this.hasShowBannerAd = true;
-      return;
     }
   },
-
-  // update (dt) {},
 
   dispatchGot() {
     this.doubelNode.active = true;
@@ -66,20 +68,28 @@ cc.Class({
   pressDoubel(evt) {
     this.AudioPlayer.playOnceMusic("button");
     cc.log("pressDoubel");
-    const ad = cc.find("bgm").getComponent("WechatAdService");
+    let ad = null;
+    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+      ad = cc.find("bgm").getComponent("WechatAdService");
+    }
+    if (cc.sys.platform == cc.sys.OPPO_GAME) {
+      ad = cc.find("bgm").getComponent("OppoAdService");
+    }
     const call = () => {
       const dphevt = new cc.Event.EventCustom("_state_change", true);
       dphevt.setUserData({ heart: 2 });
       this.node.dispatchEvent(dphevt);
       this.goNext();
     };
-    const res = ad.openVideoWithCb(() => {
+
+    if (!ad) {
+      call();
+      return;
+    }
+
+    ad.openVideoWithCb(() => {
       call();
     });
-    if (false == res) {
-      // 不在微信环境下直接获取奖励
-      call();
-    }
   },
 
   pressSingle(evt) {

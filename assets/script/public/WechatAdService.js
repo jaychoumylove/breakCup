@@ -6,12 +6,7 @@ cc.Class({
   onLoad() {
     // this._currentScene = cc.director.getScene().name;
     // this._lastScene = null;
-
-    if (typeof wx == "undefined") {
-      cc.warn("wx is undefined!");
-    } else {
-      // 初始化广告单例
-      // 激励视频
+    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
       this.initAdIds();
       setTimeout(() => {
         this.initAD();
@@ -177,7 +172,7 @@ cc.Class({
 
   // pos {x: 1, y: 1, anchorx:0.5, anchory:0.5}
   transformPos(node, size) {
-    if (typeof wx == "undefined") {
+    if (cc.sys.platform != cc.sys.WECHAT_GAME) {
       cc.warn("wx is undefined!");
       return null;
     }

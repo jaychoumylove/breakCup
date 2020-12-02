@@ -1,7 +1,7 @@
 import zsSdk from "zs.sdk";
 import cfg from "./cfg";
 
-let loadedData = null;
+let loadedData = { promotion: [] };
 let imageDict = {};
 
 const setLoadedData = (data) => {
@@ -38,10 +38,19 @@ const zsLoad = (call) => {
     cc.sys.localStorage.setItem("zsCfg", JSON.stringify(data));
     call && call();
   });
-  zsSdk.login((user_id) => {
-    cc.sys.localStorage.setItem("zsUser", user_id);
-    zsSdk.init(user_id);
-  });
+  //wx, oppo, vivo, tt, qq
+  const map = [
+    cc.sys.WECHAT_GAME,
+    // cc.sys.OPPO_GAME,
+    // cc.sys.VIVO_GAME,
+    cc.sys.QQ_PLAY,
+  ];
+  if (map.indexOf(cc.sys.platform) > -1) {
+    zsSdk.login((user_id) => {
+      cc.sys.localStorage.setItem("zsUser", user_id);
+      zsSdk.init(user_id);
+    });
+  }
 };
 
 const getCfgVal = (key, dft) => {
@@ -73,8 +82,12 @@ const getZsLoadData = (call) => {
 
 const setZsLoadData = (call) => {
   zsSdk.loadAd((res) => {
-    setLoadedData(res);
     const adArray = res.promotion;
+    if (!adArray.length) {
+      call && call();
+      return;
+    }
+    setLoadedData(res);
     for (let i = 0; i < adArray.length; i++) {
       let adEntity = adArray[i];
       cc.assetManager.loadRemote(
@@ -94,10 +107,8 @@ const setZsLoadData = (call) => {
 };
 
 const initZsData = (call) => {
-  cc.log("call");
   setZsLoadData(call);
   setInterval(() => {
-    cc.log("call null");
     setZsLoadData(null);
   }, 1000 * 30);
 };
@@ -115,6 +126,14 @@ const versionCheck = () => {
   // 最初版本1.1.0
   // return false;
   // return true;
+  if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+    return !(getCfgVal("zs_version", "1.1.0") == cfg.version);
+  }
+  if (cc.sys.platform == cc.sys.OPPO_GAME) {
+    return getCfgVal("zs_version", "1.0") == cfg.version;
+  }
+
+  // 默认
   return !(getCfgVal("zs_version", "1.1.0") == cfg.version);
 };
 

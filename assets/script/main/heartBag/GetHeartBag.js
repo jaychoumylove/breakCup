@@ -18,8 +18,11 @@ cc.Class({
     this.initBtn();
     this.initPregressBar();
     this.initLightAction();
-    if (!versionCheck()) {
-      cc.find("horizontalScroll", this.node).active = false;
+    cc.find("horizontalScroll", this.node).active = false;
+    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+      if (versionCheck()) {
+        cc.find("horizontalScroll", this.node).active = true;
+      }
     }
   },
 

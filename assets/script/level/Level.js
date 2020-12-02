@@ -6,32 +6,31 @@ cc.Class({
 
   onLoad() {
     this.initState();
-    const ad = cc.find("bgm").getComponent("WechatAdService");
-    // ad.showInterstitialAd();
-    // ad.showGridAd({
-    //     width: 330,
-    //     top: 375,
-    //     left: 10,
-    // });
+
     if (versionCheck()) {
-      ad.setGBAd(
-        "banner",
-        true,
-        {
-          width: 300,
-          height: 100,
-          pos: "middleBottom",
-        },
-        () => {
-          console.log("added");
-        }
-      );
+      let ad = null;
+      if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+        ad = cc.find("bgm").getComponent("WechatAdService");
+      }
+      if (cc.sys.platform == cc.sys.OPPO_GAME) {
+        ad = cc.find("bgm").getComponent("OppoAdService");
+      }
+      if (ad) {
+        ad.setGBAd(
+          "banner",
+          true,
+          {
+            width: 300,
+            height: 100,
+            pos: "middleBottom",
+          },
+          () => {
+            console.log("added");
+          }
+        );
+      }
     }
   },
-
-  //   start() {
-  //     const ad = cc.find("bgm").getComponent("WechatAdService");
-  //   },
 
   initState() {
     this.achievement = this.node

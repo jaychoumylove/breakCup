@@ -11,19 +11,21 @@ cc.Class({
   },
 
   onLoad() {
-    if (versionCheck()) {
-      // 不在审核中
-      const freeSideAdNode = cc.instantiate(this.freeSideAd);
-      let parent;
-      if (this.parent == "canvas") {
-        parent = cc.find("Canvas/Main Camera");
+    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+      if (versionCheck()) {
+        // 不在审核中
+        const freeSideAdNode = cc.instantiate(this.freeSideAd);
+        let parent;
+        if (this.parent == "canvas") {
+          parent = cc.find("Canvas/Main Camera");
+        }
+        if (this.parent == "self") {
+          parent = this.node;
+        }
+        freeSideAdNode.x = this.pos.x;
+        freeSideAdNode.y = this.pos.y;
+        parent.addChild(freeSideAdNode);
       }
-      if (this.parent == "self") {
-        parent = this.node;
-      }
-      freeSideAdNode.x = this.pos.x;
-      freeSideAdNode.y = this.pos.y;
-      parent.addChild(freeSideAdNode);
     }
   },
 });

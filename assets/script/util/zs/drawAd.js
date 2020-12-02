@@ -25,7 +25,6 @@ cc.Class({
   },
 
   onLoad() {
-    cc.log("loaded", this.newGuy);
     if (versionCheck()) {
       this.status = false; // 隐藏状态
       this.showNode = cc.find("showMore", this.node);
@@ -191,24 +190,26 @@ cc.Class({
     cc.tween(this.moreBox)
       .to(0.1, { x: x })
       .call(() => {
-        if (true == this.newGuy) {
-          // this.changeSprite(false, true);
-        }
-        if (false == this.newGuy) {
-          if (!cc.find("Canvas/openOneVertical")) {
-            cc.resources.load(
-              "prefab/openOneVertical",
-              cc.Prefab,
-              (err, prefab) => {
-                if (!err) {
-                  const ad = cc.find("bgm").getComponent("WechatAdService");
-                  ad.setGBAd("banner", false);
-                  const openNode = cc.instantiate(prefab);
-                  openNode.getComponent("OpenOneFullAd").isback = true;
-                  cc.find("Canvas").addChild(openNode);
+        if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+          if (true == this.newGuy) {
+            // this.changeSprite(false, true);
+          }
+          if (false == this.newGuy) {
+            if (!cc.find("Canvas/openOneVertical")) {
+              cc.resources.load(
+                "prefab/openOneVertical",
+                cc.Prefab,
+                (err, prefab) => {
+                  if (!err) {
+                    const ad = cc.find("bgm").getComponent("WechatAdService");
+                    ad.setGBAd("banner", false);
+                    const openNode = cc.instantiate(prefab);
+                    openNode.getComponent("OpenOneFullAd").isback = true;
+                    cc.find("Canvas").addChild(openNode);
+                  }
                 }
-              }
-            );
+              );
+            }
           }
         }
         this.showNode.active = true;

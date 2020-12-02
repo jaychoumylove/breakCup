@@ -1,5 +1,4 @@
 import { initSkinGroup } from "../public/UserSkin";
-import { initAD } from "../util/wechatAd";
 import { versionCheck } from "../util/ZSLoad";
 
 cc.Class({
@@ -49,10 +48,17 @@ cc.Class({
   },
 
   initAd(newGuy) {
+    this.moreGameNode.active = false;
     if (versionCheck()) {
       const parent = cc.find("Canvas/Main Camera");
-      const crollNode = cc.instantiate(this.scrollPrefab);
-      crollNode.y = 252.539;
+      if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+        const crollNode = cc.instantiate(this.scrollPrefab);
+        crollNode.y = 252.539;
+      }
+      if (cc.sys.platform == cc.sys.OPPO_GAME) {
+        const oneFreeAd = cc.find("bg container/oppoOneFree", parent);
+        oneFreeAd.active = true;
+      }
       if (this.drawNode) {
         const darkNode = cc.instantiate(this.darkScreen);
         parent.addChild(darkNode);
@@ -61,31 +67,42 @@ cc.Class({
         drawNode.getComponent("drawAd").changeSprite(newGuy, true);
         drawNode.getComponent("drawAd").darkScreen = darkNode;
       }
-      parent.addChild(crollNode);
-      this.moreGameNode.active = true;
+      if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+        parent.addChild(crollNode);
+        this.moreGameNode.active = true;
+      }
     } else {
       if (this.drawNode) {
         // this.drawNode.active = false;
       }
-      this.moreGameNode.active = false;
     }
   },
 
   start() {
     if (versionCheck()) {
-      const ad = cc.find("bgm").getComponent("WechatAdService");
-      ad.setGBAd(
-        "banner",
-        true,
-        {
+      let ad = null,
+        style;
+      if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+        ad = cc.find("bgm").getComponent("WechatAdService");
+        style = {
           width: 300,
           height: 100,
           pos: "middleBottom",
-        },
-        () => {
+        };
+      }
+      if (cc.sys.platform == cc.sys.OPPO_GAME) {
+        ad = cc.find("bgm").getComponent("OppoAdService");
+        style = {
+          width: 900,
+          height: 300,
+          pos: "middleBottom",
+        };
+      }
+      if (ad) {
+        ad.setGBAd("banner", true, style, () => {
           console.log("added");
-        }
-      );
+        });
+      }
     }
   },
 

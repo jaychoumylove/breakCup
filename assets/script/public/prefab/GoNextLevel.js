@@ -15,7 +15,13 @@ cc.Class({
   goNextLevel() {
     this.AudioPlayer.playOnceMusic("button");
     cc.log("go next");
-    const ad = cc.find("bgm").getComponent("WechatAdService");
+    let ad = null;
+    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+      ad = cc.find("bgm").getComponent("WechatAdService");
+    }
+    if (cc.sys.platform == cc.sys.OPPO_GAME) {
+      ad = cc.find("bgm").getComponent("OppoAdService");
+    }
     const call = () => {
       const evt1 = new cc.Event.EventCustom("_toggle_loading", true);
       evt1.setUserData({ status: true });
@@ -26,12 +32,14 @@ cc.Class({
       this.node.dispatchEvent(new cc.Event.EventCustom("_unlock_lv", true));
       this.node.dispatchEvent(new cc.Event.EventCustom("_go_next_lv", true));
     };
-    const res = ad.openVideoWithCb(() => {
+
+    if (!ad) {
+      call();
+      return;
+    }
+
+    ad.openVideoWithCb(() => {
       call();
     });
-    if (false == res) {
-      // 不在微信环境下直接获取奖励
-      call();
-    }
   },
 });

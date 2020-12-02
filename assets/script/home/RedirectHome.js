@@ -1,4 +1,3 @@
-import { initAD } from "../util/wechatAd";
 import { zsLoad, initZsData } from "../util/ZSLoad";
 
 cc.Class({

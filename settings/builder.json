@@ -16,11 +16,11 @@
   "inlineSpriteFrames": true,
   "inlineSpriteFrames_native": true,
   "mainCompressionType": "default",
-  "mainIsRemote": true,
+  "mainIsRemote": false,
   "optimizeHotUpdate": false,
   "md5Cache": true,
   "nativeMd5Cache": true,
-  "encryptJs": true,
+  "encryptJs": false,
   "xxteaKey": "61dd2e35-efec-44",
   "zipCompressJs": true,
   "fb-instant-games": {},
@@ -53,5 +53,5 @@
     "skipRecord": false
   },
   "appBundle": false,
-  "includeSDKBox": null
+  "includeSDKBox": false
 }

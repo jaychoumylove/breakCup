@@ -22,6 +22,8 @@ cc.Class({
     levelLabel: cc.Label,
     goldRewardLabel: cc.Label,
 
+    grid33: cc.Prefab,
+
     reward: cc.Integer,
     doubel: true,
   },
@@ -42,17 +44,49 @@ cc.Class({
    * 是否误触
    */
   checkWorseClick() {
-    if (!versionCheck()) {
-      // 审核中不展示广告
+    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+      if (!versionCheck()) {
+        // 审核中不展示广告
+        this.hasShowOnceBannerAd = true;
+        this.hasShowTwiceBannerAd = true;
+        return;
+      }
+      if (parseInt(getCfgVal("zs_switch")) < 1) {
+        // 未开启误触
+        this.hasShowOnceBannerAd = true;
+        this.hasShowTwiceBannerAd = true;
+        return;
+      }
+    } else {
       this.hasShowOnceBannerAd = true;
       this.hasShowTwiceBannerAd = true;
-      return;
     }
-    if (parseInt(getCfgVal("zs_switch")) < 1) {
-      // 未开启误触
-      this.hasShowOnceBannerAd = true;
-      this.hasShowTwiceBannerAd = true;
-      return;
+
+    if (cc.sys.platform == cc.sys.OPPO_GAME) {
+      if (versionCheck()) {
+        const bgNode = cc.find("Canvas/Main Camera/bg");
+        cc.find("star", bgNode).active = false;
+        cc.find("reward", bgNode).active = false;
+        // 取消重玩本关
+        // this.replayNode.on("click", this.replayCurrentLevel, this);
+        bgNode.addChild(cc.instantiate(this.grid33));
+        const ad = cc.find("bgm").getComponent("OppoAdService");
+        ad.setGBAd(
+          "banner",
+          true,
+          {
+            width: 300,
+            height: 100,
+            pos: "middleBottom",
+          },
+          () => {
+            console.log("added");
+          }
+        );
+      } else {
+        // this.getRewardNode.y = 200 + this.getRewardNode.y;
+        // this.redirectNode.y = 200 + this.redirectNode.y;
+      }
     }
   },
 
@@ -84,7 +118,13 @@ cc.Class({
   },
 
   initBtn() {
-    this.getRewardNode.on("click", this.pressGetReward, this);
+    this.doubelNode.active = false;
+    cc.find("Canvas/Main Camera/bg/get Reward").active = false;
+    if (this.getRewardNode.active) {
+      this.getRewardNode.on("click", this.pressGetReward, this);
+    }
+    this.redirectNode.active = true;
+    this.goNextNode.on("click", this.goNextLevel, this);
     this.checkDoubelNode
       .getComponent(cc.Toggle)
       .node.on("toggle", this.toggleDoubel, this);
@@ -152,36 +192,45 @@ cc.Class({
     // 去下一关
     const evt = new cc.Event.EventCustom("_toggle_loading", true);
     evt.setUserData({ status: true });
-    this.node.dispatchEvent(evt);
-    if (versionCheck()) {
-      cc.resources.load("prefab/openOneVertical", cc.Prefab, (err, prefab) => {
-        if (!err) {
-          const openNode = cc.instantiate(prefab);
-          openNode.getComponent("OpenOneFullAd").isback = true;
-          cc.find("Canvas").addChild(openNode);
-        }
-      });
-    } else {
-      if (!this.checkHeart()) {
-        const freeSide = cc.find("Canvas/Main Camera/freeSideL");
-        if (freeSide) {
-          freeSide.destroy();
-        }
-        return this.node.dispatchEvent(
-          new cc.Event.EventCustom("_add_heart", true)
+
+    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+      if (versionCheck()) {
+        this.node.dispatchEvent(evt);
+        cc.resources.load(
+          "prefab/openOneVertical",
+          cc.Prefab,
+          (err, prefab) => {
+            if (!err) {
+              const openNode = cc.instantiate(prefab);
+              openNode.getComponent("OpenOneFullAd").isback = true;
+              cc.find("Canvas").addChild(openNode);
+            }
+          }
         );
-      } else {
-        const dphHevt = new cc.Event.EventCustom("_state_change", true);
-        dphHevt.setUserData({ heart: -1 });
-        this.node.dispatchEvent(dphHevt);
+        return;
       }
-      this.node.dispatchEvent(new cc.Event.EventCustom("_go_next_lv", true));
     }
+    if (!this.checkHeart()) {
+      const freeSide = cc.find("Canvas/Main Camera/freeSideL");
+      if (freeSide) {
+        freeSide.destroy();
+      }
+      return this.node.dispatchEvent(
+        new cc.Event.EventCustom("_add_heart", true)
+      );
+    } else {
+      const dphHevt = new cc.Event.EventCustom("_state_change", true);
+      dphHevt.setUserData({ heart: -1 });
+      this.node.dispatchEvent(dphHevt);
+    }
+    this.node.dispatchEvent(evt);
+    this.node.dispatchEvent(new cc.Event.EventCustom("_go_next_lv", true));
   },
 
   pressGetReward() {
     // 获取奖励
     cc.log("pressGetReward");
+    this.AudioPlayer.playOnceMusic("coin");
     if (!this.hasShowOnceBannerAd) {
       setTimeout(() => {
         const ad = cc.find("bgm").getComponent("WechatAdService");
@@ -202,7 +251,6 @@ cc.Class({
     this.doubelNode.active = false;
     this.getRewardNode.active = false;
     this.redirectNode.active = true;
-    this.AudioPlayer.playOnceMusic("coin");
     // 取消重玩本关
     // this.replayNode.on("click", this.replayCurrentLevel, this);
     this.goNextNode.on("click", this.goNextLevel, this);
