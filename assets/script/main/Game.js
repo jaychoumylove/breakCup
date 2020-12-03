@@ -44,9 +44,23 @@ cc.Class({
   },
 
   onLoad() {
+    const parentCamera = cc.find("Canvas/Main Camera");
     if (cc.sys.platform == cc.sys.WECHAT_GAME) {
       const ad = cc.find("bgm").getComponent("WechatAdService");
       ad.setGBAd("banner", false);
+      if (versionCheck()) {
+        cc.resources.load(
+          "prefab/horizontalScroll",
+          cc.Prefab,
+          (err, prefab) => {
+            if (!err) {
+              let node = cc.instantiate(prefab);
+              node.y = -34;
+              cc.find("game Bg/ground", parentCamera).addChild(node);
+            }
+          }
+        );
+      }
     }
     const darkScreenNode = cc.instantiate(this.darkScreenPrefab);
     darkScreenNode.active = false;
@@ -56,7 +70,6 @@ cc.Class({
       this.getThreeStarScreenPrefab
     );
     getThreeStarScreenNode.active = false;
-    const parentCamera = cc.find("Canvas/Main Camera");
     cc.find("loading", parentCamera).zIndex = 5;
     cc.find("game Bg", parentCamera).zIndex = 0;
     parentCamera.addChild(darkScreenNode, 2);
@@ -109,6 +122,12 @@ cc.Class({
     this.darkScreenNode.dispatchEvent(new cc.Event.EventCustom("_fail", true));
     if (cc.sys.platform == cc.sys.WECHAT_GAME) {
       if (versionCheck()) {
+        let scroll = cc.find(
+          "Canvas/Main Camera/game Bg/ground/horizontalScroll"
+        );
+        if (scroll) {
+          scroll.destroy();
+        }
         if (cc.find("Canvas/openThree")) {
         } else {
           this.scheduleOnce(() => {
@@ -132,14 +151,20 @@ cc.Class({
     this.recordLevelStar();
     // 解锁下一等级
     this.unlockNextLevel();
+    let openNode;
     if (cc.sys.platform == cc.sys.WECHAT_GAME) {
-      let openNode;
       if (versionCheck()) {
         cc.resources.load("prefab/openThree", cc.Prefab, (err, prefab) => {
           if (!err) {
             openNode = cc.instantiate(prefab);
           }
         });
+        let scroll = cc.find(
+          "Canvas/Main Camera/game Bg/ground/horizontalScroll"
+        );
+        if (scroll) {
+          scroll.destroy();
+        }
       }
     }
     this.scheduleOnce(() => {

@@ -9127,7 +9127,7 @@
         "__id__": 220
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 222
@@ -9233,7 +9233,7 @@
         1,
         1,
         1,
-        0
+        1
       ]
     },
     "_eulerAngles": {
@@ -9427,7 +9427,7 @@
         "__id__": 232
       }
     ],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 238
@@ -9940,7 +9940,7 @@
         1,
         1,
         1,
-        1
+        0
       ]
     },
     "_eulerAngles": {
@@ -11187,6 +11187,6 @@
       "__id__": 2
     },
     "_enabled": true,
-    "_id": "b0q4J6pytFILqy6FGHxLdj"
+    "_id": "1dwOStDvZB64Gou5u+dRvA"
   }
 ]

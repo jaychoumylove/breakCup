@@ -76,11 +76,18 @@ cc.Class({
               if (diff <= 0) {
                 this.cleanTimerInterval();
               }
-              const m = Math.round(((diff % (3600 * 24)) % 3600) / 60);
-              const s = Math.round((diff % (3600 * 24)) % 60);
+              let m = Math.round(((diff % (3600 * 24)) % 3600) / 60);
+              let s = Math.round((diff % (3600 * 24)) % 60);
               if (s < 1) {
                 state.heart += 1;
                 localStorage.setItem("userState", JSON.stringify(state));
+              }
+              if (m > 0) m -= 1;
+              if (m < 10) {
+                m = `0${m}`;
+              }
+              if (s < 10) {
+                s = `0${s}`;
               }
               const timer = cc.find("heart/time", this.node);
               timer.getComponent(cc.Label).string = `${m}:${s}`;

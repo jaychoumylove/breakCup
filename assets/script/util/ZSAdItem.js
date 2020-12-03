@@ -88,6 +88,9 @@ cc.Class({
 
       if (cc.sys.platform == cc.sys.WECHAT_GAME) {
         if (!cc.find("Canvas/openOneVertical")) {
+          if (cc.find("Canvas/openThree") || cc.find("Canvas/openThree")) {
+            return;
+          }
           const ad = cc.find("bgm").getComponent("WechatAdService");
           ad.setGBAd("banner", false);
           cc.find("Canvas").addChild(cc.instantiate(this.openOne));

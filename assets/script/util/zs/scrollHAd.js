@@ -11,9 +11,11 @@ cc.Class({
   },
 
   onLoad() {
-    if (versionCheck()) {
-      this.initWH();
-      this.refreshAds();
+    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+      if (versionCheck()) {
+        this.initWH();
+        this.refreshAds();
+      }
     }
   },
 

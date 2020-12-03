@@ -73,6 +73,9 @@ cc.Class({
       console.log("失败");
       if (cc.sys.platform == cc.sys.WECHAT_GAME) {
         if (!cc.find("Canvas/openOne")) {
+          if (cc.find("Canvas/openThree") || cc.find("Canvas/openThree")) {
+            return;
+          }
           if (parseInt(getCfgVal("zs_full_screen_jump"))) {
             if (this.node.parent.parent.parent.name == "bg") {
               return;

@@ -1,5 +1,5 @@
 import { initSkinGroup } from "../public/UserSkin";
-import { versionCheck } from "../util/ZSLoad";
+import { versionCheck, getCfgVal } from "../util/ZSLoad";
 
 cc.Class({
   extends: cc.Component,
@@ -49,25 +49,41 @@ cc.Class({
 
   initAd(newGuy) {
     this.moreGameNode.active = false;
+    if (cc.sys.platform == cc.sys.MOBILE_BROWSER) {
+      return;
+    }
     if (versionCheck()) {
       const parent = cc.find("Canvas/Main Camera");
+      let crollNode = null;
       if (cc.sys.platform == cc.sys.WECHAT_GAME) {
-        const crollNode = cc.instantiate(this.scrollPrefab);
+        crollNode = cc.instantiate(this.scrollPrefab);
         crollNode.y = 252.539;
       }
       if (cc.sys.platform == cc.sys.OPPO_GAME) {
         const oneFreeAd = cc.find("bg container/oppoOneFree", parent);
-        oneFreeAd.active = true;
-      }
-      if (this.drawNode) {
-        const darkNode = cc.instantiate(this.darkScreen);
-        parent.addChild(darkNode);
-        const drawNode = cc.instantiate(this.drawNode);
-        parent.addChild(drawNode);
-        drawNode.getComponent("drawAd").changeSprite(newGuy, true);
-        drawNode.getComponent("drawAd").darkScreen = darkNode;
+        if (parseInt(getCfgVal("zs_jump_switch"))) {
+          oneFreeAd.active = true;
+          if (this.drawNode) {
+            const darkNode = cc.instantiate(this.darkScreen);
+            parent.addChild(darkNode);
+            const drawNode = cc.instantiate(this.drawNode);
+            parent.addChild(drawNode);
+            drawNode.getComponent("drawAd").changeSprite(newGuy, true);
+            drawNode.getComponent("drawAd").darkScreen = darkNode;
+          }
+        } else {
+          oneFreeAd.active = false;
+        }
       }
       if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+        if (this.drawNode) {
+          const darkNode = cc.instantiate(this.darkScreen);
+          parent.addChild(darkNode);
+          const drawNode = cc.instantiate(this.drawNode);
+          parent.addChild(drawNode);
+          drawNode.getComponent("drawAd").changeSprite(newGuy, true);
+          drawNode.getComponent("drawAd").darkScreen = darkNode;
+        }
         parent.addChild(crollNode);
         this.moreGameNode.active = true;
       }

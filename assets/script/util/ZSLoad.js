@@ -34,10 +34,25 @@ const loadRemoteImage = (url, call) => {
 };
 
 const zsLoad = (call) => {
-  zsSdk.loadCfg((data) => {
-    cc.sys.localStorage.setItem("zsCfg", JSON.stringify(data));
-    call && call();
-  });
+  const loadMap = [
+    cc.sys.WECHAT_GAME,
+    cc.sys.OPPO_GAME,
+    cc.sys.VIVO_GAME,
+    cc.sys.QQ_PLAY,
+  ];
+  if (loadMap.indexOf(cc.sys.platform) > -1) {
+    zsSdk.loadCfg((data) => {
+      cc.sys.localStorage.setItem("zsCfg", JSON.stringify(data));
+      call && call();
+    });
+  } else {
+    // call && call();
+    // return;
+    zsSdk.loadCfg((data) => {
+      cc.sys.localStorage.setItem("zsCfg", JSON.stringify(data));
+      call && call();
+    });
+  }
   //wx, oppo, vivo, tt, qq
   const map = [
     cc.sys.WECHAT_GAME,
@@ -132,9 +147,12 @@ const versionCheck = () => {
   if (cc.sys.platform == cc.sys.OPPO_GAME) {
     return getCfgVal("zs_version", "1.0") == cfg.version;
   }
+  if (cc.sys.platform == cc.sys.VIVO_GAME) {
+    return getCfgVal("zs_version", "1.0") == cfg.version;
+  }
 
   // 默认
-  return !(getCfgVal("zs_version", "1.1.0") == cfg.version);
+  return !(getCfgVal("zs_version", "1.0") == cfg.version);
 };
 
 module.exports = {

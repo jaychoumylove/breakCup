@@ -8,44 +8,17 @@ cc.Class({
       adUnitId: "263523",
     });
     this.node.active = false;
-    console.log("onLoad263523");
     this.nativeAd.onLoad((res) => {
-      console.log("nativeadonLoad");
-      console.log(JSON.stringify(res));
       this.init(res);
       this.nativeAd.offLoad();
     });
     this.nativeAd.onError((err) => {
-      console.log("nativeaderror");
       console.log(JSON.stringify(err));
     });
     this.nativeAd.load();
   },
 
   init(adInfo) {
-    if (!adInfo) {
-      adInfo = {
-        adList: [
-          {
-            adId: "ad9dead6-edcc-4aae-801c-39225762431d",
-            clickBtnTxt: "点击查看",
-            creativeType: 6,
-            desc: "9块9抢充话费100元",
-            iconUrlList: [],
-            icon: "",
-            interactionType: 1,
-            logoUrl: "",
-            title: "拼多多",
-            imgUrlList: [
-              "http://images.pinduoduo.com/marketing_api/2020-09-14/0f24e2c4-a95d-40e6-8477-09687d0319d1.jpeg",
-            ],
-          },
-        ],
-        code: 0,
-        msg: "ok",
-      };
-    }
-
     const ad = adInfo.adList[0];
 
     // cc.assetManager.loadRemote('http://www.cloud.com/test1.jpg', (err, texture) => console.log(err));
@@ -84,7 +57,6 @@ cc.Class({
     cc.find("close", this.node).on("click", this.handleCloseClick, this);
     this.adId = ad.adId;
     this.node.active = true;
-    console.log("reportAdShow");
     this.nativeAd.reportAdShow({
       adId: this.adId,
     });
@@ -95,6 +67,7 @@ cc.Class({
     this.nativeAd.reportAdClick({
       adId: this.adId,
     });
+    this.node.destroy();
   },
 
   handleCloseClick() {

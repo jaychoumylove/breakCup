@@ -1,17 +1,17 @@
 ﻿//v2.5
-// var conf = {
-//     appId: "wx709f9ccd46e0690b", //请在此行填写游戏appid
-//     secret: "GgZTb4uCzn1Xae8u", //请在此行填写指色分配的密钥
-//     uploadLog: "true", //不用理会
-//     channel: "wx", //wx, oppo, vivo, tt, qq
-// }
-
 var conf = {
-    appId: "30419493", //请在此行填写游戏appid
-    secret: "57cb23Aee5F83Cab60B30758204b69D9", //请在此行填写指色分配的密钥
+    appId: "wx709f9ccd46e0690b", //请在此行填写游戏appid
+    secret: "GgZTb4uCzn1Xae8u", //请在此行填写指色分配的密钥
     uploadLog: "true", //不用理会
-    channel: "oppo", //wx, oppo, vivo, tt, qq
+    channel: "wx", //wx, oppo, vivo, tt, qq
 }
+
+// var conf = {
+//     appId: "30419493", //请在此行填写游戏appid
+//     secret: "57cb23Aee5F83Cab60B30758204b69D9", //请在此行填写指色分配的密钥
+//     uploadLog: "true", //不用理会
+//     channel: "oppo", //wx, oppo, vivo, tt, qq
+// }
 
 var sdkStorage = {};
 

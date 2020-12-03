@@ -71,6 +71,9 @@ cc.Class({
       console.log("失败");
       if (cc.sys.platform == cc.sys.WECHAT_GAME) {
         if (!cc.find("Canvas/openOne")) {
+          if (cc.find("Canvas/openThree") || cc.find("Canvas/openThree")) {
+            return;
+          }
           if (parseInt(getCfgVal("zs_full_screen_jump"))) {
             const ad = cc.find("bgm").getComponent("WechatAdService");
             ad.setGBAd("banner", false);

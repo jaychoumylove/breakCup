@@ -72,6 +72,8 @@ cc.Class({
         const node = cc.instantiate(this.grid33);
         node.y = -35.315;
         bgNode.addChild(node);
+        const ad = cc.find("bgm").getComponent("OppoAdService");
+        ad.setGBAd("banner", false);
       } else {
         // this.getRewardNode.y = 200 + this.getRewardNode.y;
         // this.redirectNode.y = 200 + this.redirectNode.y;
@@ -108,10 +110,6 @@ cc.Class({
 
   initBtn() {
     this.doubelNode.active = false;
-    cc.find("Canvas/Main Camera/bg/get Reward").active = false;
-    if (this.getRewardNode.active) {
-      this.getRewardNode.on("click", this.pressGetReward, this);
-    }
     this.redirectNode.active = true;
     this.goNextNode.on("click", this.goNextLevel, this);
     this.checkDoubelNode
@@ -185,6 +183,8 @@ cc.Class({
     if (cc.sys.platform == cc.sys.WECHAT_GAME) {
       if (versionCheck()) {
         this.node.dispatchEvent(evt);
+        const ad = cc.find("bgm").getComponent("WechatAdService");
+        ad.setGBAd("banner", false);
         cc.resources.load(
           "prefab/openOneVertical",
           cc.Prefab,
@@ -196,6 +196,13 @@ cc.Class({
             }
           }
         );
+        return;
+      }
+    }
+    if (versionCheck()) {
+      if (cc.sys.platform == cc.sys.OPPO_GAME) {
+        this.node.dispatchEvent(evt);
+        cc.director.loadScene("home");
         return;
       }
     }
