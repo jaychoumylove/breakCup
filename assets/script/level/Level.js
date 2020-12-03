@@ -13,7 +13,7 @@ cc.Class({
         ad = cc.find("bgm").getComponent("WechatAdService");
       }
       if (cc.sys.platform == cc.sys.OPPO_GAME) {
-        ad = cc.find("bgm").getComponent("OppoAdService");
+        // ad = cc.find("bgm").getComponent("OppoAdService");
       }
       if (ad) {
         ad.setGBAd(

@@ -27,8 +27,10 @@ cc.Class({
     const evt = new cc.Event.EventCustom("_toggle_loading", true);
     evt.setUserData({ status: true });
     this.node.dispatchEvent(evt);
-    const ad = cc.find("bgm").getComponent("WechatAdService");
-    ad.setGBAd("banner", false);
+    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+      const ad = cc.find("bgm").getComponent("WechatAdService");
+      ad.setGBAd("banner", false);
+    }
     cc.director.loadScene("level");
   },
 });

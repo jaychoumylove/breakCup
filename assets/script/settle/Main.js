@@ -69,20 +69,9 @@ cc.Class({
         cc.find("reward", bgNode).active = false;
         // 取消重玩本关
         // this.replayNode.on("click", this.replayCurrentLevel, this);
-        bgNode.addChild(cc.instantiate(this.grid33));
-        const ad = cc.find("bgm").getComponent("OppoAdService");
-        ad.setGBAd(
-          "banner",
-          true,
-          {
-            width: 300,
-            height: 100,
-            pos: "middleBottom",
-          },
-          () => {
-            console.log("added");
-          }
-        );
+        const node = cc.instantiate(this.grid33);
+        node.y = -35.315;
+        bgNode.addChild(node);
       } else {
         // this.getRewardNode.y = 200 + this.getRewardNode.y;
         // this.redirectNode.y = 200 + this.redirectNode.y;

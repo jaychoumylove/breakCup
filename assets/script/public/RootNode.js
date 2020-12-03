@@ -14,9 +14,11 @@ cc.Class({
     if (this._currentScene != currentScene) {
       this._lastScene = this._currentScene;
       this._currentScene = currentScene;
-      const ad = this.node.getComponent("WechatAdService");
-      ad.setGBAd("banner", false);
-      ad.setGBAd("grid", false);
+      if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+        const ad = this.node.getComponent("WechatAdService");
+        ad.setGBAd("banner", false);
+        ad.setGBAd("grid", false);
+      }
     }
   },
 

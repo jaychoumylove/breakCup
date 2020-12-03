@@ -16,32 +16,18 @@ cc.Class({
           console.warn("test consol warn");
           console.debug("test consol debug");
           console.error("test consol error");
-          setTimeout(() => {
-            this.show = false;
-          }, 3000);
         },
         complete: function () {},
         fail: function () {},
       });
       this.initAdIds();
-      this.show = false;
       setTimeout(() => {
         this.initAD();
       }, 1);
     }
   },
 
-  update() {
-    if (this.show) return;
-    if (this.nativeAdunit || this.rewardedVideo || this.bannerAd) {
-      console.log(JSON.stringify(this.nativeAdunit));
-      console.log(JSON.stringify(this.rewardedVideo));
-      console.log(JSON.stringify(this.bannerAd));
-      if (this.nativeAdunit && this.rewardedVideo && this.bannerAd) {
-        this.show = true;
-      }
-    }
-  },
+  update() {},
 
   //   oppo打碎他的瓶子：
   // 包名：com.hnml.dstdpz.nearme.gamecenter
@@ -69,8 +55,8 @@ cc.Class({
     // this.intertitialAdunit = "263521";
     this.bannerAdunit1 = "263519";
     this.bannerAdunit2 = "263520";
-    this.nativeAdunit1 = "263522";
-    this.nativeAdunit2 = "263523";
+    // this.nativeAdunit1 = "263522";
+    // this.nativeAdunit2 = "263523";
     this.rewardedVideoAdunit = "263524";
   },
 
@@ -97,23 +83,6 @@ cc.Class({
       console.log(JSON.stringify(this.bannerAd));
       console.log(JSON.stringify(err));
     });
-
-    this.nativeAdunit = qg.createNativeAd({
-      adUnitId: this.nativeAdunit1,
-    });
-    this.nativeAdunit.onError(function (err) {
-      console.log("nativeAdunitErr");
-      console.log(JSON.stringify(this.nativeAdunit));
-      console.log(JSON.stringify(err));
-    });
-    this.nativeAdunit.onLoad((res) => {
-      console.log("nativeAdunitLOADed");
-      console.log(JSON.stringify(this.nativeAdunit));
-      console.log(JSON.stringify(res));
-    });
-    console.log("nativeAdunitLOAD");
-    console.log(JSON.stringify(this.nativeAdunit));
-    this.nativeAdunit.load();
   },
 
   openVideoWithCb(call) {

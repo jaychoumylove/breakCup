@@ -4,10 +4,22 @@ cc.Class({
   properties: {},
 
   onLoad() {
-    // this.nativeAd = qg.createNativeAd({
-    //     adUnitId: 'xxx'
-    //   });
-    this.init();
+    this.nativeAd = qg.createNativeAd({
+      adUnitId: "263523",
+    });
+    this.node.active = false;
+    console.log("onLoad263523");
+    this.nativeAd.onLoad((res) => {
+      console.log("nativeadonLoad");
+      console.log(JSON.stringify(res));
+      this.init(res);
+      this.nativeAd.offLoad();
+    });
+    this.nativeAd.onError((err) => {
+      console.log("nativeaderror");
+      console.log(JSON.stringify(err));
+    });
+    this.nativeAd.load();
   },
 
   init(adInfo) {
@@ -70,13 +82,23 @@ cc.Class({
       this
     );
     cc.find("close", this.node).on("click", this.handleCloseClick, this);
+    this.adId = ad.adId;
+    this.node.active = true;
+    console.log("reportAdShow");
+    this.nativeAd.reportAdShow({
+      adId: this.adId,
+    });
   },
 
   handleAdClick() {
-    cc.log("adclick");
+    console.log("reportAdShow");
+    this.nativeAd.reportAdClick({
+      adId: this.adId,
+    });
   },
 
   handleCloseClick() {
+    console.log("handleCloseClick");
     this.node.destroy();
   },
 });

@@ -44,8 +44,10 @@ cc.Class({
   },
 
   onLoad() {
-    const ad = cc.find("bgm").getComponent("WechatAdService");
-    ad.setGBAd("banner", false);
+    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+      const ad = cc.find("bgm").getComponent("WechatAdService");
+      ad.setGBAd("banner", false);
+    }
     const darkScreenNode = cc.instantiate(this.darkScreenPrefab);
     darkScreenNode.active = false;
     const getHeartScreenNode = cc.instantiate(this.getHeartScreenPrefab);
