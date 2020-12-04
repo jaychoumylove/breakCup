@@ -38,6 +38,13 @@ cc.Class({
     this.initReward();
     // 播放动画
     this.initStarAction();
+
+    if (cc.sys.platform == cc.sys.OPPO_GAME) {
+      if (versionCheck()) {
+        const ad = cc.find("bgm").getComponent("OppoAdService");
+        ad.setGBAd("banner", false);
+      }
+    }
   },
 
   /**
@@ -55,7 +62,6 @@ cc.Class({
         // 未开启误触
         this.hasShowOnceBannerAd = true;
         this.hasShowTwiceBannerAd = true;
-        return;
       }
     } else {
       this.hasShowOnceBannerAd = true;
@@ -72,8 +78,6 @@ cc.Class({
         const node = cc.instantiate(this.grid33);
         node.y = -35.315;
         bgNode.addChild(node);
-        const ad = cc.find("bgm").getComponent("OppoAdService");
-        ad.setGBAd("banner", false);
       } else {
         // this.getRewardNode.y = 200 + this.getRewardNode.y;
         // this.redirectNode.y = 200 + this.redirectNode.y;
@@ -85,20 +89,22 @@ cc.Class({
     const { star, current } = JSON.parse(
       cc.sys.localStorage.getItem("currentLevel")
     );
-    this.starGroupNode.children.map((ite, ind) => {
-      if (ind < star) {
-        setTimeout(() => {
-          ite.getComponent(cc.Sprite).spriteFrame =
-            ind == 1 ? this.middleFullStarSprite : this.sideFullStarSprite;
-          this.AudioPlayer.playOnceMusic("collectStar");
-        }, 500);
-      } else {
-        setTimeout(() => {
-          ite.getComponent(cc.Sprite).spriteFrame =
-            ind == 1 ? this.middleEmptyStarSprite : this.sideEmptyStarSprite;
-        }, 500);
-      }
-    });
+    if (this.starGroupNode.active) {
+      this.starGroupNode.children.map((ite, ind) => {
+        if (ind < star) {
+          setTimeout(() => {
+            ite.getComponent(cc.Sprite).spriteFrame =
+              ind == 1 ? this.middleFullStarSprite : this.sideFullStarSprite;
+            this.AudioPlayer.playOnceMusic("collectStar");
+          }, 500);
+        } else {
+          setTimeout(() => {
+            ite.getComponent(cc.Sprite).spriteFrame =
+              ind == 1 ? this.middleEmptyStarSprite : this.sideEmptyStarSprite;
+          }, 500);
+        }
+      });
+    }
     const levels = JSON.parse(localStorage.getItem("userLevel"));
     this.goNextNode.active = current < levels.length;
     this.levelLabel.string = current;
@@ -109,12 +115,13 @@ cc.Class({
   },
 
   initBtn() {
-    this.doubelNode.active = false;
-    this.redirectNode.active = true;
+    console.log("initBtn()");
+    // this.doubelNode.active = false;
+    // this.redirectNode.active = true;
     this.goNextNode.on("click", this.goNextLevel, this);
-    this.checkDoubelNode
-      .getComponent(cc.Toggle)
-      .node.on("toggle", this.toggleDoubel, this);
+    // this.checkDoubelNode
+    //   .getComponent(cc.Toggle)
+    //   .node.on("toggle", this.toggleDoubel, this);
   },
 
   initReward() {

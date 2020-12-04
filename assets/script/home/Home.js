@@ -1,5 +1,5 @@
 import { initSkinGroup } from "../public/UserSkin";
-import { versionCheck, getCfgVal } from "../util/ZSLoad";
+import { versionCheck, getCfgVal, getOpenStatus } from "../util/ZSLoad";
 
 cc.Class({
   extends: cc.Component,
@@ -59,7 +59,7 @@ cc.Class({
         crollNode = cc.instantiate(this.scrollPrefab);
         crollNode.y = 252.539;
       }
-      if (cc.sys.platform == cc.sys.OPPO_GAME) {
+      if (cc.sys.platform == cc.sys.OPPO_GAME && !getOpenStatus()) {
         const oneFreeAd = cc.find("bg container/oppoOneFree", parent);
         if (parseInt(getCfgVal("zs_jump_switch"))) {
           oneFreeAd.active = true;
@@ -106,7 +106,7 @@ cc.Class({
           pos: "middleBottom",
         };
       }
-      if (cc.sys.platform == cc.sys.OPPO_GAME) {
+      if (cc.sys.platform == cc.sys.OPPO_GAME && !getOpenStatus()) {
         ad = cc.find("bgm").getComponent("OppoAdService");
         style = {
           width: 900,

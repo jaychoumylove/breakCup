@@ -49,10 +49,29 @@ cc.Class({
   dispatchLoad(evt) {
     const { node } = evt.getUserData();
     this.containerNode = node;
-    setTimeout(() => {
-      this.closeBtn.active = true;
-      this.closeBtn.on("click", this.handleClose, this);
-    }, 2000);
+    if (cc.sys.platform == cc.sys.OPPO_GAME) {
+      if (versionCheck()) {
+        let time = getCfgVal("zs_jump_time");
+        if (time < 1) {
+          this.singleNode.active = true;
+        } else {
+          if (time < 1000) {
+            time = time * 1000;
+          }
+          setTimeout(() => {
+            this.singleNode.active = true;
+          }, time);
+        }
+      } else {
+        this.closeBtn.active = true;
+        this.closeBtn.on("click", this.handleClose, this);
+      }
+    } else {
+      setTimeout(() => {
+        this.closeBtn.active = true;
+        this.closeBtn.on("click", this.handleClose, this);
+      }, 2000);
+    }
   },
 
   handleClose(evt) {

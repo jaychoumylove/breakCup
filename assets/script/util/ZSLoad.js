@@ -3,6 +3,18 @@ import cfg from "./cfg";
 
 let loadedData = { promotion: [] };
 let imageDict = {};
+let openTime = 0; // 用于开局一分钟之内禁止弹广告
+
+const setOpenTimer = () => {
+  openTime = Math.floor(Date.now() / 1000) + 60;
+};
+
+const getOpenStatus = () => {
+  // 是否在开局禁止广告时间内 true 是 不显示广告 false 否 显示广告
+  if (openTime < 1) return false;
+
+  return Math.floor(Date.now() / 1000) <= openTime;
+};
 
 const setLoadedData = (data) => {
   loadedData = data;
@@ -43,6 +55,12 @@ const zsLoad = (call) => {
   if (loadMap.indexOf(cc.sys.platform) > -1) {
     zsSdk.loadCfg((data) => {
       cc.sys.localStorage.setItem("zsCfg", JSON.stringify(data));
+      if (cc.sys.platform == cc.sys.OPPO_GAME) {
+        console.log(data.zs_start_video_switch);
+        if (data.zs_start_video_switch > 1) {
+          setOpenTimer();
+        }
+      }
       call && call();
     });
   } else {
@@ -164,4 +182,5 @@ module.exports = {
   versionCheck,
   loadRemoteImage,
   getImageByKey,
+  getOpenStatus,
 };

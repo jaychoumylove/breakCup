@@ -47,9 +47,27 @@ cc.Class({
   dispatchGot() {
     this.doubelNode.active = true;
     this.initDoubelAction();
-    setTimeout(() => {
-      this.singleNode.active = true;
-    }, 2000);
+    if (cc.sys.platform == cc.sys.OPPO_GAME) {
+      if (versionCheck()) {
+        let time = getCfgVal("zs_jump_time");
+        if (time < 1) {
+          this.singleNode.active = true;
+        } else {
+          if (time < 1000) {
+            time = time * 1000;
+          }
+          setTimeout(() => {
+            this.singleNode.active = true;
+          }, time);
+        }
+      } else {
+        this.singleNode.active = true;
+      }
+    } else {
+      setTimeout(() => {
+        this.singleNode.active = true;
+      }, 2000);
+    }
   },
 
   initDoubelAction() {
