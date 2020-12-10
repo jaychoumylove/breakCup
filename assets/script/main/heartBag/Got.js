@@ -49,7 +49,7 @@ cc.Class({
     this.initDoubelAction();
     if (cc.sys.platform == cc.sys.OPPO_GAME) {
       if (versionCheck()) {
-        let time = getCfgVal("zs_jump_time");
+        let time = parseInt(getCfgVal("zs_jump_time"));
         if (time < 1) {
           this.singleNode.active = true;
         } else {

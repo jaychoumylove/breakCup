@@ -1,3 +1,5 @@
+import { versionCheck, getCfgVal } from "../util/ZSLoad";
+
 cc.Class({
   extends: cc.Component,
 
@@ -45,10 +47,34 @@ cc.Class({
 
   dispatchLoad(evt) {
     const { star } = evt.getUserData();
-    setTimeout(() => {
-      this.closeNode.active = true;
-      this.closeNode.on("click", this.closeHandle, this);
-    }, 2000);
+    if (cc.sys.platform == cc.sys.OPPO_GAME) {
+      if (versionCheck()) {
+        let time = parseInt(getCfgVal("zs_jump_time"));
+        if (time < 1) {
+        } else {
+          if (time) {
+            if (time < 1000) {
+              time = time * 1000;
+            }
+            setTimeout(() => {
+              this.closeNode.active = true;
+              this.closeNode.on("click", this.closeHandle, this);
+            }, time);
+          } else {
+            this.closeNode.active = true;
+            this.closeNode.on("click", this.closeHandle, this);
+          }
+        }
+      } else {
+        this.closeNode.active = true;
+        this.closeNode.on("click", this.closeHandle, this);
+      }
+    } else {
+      setTimeout(() => {
+        this.closeNode.active = true;
+        this.closeNode.on("click", this.closeHandle, this);
+      }, 2000);
+    }
     this.closeTimer = setInterval(() => {
       let progress = this.progressNode.getComponent(cc.ProgressBar).progress;
       if (parseFloat(progress) > 0) {

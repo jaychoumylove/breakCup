@@ -97,6 +97,9 @@
       },
       {
         "__id__": 268
+      },
+      {
+        "__id__": 269
       }
     ],
     "_prefab": null,
@@ -196,7 +199,7 @@
       "array": [
         0,
         0,
-        385.38130468407525,
+        386.24733008785967,
         0,
         0,
         0,
@@ -11175,5 +11178,15 @@
       "y": 0
     },
     "_id": "2b1fg9S8JFb6cpswkYMmIH"
+  },
+  {
+    "__type__": "9d430eI3ulKjJ3Gpqw2xuxV",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "_id": "77kTyoHUNI+rviue616l/Q"
   }
 ]

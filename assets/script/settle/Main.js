@@ -115,7 +115,6 @@ cc.Class({
   },
 
   initBtn() {
-    console.log("initBtn()");
     // this.doubelNode.active = false;
     // this.redirectNode.active = true;
     this.goNextNode.on("click", this.goNextLevel, this);

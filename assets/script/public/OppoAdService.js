@@ -71,18 +71,30 @@ cc.Class({
     });
     // banner广告
     this.bannerAd = qg.createBannerAd({
-      adUnitId: this.bannerAdunit1,
+      adUnitId: Math.random() > 0.5 ? this.bannerAdunit1 : this.bannerAdunit2,
     });
-    this.bannerAd.onLoad((i) => {
-      console.log("Onloadonload");
-      console.log(JSON.stringify(this.bannerAd));
-      console.log(JSON.stringify(i));
-    });
-    this.bannerAd.onError((err) => {
-      console.log("bannerAdErr");
-      console.log(JSON.stringify(this.bannerAd));
-      console.log(JSON.stringify(err));
-    });
+    if (!this.bannerAd) {
+      console.log("recreated");
+      this.bannerAd = qg.createBannerAd({
+        adUnitId:
+          parseInt(this.nativeAdUnitId) > this.bannerAdunit1
+            ? this.bannerAdunit1
+            : this.bannerAdunit2,
+      });
+    }
+
+    if (this.bannerAd) {
+      this.bannerAd.onLoad((i) => {
+        console.log("Onloadonload");
+        console.log(JSON.stringify(this.bannerAd));
+        console.log(JSON.stringify(i));
+      });
+      this.bannerAd.onError((err) => {
+        console.log("bannerAdErr");
+        console.log(JSON.stringify(this.bannerAd));
+        console.log(JSON.stringify(err));
+      });
+    }
   },
 
   openVideoWithCb(call) {
@@ -138,15 +150,12 @@ cc.Class({
     console.log(this.bannerAdunit1);
     console.log(this.bannerAdunit1);
     let target;
-    console.log(targetAd);
     if (targetAd == "banner") {
       target = this.bannerAd;
     }
 
-    console.log(JSON.stringify(target));
     if (!target) return false;
 
-    console.log(status);
     if (status) {
       const styleMapKey = ["width", "height", "top", "left"];
       let sys = qg.getSystemInfoSync();
@@ -175,32 +184,13 @@ cc.Class({
           target.style[ite] = style[ite];
         }
       });
-      console.log(JSON.stringify(target));
-      target
-        .show()
-        .then(() => {
-          console.log(JSON.stringify(target));
-          console.log("call");
-          call && call();
-        })
-        .catch((err) => {
-          console.log("catch");
-          console.log(JSON.stringify(err));
-          console.log(JSON.stringify(target));
-        });
+      target.show().then(() => {
+        call && call();
+      });
     } else {
-      target
-        .hide()
-        .then(() => {
-          console.log("then");
-          console.log(JSON.stringify(target));
-          call && call();
-        })
-        .catch((err) => {
-          console.log("catch");
-          console.log(JSON.stringify(target));
-          console.log(JSON.stringify(err));
-        });
+      target.hide().then(() => {
+        call && call();
+      });
     }
   },
 

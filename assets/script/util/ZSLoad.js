@@ -10,6 +10,9 @@ const setOpenTimer = () => {
 };
 
 const getOpenStatus = () => {
+  console.log("now, opentime");
+  console.log(Math.floor(Date.now() / 1000));
+  console.log(openTime);
   // 是否在开局禁止广告时间内 true 是 不显示广告 false 否 显示广告
   if (openTime < 1) return false;
 
@@ -53,16 +56,20 @@ const zsLoad = (call) => {
     cc.sys.QQ_PLAY,
   ];
   if (loadMap.indexOf(cc.sys.platform) > -1) {
+    console.log("zsSdk.loadCfg");
     zsSdk.loadCfg((data) => {
+      console.log(JSON.stringify(data));
       cc.sys.localStorage.setItem("zsCfg", JSON.stringify(data));
       if (cc.sys.platform == cc.sys.OPPO_GAME) {
-        console.log(data.zs_start_video_switch);
-        if (data.zs_start_video_switch > 1) {
+        if (
+          data.hasOwnProperty(zs_onemin_show_ad_switch) &&
+          data.zs_onemin_show_ad_switch > 1
+        ) {
           setOpenTimer();
         }
       }
-      call && call();
     });
+    call && call();
   } else {
     // call && call();
     // return;

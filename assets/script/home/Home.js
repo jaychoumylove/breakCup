@@ -106,6 +106,7 @@ cc.Class({
           pos: "middleBottom",
         };
       }
+      console.log(getOpenStatus());
       if (cc.sys.platform == cc.sys.OPPO_GAME && !getOpenStatus()) {
         ad = cc.find("bgm").getComponent("OppoAdService");
         style = {

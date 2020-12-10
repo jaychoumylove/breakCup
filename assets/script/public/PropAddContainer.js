@@ -1,3 +1,5 @@
+import { getCfgVal, versionCheck } from "../util/ZSLoad";
+
 cc.Class({
   extends: cc.Component,
 
@@ -34,6 +36,7 @@ cc.Class({
       const dphevt = new cc.Event.EventCustom("_state_change", true);
       dphevt.setUserData({ [this.addType]: this.addNumber });
       this.node.dispatchEvent(dphevt);
+      this.closeContainer();
     };
 
     if (!ad) {
@@ -51,16 +54,23 @@ cc.Class({
     this.containerNode = node;
     if (cc.sys.platform == cc.sys.OPPO_GAME) {
       if (versionCheck()) {
-        let time = getCfgVal("zs_jump_time");
+        let time = parseInt(getCfgVal("zs_jump_time"));
         if (time < 1) {
-          this.singleNode.active = true;
+          this.closeBtn.active = true;
+          this.closeBtn.on("click", this.handleClose, this);
         } else {
-          if (time < 1000) {
-            time = time * 1000;
+          if (time) {
+            if (time < 1000) {
+              time = time * 1000;
+            }
+            setTimeout(() => {
+              this.closeBtn.active = true;
+              this.closeBtn.on("click", this.handleClose, this);
+            }, time);
+          } else {
+            this.closeBtn.active = true;
+            this.closeBtn.on("click", this.handleClose, this);
           }
-          setTimeout(() => {
-            this.singleNode.active = true;
-          }, time);
         }
       } else {
         this.closeBtn.active = true;
@@ -76,6 +86,10 @@ cc.Class({
 
   handleClose(evt) {
     this.AudioPlayer.playOnceMusic("button");
+    this.closeContainer();
+  },
+
+  closeContainer() {
     this.closeBtn.active = false;
     this.node.active = false;
     this.containerNode.active = false;
