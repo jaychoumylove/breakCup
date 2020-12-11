@@ -142,12 +142,7 @@ cc.Class({
         }
       }
     }
-    if (
-      isOppo() &&
-      versionCheck() &&
-      !getOpenStatus() &&
-      parseInt(getCfgVal("zs_native_limit"))
-    ) {
+    if (isOppo() && versionCheck() && !getOpenStatus()) {
       cc.resources.load("prefab/SingleNativeAd", cc.Prefab, (err, prefab) => {
         if (!err) {
           const node = cc.instantiate(prefab);

@@ -32,12 +32,7 @@ cc.Class({
     this.hasShowOnceBannerAd = false;
     this.hasShowTwiceBannerAd = false;
     this.cleanNative = false; // 默认不需要清理原生广告
-    if (
-      isOppo() &&
-      versionCheck() &&
-      !getOpenStatus() &&
-      parseInt(getCfgVal("zs_native_limit"))
-    ) {
+    if (isOppo() && versionCheck() && !getOpenStatus()) {
       const bgNode = cc.find("Canvas/Main Camera/bg");
       cc.find("star", bgNode).active = false;
       cc.find("reward", bgNode).active = false;
@@ -129,12 +124,7 @@ cc.Class({
     // this.doubelNode.active = false;
     // this.redirectNode.active = true;
     if (isOppo()) {
-      if (
-        versionCheck() &&
-        !getOpenStatus() &&
-        parseInt(getCfgVal("zs_native_limit")) &&
-        this.cleanNative
-      ) {
+      if (versionCheck() && !getOpenStatus() && this.cleanNative) {
         cc.find("goNext/Label", this.goNextNode).getComponent(cc.Label).string =
           "下一步";
 
@@ -158,13 +148,7 @@ cc.Class({
         });
       }
     }
-    if (
-      isOppo() &&
-      versionCheck() &&
-      !getOpenStatus() &&
-      parseInt(getCfgVal("zs_native_limit")) &&
-      this.cleanNative
-    ) {
+    if (isOppo() && versionCheck() && !getOpenStatus() && this.cleanNative) {
       if (parseInt(getCfgVal("zs_jump_time"))) {
         let time = parseInt(getCfgVal("zs_jump_time"));
         let call = () => {

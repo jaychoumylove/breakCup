@@ -87,12 +87,7 @@ cc.Class({
     let call = () => {
       this.replayBtn.node.on("click", this.pressReplay, this);
     };
-    if (
-      isOppo() &&
-      versionCheck() &&
-      !getOpenStatus() &&
-      parseInt(getCfgVal("zs_native_limit"))
-    ) {
+    if (isOppo() && versionCheck() && !getOpenStatus()) {
       if (parseInt(getCfgVal("zs_jump_time"))) {
         let time = parseInt(getCfgVal("zs_jump_time"));
         if (time < 1) {
