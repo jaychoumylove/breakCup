@@ -1,16 +1,21 @@
+import { isOppo } from "../common";
 import { zsLoad, getCfgVal } from "../ZSLoad";
 
 cc.Class({
   extends: cc.Component,
 
-  properties: {},
+  properties: {
+    backHome: false,
+    callBack: () => {},
+  },
 
   onLoad() {
-    this.node.active = false;
+    this.initClick();
+    // this.node.active = false;
     this.isWorse = false;
     // console.log(this.isWorse);
     this.nativeAdUnitId = Math.random() > 0.5 ? "263522" : "263523";
-    if (cc.sys.platform == cc.sys.OPPO_GAME) {
+    if (isOppo()) {
       this.nativeAd = qg.createNativeAd({
         adUnitId: this.nativeAdUnitId,
       });
@@ -32,7 +37,9 @@ cc.Class({
         });
         this.nativeAd.load();
       }
-      this.isWorse = parseInt(getCfgVal("zs_switch"));
+      this.isWorse =
+        parseInt(getCfgVal("zs_switch")) &&
+        parseInt(getCfgVal("zs_native_click_switch"));
     }
     //  else {
     //   this.isWorse = true;
@@ -58,18 +65,40 @@ cc.Class({
     //   };
     //   this.init(a);
     // }
+  },
 
+  initClick() {
     cc.find("btn", this.node).on("click", this.handleAdClick, this);
     cc.find("image/adicon", this.node).on(
       cc.Node.EventType.TOUCH_START,
       this.handleAdClick,
       this
     );
-    cc.find("image/adicon/close", this.node).on(
-      cc.Node.EventType.TOUCH_START,
-      this.handleCloseClick,
-      this
-    );
+    const closeNode = cc.find("image/adicon/close", this.node);
+    if (parseInt(getCfgVal("zs_jump_time"))) {
+      closeNode.active = false;
+      let time = parseInt(getCfgVal("zs_jump_time"));
+      let call = () => {
+        closeNode.active = true;
+        closeNode.on(
+          cc.Node.EventType.TOUCH_START,
+          this.handleCloseClick,
+          this
+        );
+      };
+      if (time < 1) {
+        call();
+      } else {
+        if (time < 1000) {
+          time *= 1000;
+        }
+        setTimeout(() => {
+          call();
+        }, time);
+      }
+    } else {
+      closeNode.on(cc.Node.EventType.TOUCH_START, this.handleCloseClick, this);
+    }
     cc.find("image/desc", this.node).on(
       cc.Node.EventType.TOUCH_START,
       this.handleAdClick,
@@ -114,13 +143,23 @@ cc.Class({
         adId: this.adId,
       });
     }
+    if (this.backHome) {
+      cc.director.loadScene("home");
+      return;
+    }
     this.node.destroy();
+    this.callBack && this.callBack();
     event.stopPropagation();
   },
 
   handleCloseClick(event) {
     // console.log("handleCloseClick");
+    if (this.backHome) {
+      cc.director.loadScene("home");
+      return;
+    }
     this.node.destroy();
+    this.callBack && this.callBack();
     event.stopPropagation();
   },
 

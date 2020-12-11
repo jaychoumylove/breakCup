@@ -1,4 +1,4 @@
-import { shuffleArray } from "./common";
+import { isOppo } from "../common";
 import zsLoad from "./ZSLoad";
 
 cc.Class({
@@ -18,7 +18,12 @@ cc.Class({
   },
 
   onLoad() {
-    if (zsLoad.versionCheck()) {
+    if (
+      isOppo() &&
+      zsLoad.versionCheck() &&
+      parseInt(zsLoad.getCfgVal("zs_jump_switch"))
+    ) {
+      // 导出开关为1才加
       this.refreshAds();
     }
   },
@@ -92,13 +97,7 @@ cc.Class({
     return [newCurrent, items];
   },
 
-  intervalRefresh() {
-    this.intervalRes = setInterval(() => {
-      if (this.adArray.length) {
-        this.refreshAdItems();
-      }
-    }, this.refreshAd * 1000);
-  },
+  intervalRefresh() {},
 
   cleanintervalRefresh() {
     if (this.intervalRes) {

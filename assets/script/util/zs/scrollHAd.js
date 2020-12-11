@@ -1,4 +1,4 @@
-import Common from "../common";
+import { shuffleArray } from "../common";
 import { versionCheck, getZsLoadData } from "../ZSLoad";
 
 cc.Class({
@@ -39,7 +39,7 @@ cc.Class({
   showAd(adData) {
     let adArray = adData.promotion;
     // 打乱数组
-    adArray = Common.shuffleArray(adArray);
+    adArray = shuffleArray(adArray);
 
     if (adArray.length > 0) {
       for (let i = 0; i < adArray.length; i++) {

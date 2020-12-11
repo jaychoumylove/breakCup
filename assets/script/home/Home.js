@@ -1,4 +1,5 @@
 import { initSkinGroup } from "../public/UserSkin";
+import { isOppo } from "../util/common";
 import { versionCheck, getCfgVal, getOpenStatus } from "../util/ZSLoad";
 
 cc.Class({
@@ -55,27 +56,34 @@ cc.Class({
     if (versionCheck()) {
       const parent = cc.find("Canvas/Main Camera");
       let crollNode = null;
-      if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+      if (
+        cc.sys.platform == cc.sys.WECHAT_GAME &&
+        parseInt(getCfgVal("zs_jump_switch"))
+      ) {
         crollNode = cc.instantiate(this.scrollPrefab);
         crollNode.y = 252.539;
       }
-      if (cc.sys.platform == cc.sys.OPPO_GAME && !getOpenStatus()) {
-        const oneFreeAd = cc.find("bg container/oppoOneFree", parent);
-        if (parseInt(getCfgVal("zs_jump_switch"))) {
-          oneFreeAd.active = true;
-          if (this.drawNode) {
-            const darkNode = cc.instantiate(this.darkScreen);
-            parent.addChild(darkNode);
-            const drawNode = cc.instantiate(this.drawNode);
-            parent.addChild(drawNode);
-            drawNode.getComponent("drawAd").changeSprite(newGuy, true);
-            drawNode.getComponent("drawAd").darkScreen = darkNode;
-          }
-        } else {
-          oneFreeAd.active = false;
+      const oneFreeAd = cc.find("bg container/oppoOneFree", parent);
+      oneFreeAd.active = false;
+      if (
+        isOppo() &&
+        !getOpenStatus() &&
+        parseInt(getCfgVal("zs_jump_switch"))
+      ) {
+        oneFreeAd.active = true;
+        if (this.drawNode) {
+          const darkNode = cc.instantiate(this.darkScreen);
+          parent.addChild(darkNode);
+          const drawNode = cc.instantiate(this.drawNode);
+          parent.addChild(drawNode);
+          drawNode.getComponent("drawAd").changeSprite(newGuy, true);
+          drawNode.getComponent("drawAd").darkScreen = darkNode;
         }
       }
-      if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+      if (
+        cc.sys.platform == cc.sys.WECHAT_GAME &&
+        parseInt(getCfgVal("zs_jump_switch"))
+      ) {
         if (this.drawNode) {
           const darkNode = cc.instantiate(this.darkScreen);
           parent.addChild(darkNode);
@@ -107,7 +115,7 @@ cc.Class({
         };
       }
       console.log(getOpenStatus());
-      if (cc.sys.platform == cc.sys.OPPO_GAME && !getOpenStatus()) {
+      if (isOppo() && !getOpenStatus()) {
         ad = cc.find("bgm").getComponent("OppoAdService");
         style = {
           width: 900,

@@ -1,3 +1,4 @@
+import { isOppo } from "../util/common";
 import { getCfgVal, versionCheck } from "../util/ZSLoad";
 
 cc.Class({
@@ -29,7 +30,7 @@ cc.Class({
     if (cc.sys.platform == cc.sys.WECHAT_GAME) {
       ad = cc.find("bgm").getComponent("WechatAdService");
     }
-    if (cc.sys.platform == cc.sys.OPPO_GAME) {
+    if (isOppo()) {
       ad = cc.find("bgm").getComponent("OppoAdService");
     }
     const call = () => {
@@ -52,7 +53,7 @@ cc.Class({
   dispatchLoad(evt) {
     const { node } = evt.getUserData();
     this.containerNode = node;
-    if (cc.sys.platform == cc.sys.OPPO_GAME) {
+    if (isOppo()) {
       if (versionCheck()) {
         let time = parseInt(getCfgVal("zs_jump_time"));
         if (time < 1) {

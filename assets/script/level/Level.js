@@ -1,3 +1,4 @@
+import { isOppo } from "../util/common";
 import { versionCheck } from "../util/ZSLoad";
 cc.Class({
   extends: cc.Component,
@@ -12,7 +13,7 @@ cc.Class({
       if (cc.sys.platform == cc.sys.WECHAT_GAME) {
         ad = cc.find("bgm").getComponent("WechatAdService");
       }
-      if (cc.sys.platform == cc.sys.OPPO_GAME) {
+      if (isOppo()) {
         // ad = cc.find("bgm").getComponent("OppoAdService");
       }
       if (ad) {

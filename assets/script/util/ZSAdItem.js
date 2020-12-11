@@ -1,6 +1,5 @@
 import zsSdk from "zs.sdk";
-import { getCfgVal, getSysVal, getImageByKey } from "./ZSLoad";
-import { randomIntFromInterval } from "./common";
+import { getSysVal, getImageByKey } from "./ZSLoad";
 
 cc.Class({
   extends: cc.Component,
@@ -28,14 +27,13 @@ cc.Class({
    * app_icon ��Ϸicon��ַ
    */
   init(adEntity, adIndex) {
-    const _this = this;
-    _this.adEntity = adEntity;
-    if (_this.txt_name) {
-      _this.txt_name.string = adEntity.app_title;
+    this.adEntity = adEntity;
+    if (this.txt_name) {
+      this.txt_name.string = adEntity.app_title;
       if (typeof adIndex == "number" && adIndex > -1) {
         if (
-          _this.txt_name.node.parent != _this.node &&
-          _this.txt_name.node.parent.getChildByName("bg")
+          this.txt_name.node.parent != this.node &&
+          this.txt_name.node.parent.getChildByName("bg")
         ) {
           const absolutePath = "image/util/openOneAssets/";
           let floor = adIndex > 0 ? adIndex % 9 : 0;
@@ -46,7 +44,7 @@ cc.Class({
             null,
             (e, df) => {
               if (!e) {
-                _this.txt_name.node.parent
+                this.txt_name.node.parent
                   .getChildByName("bg")
                   .getComponent(cc.Sprite).spriteFrame = df;
               }
@@ -58,9 +56,9 @@ cc.Class({
 
     if (adEntity.app_icon) {
       getImageByKey(adEntity.app_icon, (spriteFrame) => {
-        _this.icon.spriteFrame = spriteFrame;
-        _this.icon.node.width = _this.spriteSize.x;
-        _this.icon.node.height = _this.spriteSize.y;
+        this.icon.spriteFrame = spriteFrame;
+        this.icon.node.width = this.spriteSize.x;
+        this.icon.node.height = this.spriteSize.y;
       });
     }
   },

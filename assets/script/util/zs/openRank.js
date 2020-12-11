@@ -1,4 +1,4 @@
-import Common from "../common";
+import { randomIntFromInterval } from "../common";
 import { versionCheck, getCfgVal, getZsLoadData } from "../ZSLoad";
 
 cc.Class({
@@ -147,7 +147,7 @@ cc.Class({
         }
       }
       setTimeout(() => {
-        const randInt = Common.randomIntFromInterval(0, adArray.length - 3);
+        const randInt = randomIntFromInterval(0, adArray.length - 3);
         this.adContainer.children[randInt]
           .getComponent("adRowItem")
           .navigate2Mini();

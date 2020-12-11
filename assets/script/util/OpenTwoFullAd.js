@@ -1,5 +1,5 @@
 import { versionCheck, getCfgVal, getZsLoadData } from "./ZSLoad";
-import Common from "./common";
+import { getRandNumber, shuffleArray } from "./common";
 
 cc.Class({
   extends: cc.Component,
@@ -95,7 +95,7 @@ cc.Class({
     let adArray = adData.promotion;
 
     if (adArray.length > 0) {
-      adArray = Common.shuffleArray(adArray);
+      adArray = shuffleArray(adArray);
       let index = 0;
       for (let i = 0; i < number; i++) {
         if (index >= adArray.length) {
@@ -111,7 +111,7 @@ cc.Class({
         index++;
       }
 
-      const randInt = Common.getRandNumber(1);
+      const randInt = getRandNumber(1);
       this.adContainer.children[randInt]
         .getComponent("ZSAdItem")
         .navigate2Mini();

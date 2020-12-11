@@ -1,4 +1,4 @@
-import Common from "../common";
+import { shuffleArray } from "../common";
 import { versionCheck, getZsLoadData } from "../ZSLoad";
 
 cc.Class({
@@ -76,13 +76,13 @@ cc.Class({
 
   showAd(adData, number, call) {
     let adArray = adData.promotion;
-    adArray = Common.shuffleArray(adArray);
+    adArray = shuffleArray(adArray);
 
     if (adArray.length > 0) {
       let index = 0;
 
       if (adArray.length > 0) {
-        adArray = Common.shuffleArray(adArray);
+        adArray = shuffleArray(adArray);
         // for (let i = 0; i < adArray.length; i++) {
         //   let adEntity = adArray[i];
         //   cc.loader.load(

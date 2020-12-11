@@ -1,5 +1,6 @@
 import zsSdk from "zs.sdk";
 import cfg from "./cfg";
+import { isOppo } from "./common";
 
 let loadedData = { promotion: [] };
 let imageDict = {};
@@ -58,12 +59,11 @@ const zsLoad = (call) => {
   if (loadMap.indexOf(cc.sys.platform) > -1) {
     console.log("zsSdk.loadCfg");
     zsSdk.loadCfg((data) => {
-      console.log(JSON.stringify(data));
       cc.sys.localStorage.setItem("zsCfg", JSON.stringify(data));
-      if (cc.sys.platform == cc.sys.OPPO_GAME) {
+      if (isOppo()) {
         if (
-          data.hasOwnProperty(zs_onemin_show_ad_switch) &&
-          data.zs_onemin_show_ad_switch > 1
+          data.hasOwnProperty("zs_onemin_show_ad_switch") &&
+          parseInt(data.zs_onemin_show_ad_switch) > 0
         ) {
           setOpenTimer();
         }
@@ -117,7 +117,13 @@ const getSysVal = (key, dft) => {
 };
 
 const getZsLoadData = (call) => {
-  call(loadedData);
+  if (isOppo()) {
+    zsSdk.loadAd((res) => {
+      call(res);
+    });
+  } else {
+    call(loadedData);
+  }
 };
 
 const setZsLoadData = (call) => {
@@ -169,7 +175,7 @@ const versionCheck = () => {
   if (cc.sys.platform == cc.sys.WECHAT_GAME) {
     return !(getCfgVal("zs_version", "1.1.0") == cfg.version);
   }
-  if (cc.sys.platform == cc.sys.OPPO_GAME) {
+  if (isOppo()) {
     return getCfgVal("zs_version", "1.0") == cfg.version;
   }
   if (cc.sys.platform == cc.sys.VIVO_GAME) {

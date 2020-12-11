@@ -1,5 +1,5 @@
 import zsSdk from "zs.sdk";
-import Common from "./common";
+import { shuffleArray } from "./common";
 import zsLoad from "./ZSLoad";
 
 cc.Class({
@@ -27,7 +27,7 @@ cc.Class({
     //��ȡ��������Ĺ�����ݣ���������ҳ�ײ��Ĺ������Ϊ��
     let adArray = adData.promotion;
     // 打乱数组
-    adArray = Common.shuffleArray(adArray);
+    adArray = shuffleArray(adArray);
 
     if (adArray.length > 0) {
       //���������ݴ���0��

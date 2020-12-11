@@ -1,5 +1,5 @@
-const common = require("../util/common");
-import { versionCheck, getCfgVal } from "../util/ZSLoad";
+import { isOppo, preloadlevel } from "../util/common";
+import { versionCheck, getCfgVal, getOpenStatus } from "../util/ZSLoad";
 
 cc.Class({
   extends: cc.Component,
@@ -31,6 +31,19 @@ cc.Class({
   onLoad() {
     this.hasShowOnceBannerAd = false;
     this.hasShowTwiceBannerAd = false;
+    this.cleanNative = false; // 默认不需要清理原生广告
+    if (
+      isOppo() &&
+      versionCheck() &&
+      !getOpenStatus() &&
+      parseInt(getCfgVal("zs_native_limit"))
+    ) {
+      const bgNode = cc.find("Canvas/Main Camera/bg");
+      cc.find("star", bgNode).active = false;
+      cc.find("reward", bgNode).active = false;
+      this.cleanNative = true;
+    }
+
     this.checkWorseClick();
     this.AudioPlayer = cc.find("bgm").getComponent("AudioManager");
     this.AudioPlayer.playOnceMusic("win");
@@ -39,11 +52,9 @@ cc.Class({
     // 播放动画
     this.initStarAction();
 
-    if (cc.sys.platform == cc.sys.OPPO_GAME) {
-      if (versionCheck()) {
-        const ad = cc.find("bgm").getComponent("OppoAdService");
-        ad.setGBAd("banner", false);
-      }
+    if (isOppo() && versionCheck()) {
+      const ad = cc.find("bgm").getComponent("OppoAdService");
+      ad.setGBAd("banner", false);
     }
   },
 
@@ -68,21 +79,25 @@ cc.Class({
       this.hasShowTwiceBannerAd = true;
     }
 
-    if (cc.sys.platform == cc.sys.OPPO_GAME) {
-      if (versionCheck()) {
-        const bgNode = cc.find("Canvas/Main Camera/bg");
-        cc.find("star", bgNode).active = false;
-        cc.find("reward", bgNode).active = false;
-        // 取消重玩本关
-        // this.replayNode.on("click", this.replayCurrentLevel, this);
-        const node = cc.instantiate(this.grid33);
-        node.y = -35.315;
-        bgNode.addChild(node);
-      } else {
-        // this.getRewardNode.y = 200 + this.getRewardNode.y;
-        // this.redirectNode.y = 200 + this.redirectNode.y;
+    if (
+      isOppo() &&
+      versionCheck() &&
+      !getOpenStatus() &&
+      parseInt(getCfgVal("zs_jump_switch"))
+    ) {
+      if (!this.cleanNative) {
+        this.addGrid33();
       }
     }
+  },
+
+  addGrid33() {
+    const bgNode = cc.find("Canvas/Main Camera/bg");
+    cc.find("star", bgNode).active = false;
+    cc.find("reward", bgNode).active = false;
+    const node = cc.instantiate(this.grid33);
+    node.y = -35.315;
+    bgNode.addChild(node);
   },
 
   initStarAction() {
@@ -108,15 +123,44 @@ cc.Class({
     const levels = JSON.parse(localStorage.getItem("userLevel"));
     this.goNextNode.active = current < levels.length;
     this.levelLabel.string = current;
-    common.preloadlevel(current);
     if (current < levels.length) {
-      common.preloadlevel(current);
+      preloadlevel(current);
+    } else {
+      preloadlevel(current + 1);
     }
   },
 
   initBtn() {
     // this.doubelNode.active = false;
     // this.redirectNode.active = true;
+    if (isOppo()) {
+      if (
+        versionCheck() &&
+        !getOpenStatus() &&
+        parseInt(getCfgVal("zs_native_limit")) &&
+        this.cleanNative
+      ) {
+        cc.find("goNext/Label", this.goNextNode).getComponent(cc.Label).string =
+          "下一步";
+
+        cc.resources.load("prefab/SingleNativeAd", cc.Prefab, (err, prefab) => {
+          if (!err) {
+            const node = cc.instantiate(prefab);
+            node.y = -35.315;
+            node.getComponent("NativeAd").callBack = () => {
+              this.cleanNative = false;
+              this.addGrid33();
+            };
+            cc.find("Canvas").addChild(node);
+            console.log("added prefab/SingleNativeAd");
+          } else {
+            // 出错直接返回到首页
+            console.log("loaded prefab/SingleNativeAd failed");
+            console.log(JSON.stringify(err));
+          }
+        });
+      }
+    }
     this.goNextNode.on("click", this.goNextLevel, this);
     // this.checkDoubelNode
     //   .getComponent(cc.Toggle)
@@ -182,6 +226,20 @@ cc.Class({
       }, 1000);
       return;
     }
+
+    if (isOppo()) {
+      if (this.cleanNative) {
+        const singleNative = cc.find("Canvas/SingleNativeAd");
+        if (singleNative) {
+          singleNative.active = false;
+          singleNative.destroy();
+          this.addGrid33();
+        }
+        this.cleanNative = false;
+        return;
+      }
+    }
+
     // 去下一关
     const evt = new cc.Event.EventCustom("_toggle_loading", true);
     evt.setUserData({ status: true });
@@ -205,12 +263,37 @@ cc.Class({
         return;
       }
     }
-    if (versionCheck()) {
-      if (cc.sys.platform == cc.sys.OPPO_GAME) {
-        this.node.dispatchEvent(evt);
-        cc.director.loadScene("home");
-        return;
-      }
+    if (isOppo()) {
+      // 游戏结束去插屏原生广告
+      // if (
+      //   versionCheck() &&
+      //   parseInt(getCfgVal("zs_jump_switch")) &&
+      //   !getOpenStatus() &&
+      //   parseInt(getCfgVal("zs_native_limit"))
+      // ) {
+      //   cc.resources.load("prefab/FullNativeAd", cc.Prefab, (err, prefab) => {
+      //     if (!err) {
+      //       const node = cc.instantiate(prefab);
+      //       node.getComponent("NativeAd").backHome = true;
+      //       cc.find("Canvas").addChild(node);
+      //       console.log("added prefab/FullNativeAd backhome");
+      //     } else {
+      //       // 出错直接返回到首页
+      //       console.log("loaded prefab/FullNativeAd failed, back home now");
+      //       console.log(JSON.stringify(err));
+      //       this.node.dispatchEvent(evt);
+      //       cc.director.loadScene("home");
+      //     }
+      //   });
+      //   return;
+      // } else {
+      //   this.node.dispatchEvent(evt);
+      //   cc.director.loadScene("home");
+      //   return;
+      // }
+      this.node.dispatchEvent(evt);
+      cc.director.loadScene("home");
+      return;
     }
     if (!this.checkHeart()) {
       const freeSide = cc.find("Canvas/Main Camera/freeSideL");

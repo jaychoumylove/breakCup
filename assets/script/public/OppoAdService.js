@@ -1,3 +1,5 @@
+const { isOppo } = require("../util/common");
+
 cc.Class({
   extends: cc.Component,
 
@@ -6,7 +8,7 @@ cc.Class({
   onLoad() {
     // this._currentScene = cc.director.getScene().name;
     // this._lastScene = null;
-    if (cc.sys.platform == cc.sys.OPPO_GAME) {
+    if (isOppo()) {
       qg.setEnableDebug({
         enableDebug: true, // true 为打开，false 为关闭
         success: () => {
@@ -21,9 +23,7 @@ cc.Class({
         fail: function () {},
       });
       this.initAdIds();
-      setTimeout(() => {
-        this.initAD();
-      }, 1);
+      this.initAD();
     }
   },
 
@@ -196,7 +196,7 @@ cc.Class({
 
   // pos {x: 1, y: 1, anchorx:0.5, anchory:0.5}
   transformPos(node, size) {
-    if (cc.sys.platform != cc.sys.OPPO_GAME) {
+    if (!isOppo()) {
       cc.warn("oppo is undefined!");
       return null;
     }

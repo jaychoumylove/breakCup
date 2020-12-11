@@ -1,3 +1,4 @@
+import { isOppo } from "../util/common";
 import { versionCheck, getCfgVal } from "../util/ZSLoad";
 
 cc.Class({
@@ -47,10 +48,12 @@ cc.Class({
 
   dispatchLoad(evt) {
     const { star } = evt.getUserData();
-    if (cc.sys.platform == cc.sys.OPPO_GAME) {
+    if (isOppo()) {
       if (versionCheck()) {
         let time = parseInt(getCfgVal("zs_jump_time"));
         if (time < 1) {
+          this.closeNode.active = true;
+          this.closeNode.on("click", this.closeHandle, this);
         } else {
           if (time) {
             if (time < 1000) {
@@ -113,7 +116,7 @@ cc.Class({
     if (cc.sys.platform == cc.sys.WECHAT_GAME) {
       ad = cc.find("bgm").getComponent("WechatAdService");
     }
-    if (cc.sys.platform == cc.sys.OPPO_GAME) {
+    if (isOppo()) {
       ad = cc.find("bgm").getComponent("OppoAdService");
     }
     const call = () => {

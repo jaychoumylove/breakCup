@@ -42,6 +42,11 @@ const common = {
   randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   },
+
+  isOppo() {
+    // return cc.sys.platform == cc.sys.OPPO_GAME;
+    return true;
+  },
 };
 
 module.exports = common;
