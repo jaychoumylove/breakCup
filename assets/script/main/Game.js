@@ -4,6 +4,7 @@ import {
   getUseSkinGroup,
   updateCurrentIndex,
 } from "../public/UserSkin";
+import { isOppo } from "../util/common";
 import { versionCheck, getCfgVal } from "../util/ZSLoad";
 
 cc.Class({
@@ -140,6 +141,25 @@ cc.Class({
           }, 0);
         }
       }
+    }
+    if (
+      isOppo() &&
+      !getOpenStatus() &&
+      parseInt(getCfgVal("zs_native_limit"))
+    ) {
+      cc.resources.load("prefab/SingleNativeAd", cc.Prefab, (err, prefab) => {
+        if (!err) {
+          const node = cc.instantiate(prefab);
+          node.y = 200;
+          node.getComponent("NativeAd").callBack = () => {};
+          cc.find("Canvas").addChild(node);
+          console.log("added prefab/SingleNativeAd");
+        } else {
+          // 出错直接返回到首页
+          console.log("loaded prefab/SingleNativeAd failed");
+          console.log(JSON.stringify(err));
+        }
+      });
     }
   },
 
