@@ -165,6 +165,13 @@ cc.Class({
       }
     }
 
+    if (isOppo()) {
+      const nativeAd = cc.find("Canvas/SingleNativeAd");
+      if (nativeAd) {
+        nativeAd.destroy();
+      }
+    }
+
     this.node.dispatchEvent(new cc.Event.EventCustom("_replay_current", true));
   },
 

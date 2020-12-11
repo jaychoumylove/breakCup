@@ -291,35 +291,38 @@ cc.Class({
     }
     if (isOppo()) {
       // 游戏结束去插屏原生广告
-      // if (
-      //   versionCheck() &&
-      //   parseInt(getCfgVal("zs_jump_switch")) &&
-      //   !getOpenStatus() &&
-      //   parseInt(getCfgVal("zs_native_limit"))
-      // ) {
-      //   cc.resources.load("prefab/FullNativeAd", cc.Prefab, (err, prefab) => {
-      //     if (!err) {
-      //       const node = cc.instantiate(prefab);
-      //       node.getComponent("NativeAd").backHome = true;
-      //       cc.find("Canvas").addChild(node);
-      //       console.log("added prefab/FullNativeAd backhome");
-      //     } else {
-      //       // 出错直接返回到首页
-      //       console.log("loaded prefab/FullNativeAd failed, back home now");
-      //       console.log(JSON.stringify(err));
-      //       this.node.dispatchEvent(evt);
-      //       cc.director.loadScene("home");
-      //     }
-      //   });
-      //   return;
-      // } else {
-      //   this.node.dispatchEvent(evt);
-      //   cc.director.loadScene("home");
-      //   return;
-      // }
-      this.node.dispatchEvent(evt);
-      cc.director.loadScene("home");
-      return;
+      if (
+        versionCheck() &&
+        !getOpenStatus() &&
+        parseInt(getCfgVal("zs_native_limit"))
+      ) {
+        cc.resources.load("prefab/FullNativeAd", cc.Prefab, (err, prefab) => {
+          if (!err) {
+            const node = cc.instantiate(prefab);
+            node.getComponent("NativeAd").callBack = () => {
+              this.node.dispatchEvent(
+                new cc.Event.EventCustom("_go_next_lv", true)
+              );
+            };
+            cc.find("Canvas").addChild(node);
+            console.log("added prefab/FullNativeAd backhome");
+          } else {
+            // 出错直接返回到首页
+            console.log("loaded prefab/FullNativeAd failed, back home now");
+            console.log(JSON.stringify(err));
+            this.node.dispatchEvent(evt);
+            cc.director.loadScene("home");
+          }
+        });
+        return;
+      } else {
+        this.node.dispatchEvent(evt);
+        cc.director.loadScene("home");
+        return;
+      }
+      // this.node.dispatchEvent(evt);
+      // cc.director.loadScene("home");
+      // return;
     }
     if (!this.checkHeart()) {
       const freeSide = cc.find("Canvas/Main Camera/freeSideL");

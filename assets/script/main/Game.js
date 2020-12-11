@@ -151,7 +151,7 @@ cc.Class({
       cc.resources.load("prefab/SingleNativeAd", cc.Prefab, (err, prefab) => {
         if (!err) {
           const node = cc.instantiate(prefab);
-          node.y = 200;
+          node.y = 180;
           node.getComponent("NativeAd").callBack = () => {};
           cc.find("Canvas").addChild(node);
           console.log("added prefab/SingleNativeAd");
