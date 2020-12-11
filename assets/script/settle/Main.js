@@ -79,12 +79,7 @@ cc.Class({
       this.hasShowTwiceBannerAd = true;
     }
 
-    if (
-      isOppo() &&
-      versionCheck() &&
-      !getOpenStatus() &&
-      parseInt(getCfgVal("zs_jump_switch"))
-    ) {
+    if (isOppo() && versionCheck() && parseInt(getCfgVal("zs_jump_switch"))) {
       if (!this.cleanNative) {
         this.addGrid33();
       }

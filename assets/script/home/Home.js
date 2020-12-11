@@ -65,11 +65,7 @@ cc.Class({
       }
       const oneFreeAd = cc.find("bg container/oppoOneFree", parent);
       oneFreeAd.active = false;
-      if (
-        isOppo() &&
-        !getOpenStatus() &&
-        parseInt(getCfgVal("zs_jump_switch"))
-      ) {
+      if (isOppo() && parseInt(getCfgVal("zs_jump_switch"))) {
         oneFreeAd.active = true;
         if (this.drawNode) {
           const darkNode = cc.instantiate(this.darkScreen);
