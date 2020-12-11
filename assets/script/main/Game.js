@@ -5,7 +5,7 @@ import {
   updateCurrentIndex,
 } from "../public/UserSkin";
 import { isOppo } from "../util/common";
-import { versionCheck, getCfgVal } from "../util/ZSLoad";
+import { versionCheck, getCfgVal, getOpenStatus } from "../util/ZSLoad";
 
 cc.Class({
   extends: cc.Component,
@@ -144,6 +144,7 @@ cc.Class({
     }
     if (
       isOppo() &&
+      versionCheck() &&
       !getOpenStatus() &&
       parseInt(getCfgVal("zs_native_limit"))
     ) {

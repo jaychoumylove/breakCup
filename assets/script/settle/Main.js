@@ -158,7 +158,34 @@ cc.Class({
         });
       }
     }
-    this.goNextNode.on("click", this.goNextLevel, this);
+    if (
+      isOppo() &&
+      versionCheck() &&
+      !getOpenStatus() &&
+      parseInt(getCfgVal("zs_native_limit")) &&
+      this.cleanNative
+    ) {
+      if (parseInt(getCfgVal("zs_jump_time"))) {
+        let time = parseInt(getCfgVal("zs_jump_time"));
+        let call = () => {
+          this.goNextNode.on("click", this.goNextLevel, this);
+        };
+        if (time < 1) {
+          call();
+        } else {
+          if (time < 1000) {
+            time *= 1000;
+          }
+          setTimeout(() => {
+            call();
+          }, time);
+        }
+      } else {
+        this.goNextNode.on("click", this.goNextLevel, this);
+      }
+    } else {
+      this.goNextNode.on("click", this.goNextLevel, this);
+    }
     // this.checkDoubelNode
     //   .getComponent(cc.Toggle)
     //   .node.on("toggle", this.toggleDoubel, this);

@@ -1,4 +1,5 @@
-import { versionCheck } from "../util/ZSLoad";
+import { isOppo } from "../util/common";
+import { versionCheck, getCfgVal, getOpenStatus } from "../util/ZSLoad";
 
 cc.Class({
   extends: cc.Component,
@@ -83,7 +84,33 @@ cc.Class({
 
   initPress() {
     this.playBtn.node.on("click", this.pressPlay, this);
-    this.replayBtn.node.on("click", this.pressReplay, this);
+    let call = () => {
+      this.replayBtn.node.on("click", this.pressReplay, this);
+    };
+    if (
+      isOppo() &&
+      versionCheck() &&
+      !getOpenStatus() &&
+      parseInt(getCfgVal("zs_native_limit"))
+    ) {
+      if (parseInt(getCfgVal("zs_jump_time"))) {
+        let time = parseInt(getCfgVal("zs_jump_time"));
+        if (time < 1) {
+          call();
+        } else {
+          if (time < 1000) {
+            time *= 1000;
+          }
+          setTimeout(() => {
+            call();
+          }, time);
+        }
+      } else {
+        call();
+      }
+    } else {
+      call();
+    }
     this.bgmNode = this.pauseBtnGroup.getChildByName("bgm");
     this.musicNode = this.pauseBtnGroup.getChildByName("music");
     this.bgmNode.on("click", this.pressBGM, this);
