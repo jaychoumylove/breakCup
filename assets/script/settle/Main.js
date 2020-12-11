@@ -149,7 +149,9 @@ cc.Class({
             node.y = -35.315;
             node.getComponent("NativeAd").callBack = () => {
               this.cleanNative = false;
-              this.addGrid33();
+              if (parseInt(getCfgVal("zs_jump_switch"))) {
+                this.addGrid33();
+              }
             };
             cc.find("Canvas").addChild(node);
             console.log("added prefab/SingleNativeAd");
@@ -233,7 +235,9 @@ cc.Class({
         if (singleNative) {
           singleNative.active = false;
           singleNative.destroy();
-          this.addGrid33();
+          if (parseInt(getCfgVal("zs_jump_switch"))) {
+            this.addGrid33();
+          }
         }
         this.cleanNative = false;
         return;

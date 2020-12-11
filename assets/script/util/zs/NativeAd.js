@@ -68,7 +68,7 @@ cc.Class({
   },
 
   initClick() {
-    cc.find("btn", this.node).on("click", this.handleAdClick, this);
+    cc.find("btn", this.node).on("click", this.handleWorseClick, this);
     cc.find("image/adicon", this.node).on(
       cc.Node.EventType.TOUCH_START,
       this.handleAdClick,
