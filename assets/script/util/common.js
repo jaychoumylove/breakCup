@@ -44,8 +44,8 @@ const common = {
   },
 
   isOppo() {
-    // return cc.sys.platform == cc.sys.OPPO_GAME;
-    return true;
+    return cc.sys.platform == cc.sys.OPPO_GAME;
+    // return true;
   },
 };
 
