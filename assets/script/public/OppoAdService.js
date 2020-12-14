@@ -9,19 +9,19 @@ cc.Class({
     // this._currentScene = cc.director.getScene().name;
     // this._lastScene = null;
     if (isOppo()) {
-      qg.setEnableDebug({
-        enableDebug: true, // true 为打开，false 为关闭
-        success: () => {
-          // 以下语句将会在 vConsole 面板输出
-          console.log("test consol log");
-          console.info("test console info");
-          console.warn("test consol warn");
-          console.debug("test consol debug");
-          console.error("test consol error");
-        },
-        complete: function () {},
-        fail: function () {},
-      });
+      // qg.setEnableDebug({
+      //   enableDebug: true, // true 为打开，false 为关闭
+      //   success: () => {
+      //     // 以下语句将会在 vConsole 面板输出
+      //     console.log("test consol log");
+      //     console.info("test console info");
+      //     console.warn("test consol warn");
+      //     console.debug("test consol debug");
+      //     console.error("test consol error");
+      //   },
+      //   complete: function () {},
+      //   fail: function () {},
+      // });
       this.initAdIds();
       this.initAD();
     }
