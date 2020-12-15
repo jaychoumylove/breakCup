@@ -187,7 +187,7 @@
       "array": [
         0,
         0,
-        385.38130468407525,
+        678.963916567,
         0,
         0,
         0,
@@ -10513,7 +10513,7 @@
     "heart": 5,
     "money": 0,
     "lastAddHeartTime": 0,
-    "maxLevel": 15,
+    "maxLevel": 16,
     "scrollPrefab": {
       "__uuid__": "844d56b5-595f-4c5b-8e9c-e22309eeabe1"
     },

@@ -83,7 +83,8 @@ cc.Class({
     const { current } = JSON.parse(cc.sys.localStorage.getItem("currentLevel"));
     this.currentLevel = current;
     this.currentLabel.string = current;
-    this.break = [];
+    this.breakAll = []; // 存储破碎的杯子集合
+    this.break = []; // 存储打碎的有效杯子 >-1
     this.cupNum = this.boxContainer.children.length;
     this.win = false;
     this.lose = false;
@@ -431,11 +432,16 @@ cc.Class({
 
   boxBreakHandle(evt) {
     const position = evt.getUserData();
-    if (this.break.indexOf(position.id) < 0) {
-      this.break.push(position.id);
+    if (this.breakAll.indexOf(position.id) < 0) {
+      this.breakAll.push(position.id);
+      // console.log(position);
+      if (position.id > -1 && this.break.indexOf(position.id) < 0) {
+        this.break.push(position.id);
+      }
       const scrapNode = cc.instantiate(this.scrapPrefab);
-      scrapNode.x = position.x;
-      scrapNode.y = position.y;
+      let c_pos = this.boxContainer.convertToNodeSpaceAR(position.pos);
+      scrapNode.x = c_pos.x;
+      scrapNode.y = c_pos.y;
       this.boxContainer.addChild(scrapNode);
     }
     if (this.break.length >= this.cupNum) {
