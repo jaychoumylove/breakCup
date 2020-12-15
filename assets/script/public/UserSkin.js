@@ -52,11 +52,11 @@ const getNextBall = (length) => {
   const useBall = getUseSkinGroup();
   const balls = ballMap[useBall];
   for (let index = 0; index < length; index++) {
-    newCurrent++;
     if (newCurrent >= balls.length) {
       newCurrent = 0;
     }
     items.push(balls[newCurrent]);
+    newCurrent++;
   }
 
   nextIndex = newCurrent;
