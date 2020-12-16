@@ -1,4 +1,4 @@
-import { shuffleArray } from "../common";
+import { isWechat, shuffleArray } from "../common";
 import { versionCheck, getZsLoadData } from "../ZSLoad";
 
 cc.Class({
@@ -11,7 +11,7 @@ cc.Class({
   },
 
   onLoad() {
-    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+    if (isWechat()) {
       if (versionCheck()) {
         this.initWH();
         this.refreshAds();

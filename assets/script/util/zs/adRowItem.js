@@ -1,4 +1,5 @@
 import zsSdk from "zs.sdk";
+import { isWechat } from "../common";
 import { getCfgVal, getSysVal, getImageByKey } from "../ZSLoad";
 
 cc.Class({
@@ -69,7 +70,7 @@ cc.Class({
     let fail = () => {
       //失败回调
       console.log("失败");
-      if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+      if (isWechat()) {
         if (!cc.find("Canvas/openOne")) {
           if (cc.find("Canvas/openThree") || cc.find("Canvas/openThree")) {
             return;

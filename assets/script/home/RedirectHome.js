@@ -13,12 +13,12 @@ cc.Class({
     zsLoad(() => {
       this.loadedCfg = true;
       console.log("this.loadedCfg", this.loadedCfg);
-      this.checkRedirectState();
+      // this.checkRedirectState();
     });
     initZsData(() => {
       this.loadedData = true;
       console.log("this.loadedData", this.loadedData);
-      this.checkRedirectState();
+      // this.checkRedirectState();
     });
     cc.director.preloadScene(
       "home",
@@ -26,15 +26,13 @@ cc.Class({
       (error) => {
         this.preloadHome = true;
         console.log("this.preloadHome", this.preloadHome);
-        this.checkRedirectState();
+        // this.checkRedirectState();
+        cc.director.loadScene("home");
       }
     );
   },
 
   checkRedirectState() {
-    console.log("this.preloadHome", this.preloadHome);
-    console.log("this.loadedData", this.loadedData);
-    console.log("this.loadedCfg", this.loadedCfg);
     if (this.loadedCfg && this.loadedData && this.preloadHome) {
       cc.director.loadScene("home");
     }

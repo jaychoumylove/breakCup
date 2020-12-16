@@ -47,6 +47,11 @@ const common = {
     return cc.sys.platform == cc.sys.OPPO_GAME;
     // return true;
   },
+
+  isWechat() {
+    return cc.sys.platform == cc.sys.WECHAT_GAME;
+    // return false;
+  },
 };
 
 module.exports = common;

@@ -1,4 +1,4 @@
-import { shuffleArray } from "../common";
+import { isWechat, shuffleArray } from "../common";
 import { versionCheck, getZsLoadData } from "../ZSLoad";
 
 cc.Class({
@@ -190,7 +190,7 @@ cc.Class({
     cc.tween(this.moreBox)
       .to(0.1, { x: x })
       .call(() => {
-        if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+        if (isWechat()) {
           if (true == this.newGuy) {
             // this.changeSprite(false, true);
           }

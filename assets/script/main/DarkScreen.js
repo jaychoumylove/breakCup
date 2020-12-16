@@ -1,4 +1,4 @@
-import { isOppo } from "../util/common";
+import { isOppo, isWechat } from "../util/common";
 import { versionCheck, getCfgVal, getOpenStatus } from "../util/ZSLoad";
 
 cc.Class({
@@ -138,7 +138,7 @@ cc.Class({
     const evt = new cc.Event.EventCustom("_toggle_loading", true);
     evt.setUserData({ status: true });
     this.node.dispatchEvent(evt);
-    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+    if (isWechat()) {
       if (versionCheck()) {
         cc.resources.load(
           "prefab/openOneVertical",

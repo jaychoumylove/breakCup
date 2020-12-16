@@ -1,3 +1,4 @@
+import { isWechat } from "../common";
 import { versionCheck } from "../ZSLoad";
 cc.Class({
   extends: cc.Component,
@@ -11,7 +12,7 @@ cc.Class({
   },
 
   onLoad() {
-    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+    if (isWechat()) {
       if (versionCheck()) {
         // 不在审核中
         const freeSideAdNode = cc.instantiate(this.freeSideAd);

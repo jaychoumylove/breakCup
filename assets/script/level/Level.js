@@ -1,4 +1,4 @@
-import { isOppo } from "../util/common";
+import { isOppo, isWechat } from "../util/common";
 import { versionCheck } from "../util/ZSLoad";
 cc.Class({
   extends: cc.Component,
@@ -10,7 +10,7 @@ cc.Class({
 
     if (versionCheck()) {
       let ad = null;
-      if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+      if (isWechat()) {
         ad = cc.find("bgm").getComponent("WechatAdService");
       }
       if (isOppo()) {

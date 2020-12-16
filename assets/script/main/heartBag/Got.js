@@ -1,4 +1,4 @@
-import { isOppo } from "../../util/common";
+import { isOppo, isWechat } from "../../util/common";
 import { versionCheck, getCfgVal } from "../../util/ZSLoad";
 
 cc.Class({
@@ -29,7 +29,7 @@ cc.Class({
    * 是否误触
    */
   checkWorseClick() {
-    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+    if (isWechat()) {
       if (!versionCheck()) {
         // 审核中不展示广告
         this.hasShowBannerAd = true;
@@ -88,7 +88,7 @@ cc.Class({
     this.AudioPlayer.playOnceMusic("button");
     cc.log("pressDoubel");
     let ad = null;
-    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+    if (isWechat()) {
       ad = cc.find("bgm").getComponent("WechatAdService");
     }
     if (isOppo()) {

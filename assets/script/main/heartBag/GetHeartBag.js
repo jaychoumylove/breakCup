@@ -1,3 +1,4 @@
+import { isWechat } from "../../util/common";
 import { versionCheck } from "../../util/ZSLoad";
 
 cc.Class({
@@ -19,7 +20,7 @@ cc.Class({
     this.initPregressBar();
     this.initLightAction();
     cc.find("horizontalScroll", this.node).active = false;
-    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+    if (isWechat()) {
       if (versionCheck()) {
         cc.find("horizontalScroll", this.node).active = true;
       }

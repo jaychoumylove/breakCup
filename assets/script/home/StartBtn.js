@@ -1,3 +1,5 @@
+const { isWechat } = require("../util/common");
+
 cc.Class({
   extends: cc.Component,
 
@@ -27,7 +29,7 @@ cc.Class({
     const evt = new cc.Event.EventCustom("_toggle_loading", true);
     evt.setUserData({ status: true });
     this.node.dispatchEvent(evt);
-    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+    if (isWechat()) {
       const ad = cc.find("bgm").getComponent("WechatAdService");
       ad.setGBAd("banner", false);
     }

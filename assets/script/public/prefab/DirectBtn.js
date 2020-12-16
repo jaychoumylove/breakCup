@@ -1,3 +1,4 @@
+import { isWechat } from "../../util/common";
 import { versionCheck } from "../../util/ZSLoad";
 
 cc.Class({
@@ -28,7 +29,7 @@ cc.Class({
     }
     this.AudioPlayer.playOnceMusic("button");
     let scene = this.scene;
-    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+    if (isWechat()) {
       const ad = cc.find("bgm").getComponent("WechatAdService");
       ad.setGBAd("banner", false);
       if (scene == "home") {

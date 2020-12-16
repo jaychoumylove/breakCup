@@ -17,12 +17,12 @@
   "inlineSpriteFrames": {
     "web-mobile": false,
     "wechatgame": true,
-    "quickgame": false
+    "quickgame": true
   },
   "isRemoteBundle": {
     "web-mobile": false,
-    "wechatgame": false,
-    "quickgame": false
+    "wechatgame": true,
+    "quickgame": true
   },
   "subMetas": {}
 }

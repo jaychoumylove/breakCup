@@ -1,6 +1,6 @@
 import zsSdk from "zs.sdk";
 import cfg from "./cfg";
-import { isOppo } from "./common";
+import { isOppo, isWechat } from "./common";
 
 let loadedData = { promotion: [] };
 let imageDict = {};
@@ -117,7 +117,7 @@ const getSysVal = (key, dft) => {
 };
 
 const getZsLoadData = (call) => {
-  if (isOppo()) {
+  if (isOppo() || isWechat()) {
     zsSdk.loadAd((res) => {
       call(res);
     });
@@ -130,7 +130,6 @@ const setZsLoadData = (call) => {
   zsSdk.loadAd((res) => {
     const adArray = res.promotion;
     if (!adArray.length) {
-      call && call();
       return;
     }
     setLoadedData(res);
@@ -150,12 +149,13 @@ const setZsLoadData = (call) => {
       );
     }
   });
+  call && call();
 };
 
 const initZsData = (call) => {
   setZsLoadData(call);
   setInterval(() => {
-    setZsLoadData(null);
+    isOppo() || isWechat() ? console.log(loadedData) : setZsLoadData(null);
   }, 1000 * 30);
 };
 

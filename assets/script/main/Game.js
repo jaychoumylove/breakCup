@@ -4,7 +4,7 @@ import {
   getUseSkinGroup,
   updateCurrentIndex,
 } from "../public/UserSkin";
-import { isOppo } from "../util/common";
+import { isOppo, isWechat } from "../util/common";
 import { versionCheck, getCfgVal, getOpenStatus } from "../util/ZSLoad";
 
 cc.Class({
@@ -46,7 +46,7 @@ cc.Class({
 
   onLoad() {
     const parentCamera = cc.find("Canvas/Main Camera");
-    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+    if (isWechat()) {
       const ad = cc.find("bgm").getComponent("WechatAdService");
       ad.setGBAd("banner", false);
       if (versionCheck()) {
@@ -122,7 +122,7 @@ cc.Class({
     // this.offTouch();
     this.darkScreenNode.active = true;
     this.darkScreenNode.dispatchEvent(new cc.Event.EventCustom("_fail", true));
-    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+    if (isWechat()) {
       if (versionCheck()) {
         let scroll = cc.find(
           "Canvas/Main Camera/game Bg/ground/horizontalScroll"
@@ -169,7 +169,7 @@ cc.Class({
     // 解锁下一等级
     this.unlockNextLevel();
     let openNode;
-    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+    if (isWechat()) {
       if (versionCheck()) {
         cc.resources.load("prefab/openThree", cc.Prefab, (err, prefab) => {
           if (!err) {
@@ -185,7 +185,7 @@ cc.Class({
       }
     }
     this.scheduleOnce(() => {
-      if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+      if (isWechat()) {
         if (versionCheck()) {
           if (cc.find("Canvas/openThree")) {
           } else {

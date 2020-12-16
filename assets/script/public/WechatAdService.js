@@ -1,3 +1,5 @@
+const { isWechat } = require("../util/common");
+
 cc.Class({
   extends: cc.Component,
 
@@ -6,7 +8,7 @@ cc.Class({
   onLoad() {
     // this._currentScene = cc.director.getScene().name;
     // this._lastScene = null;
-    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+    if (isWechat()) {
       this.initAdIds();
       setTimeout(() => {
         this.initAD();

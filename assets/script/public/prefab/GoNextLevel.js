@@ -1,4 +1,4 @@
-const { isOppo } = require("../../util/common");
+const { isOppo, isWechat } = require("../../util/common");
 
 cc.Class({
   extends: cc.Component,
@@ -18,7 +18,7 @@ cc.Class({
     this.AudioPlayer.playOnceMusic("button");
     cc.log("go next");
     let ad = null;
-    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+    if (isWechat()) {
       ad = cc.find("bgm").getComponent("WechatAdService");
     }
     if (isOppo()) {

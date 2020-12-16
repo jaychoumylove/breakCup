@@ -1,3 +1,5 @@
+const { isWechat } = require("../util/common");
+
 cc.Class({
   extends: cc.Component,
 
@@ -10,7 +12,7 @@ cc.Class({
     //     'wechat': wx
     // };
     // this.platformObject = this.platformMap[this.platform];
-    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+    if (isWechat()) {
       this.openWxShare();
     }
   },

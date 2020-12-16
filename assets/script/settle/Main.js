@@ -1,4 +1,4 @@
-import { isOppo, preloadlevel } from "../util/common";
+import { isOppo, isWechat, preloadlevel } from "../util/common";
 import { versionCheck, getCfgVal, getOpenStatus } from "../util/ZSLoad";
 
 cc.Class({
@@ -57,7 +57,7 @@ cc.Class({
    * 是否误触
    */
   checkWorseClick() {
-    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+    if (isWechat()) {
       if (!versionCheck()) {
         // 审核中不展示广告
         this.hasShowOnceBannerAd = true;
@@ -254,7 +254,7 @@ cc.Class({
     const evt = new cc.Event.EventCustom("_toggle_loading", true);
     evt.setUserData({ status: true });
 
-    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+    if (isWechat()) {
       if (versionCheck()) {
         this.node.dispatchEvent(evt);
         const ad = cc.find("bgm").getComponent("WechatAdService");

@@ -2,17 +2,17 @@
   "package": "com.hnml.dstdpz.nearme.gamecenter",
   "name": "打碎他的瓶子",
   "icon": "/Users/qucaixian/creatorProject/breakCup/assets/sources/image/public/oppoIcon.png",
-  "versionName": "1.0",
-  "versionCode": "1.0",
+  "versionName": "1.1",
+  "versionCode": "1.1",
   "minPlatformVersion": "1060",
   "deviceOrientation": "portrait",
   "logLevel": "log",
-  "tinyPackageServer": "https://res.anaculture.com/game/dstdpz/oppo",
+  "tinyPackageServer": "https://res.anaculture.com/game/dstdpz/oppo/v1.1.1",
   "useDebugKey": true,
   "privatePath": "/Users/qucaixian/creatorProject/breakCup/private.pem",
   "certificatePath": "/Users/qucaixian/creatorProject/breakCup/certificate.pem",
   "disabledMode": "disabled is-disabled",
   "npmPath": "",
   "showNpmPath": false,
-  "packFirstScreenRes": true
+  "packFirstScreenRes": false
 }

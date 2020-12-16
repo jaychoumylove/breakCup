@@ -1,4 +1,4 @@
-import { isOppo } from "../util/common";
+import { isOppo, isWechat } from "../util/common";
 import { versionCheck, getCfgVal } from "../util/ZSLoad";
 
 cc.Class({
@@ -113,7 +113,7 @@ cc.Class({
   doubelHandle() {
     this.AudioPlayer.playOnceMusic("button");
     let ad = null;
-    if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+    if (isWechat()) {
       ad = cc.find("bgm").getComponent("WechatAdService");
     }
     if (isOppo()) {
